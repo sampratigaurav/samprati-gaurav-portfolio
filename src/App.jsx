@@ -999,7 +999,7 @@ export default function App() {
             position: 'fixed',
             inset: 0,
             pointerEvents: 'none',
-            zIndex: 1,
+            zIndex: 2,
             background: `radial-gradient(circle 420px at ${spotlightPos.x}px ${spotlightPos.y}px,
               rgba(255,255,255,0.032) 0%,
               rgba(255,255,255,0.018) 25%,
@@ -1137,7 +1137,7 @@ export default function App() {
         </div>
       )}
 
-      <div className="grain-overlay" />
+      <div className="grain-overlay" style={{ zIndex: 1 }} />
       <div className="scroll-bar" style={{ width: scrollWidth, background: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)' }} />
       {!isMobile && <Cursor isDark={isDark} />}
       <div style={{ 
@@ -2004,9 +2004,10 @@ export default function App() {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.92)',
-            backdropFilter: 'blur(12px)',
-            zIndex: 20000,
+            background: 'rgba(0,0,0,0.97)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            zIndex: 100000,
             overflowY: 'auto',
             opacity: modalVisible ? 1 : 0,
             transition: 'opacity 0.4s ease',
@@ -2016,7 +2017,7 @@ export default function App() {
           <div style={{
             maxWidth: '800px',
             margin: '0 auto',
-            fontFamily: 'DM Sans, sans-serif',
+            fontFamily: "'Iosevka Charon Mono', monospace",
           }}>
 
             {/* Close button */}
@@ -2027,7 +2028,7 @@ export default function App() {
               marginBottom: '48px',
             }}>
               <span style={{
-                fontFamily: 'DM Mono, monospace',
+                fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: '11px',
                 color: 'rgba(255,255,255,0.3)',
                 letterSpacing: '2px',
@@ -2043,7 +2044,7 @@ export default function App() {
                   color: 'rgba(255,255,255,0.5)',
                   borderRadius: '6px',
                   padding: '6px 14px',
-                  fontFamily: 'DM Mono, monospace',
+                  fontFamily: "'Iosevka Charon Mono', monospace",
                   fontSize: '11px',
                   cursor: 'none',
                   transition: 'all 0.2s',
@@ -2058,7 +2059,7 @@ export default function App() {
             {/* Hero */}
             <div style={{ marginBottom: '64px' }}>
               <div style={{
-                fontFamily: 'DM Mono, monospace',
+                fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: '11px',
                 color: 'rgba(255,255,255,0.3)',
                 letterSpacing: '2px',
@@ -2068,21 +2069,22 @@ export default function App() {
                 {activeProject.status}
               </div>
               <h1 style={{
-                fontFamily: 'Instrument Serif, serif',
+                fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: 'clamp(48px, 7vw, 80px)',
                 fontStyle: 'italic',
-                fontWeight: 400,
+                fontWeight: 300,
                 color: '#fff',
                 lineHeight: 1,
-                letterSpacing: '-2px',
+                letterSpacing: '-1px',
                 marginBottom: '16px',
               }}>
                 {activeProject.name}
               </h1>
               <p style={{
-                fontFamily: 'Instrument Serif, serif',
+                fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: '22px',
                 fontStyle: 'italic',
+                fontWeight: 300,
                 color: 'rgba(255,255,255,0.5)',
                 marginBottom: '32px',
               }}>
@@ -2103,15 +2105,15 @@ export default function App() {
                   { label: 'Role', val: activeProject.role },
                 ].map((m, i) => (
                   <div key={i}>
-                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>{m.label}</div>
+                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>{m.label}</div>
                     <div style={{ fontSize: '14px', color: '#fff' }}>{m.val}</div>
                   </div>
                 ))}
                 <div>
-                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stack</div>
+                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stack</div>
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                     {activeProject.tags.map(t => (
-                      <span key={t} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontFamily: 'DM Mono, monospace', background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
+                      <span key={t} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontFamily: "'Iosevka Charon Mono', monospace", background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
                     ))}
                   </div>
                 </div>
@@ -2133,22 +2135,22 @@ export default function App() {
                   padding: '20px 16px',
                   textAlign: 'center',
                 }}>
-                  <div style={{ fontFamily: 'Instrument Serif, serif', fontSize: '32px', fontStyle: 'italic', color: '#fff', lineHeight: 1, marginBottom: '6px' }}>{m.val}</div>
-                  <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{m.label}</div>
+                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '32px', fontStyle: 'italic', color: '#fff', lineHeight: 1, marginBottom: '6px' }}>{m.val}</div>
+                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{m.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Problem */}
             <div style={{ marginBottom: '48px' }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Problem</div>
-              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: 'Instrument Serif, serif', fontStyle: 'italic' }}>{activeProject.problem}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Problem</div>
+              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.problem}</p>
             </div>
 
             {/* Solution */}
             <div style={{ marginBottom: '48px' }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Solution</div>
-              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: 'Instrument Serif, serif', fontStyle: 'italic' }}>{activeProject.solution}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Solution</div>
+              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.solution}</p>
             </div>
 
             {/* Thought process */}
@@ -2160,13 +2162,13 @@ export default function App() {
               padding: '24px 28px',
               marginBottom: '64px',
             }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>My Thought Process</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>My Thought Process</div>
               <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>{activeProject.thought}</p>
             </div>
 
             {/* Architecture diagram */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>How It Works</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>How It Works</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                 {activeProject.architecture.map((a, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0', alignItems: 'stretch' }}>
@@ -2180,7 +2182,7 @@ export default function App() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontFamily: 'DM Mono, monospace',
+                        fontFamily: "'Iosevka Charon Mono', monospace",
                         fontSize: '11px',
                         color: 'rgba(255,255,255,0.4)',
                         flexShrink: 0,
@@ -2195,7 +2197,7 @@ export default function App() {
                     {/* Right — content */}
                     <div style={{ paddingBottom: i < activeProject.architecture.length - 1 ? '28px' : '0' }}>
                       <div style={{ fontSize: '15px', color: '#fff', fontWeight: 500, marginBottom: '6px', marginTop: '6px' }}>{a.title}</div>
-                      <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, fontFamily: 'DM Mono, monospace' }}>{a.desc}</div>
+                      <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, fontFamily: "'Iosevka Charon Mono', monospace" }}>{a.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -2204,7 +2206,7 @@ export default function App() {
 
             {/* Tech deep dive */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Technical Decisions</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Technical Decisions</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {activeProject.techDeep.map((t, i) => (
                   <div key={i} style={{
@@ -2217,7 +2219,7 @@ export default function App() {
                     alignItems: 'flex-start',
                   }}>
                     <div style={{
-                      fontFamily: 'DM Mono, monospace',
+                      fontFamily: "'Iosevka Charon Mono', monospace",
                       fontSize: '12px',
                       color: '#fff',
                       background: 'rgba(255,255,255,0.06)',
@@ -2234,7 +2236,7 @@ export default function App() {
 
             {/* Learnings */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>What I Learned</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>What I Learned</div>
               <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85 }}>{activeProject.learnings}</p>
             </div>
 
@@ -2255,7 +2257,7 @@ export default function App() {
                   background: '#fff',
                   color: '#000',
                   borderRadius: '6px',
-                  fontFamily: 'DM Mono, monospace',
+                  fontFamily: "'Iosevka Charon Mono', monospace",
                   fontSize: '12px',
                   textDecoration: 'none',
                   transition: 'opacity 0.2s',
@@ -2275,7 +2277,7 @@ export default function App() {
                   color: 'rgba(255,255,255,0.6)',
                   border: '1px solid rgba(255,255,255,0.15)',
                   borderRadius: '6px',
-                  fontFamily: 'DM Mono, monospace',
+                  fontFamily: "'Iosevka Charon Mono', monospace",
                   fontSize: '12px',
                   textDecoration: 'none',
                   transition: 'all 0.2s',
