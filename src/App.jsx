@@ -193,6 +193,66 @@ const getTimeGreeting = () => {
   return "You're up late.";
 };
 
+const CHARS = '!<>-_\\/[]{}—=+*^?#@$%&ABCDEFabcdef0123456789';
+
+const scrambleText = (el, finalText, duration = 500) => {
+  if (!el) return;
+  let frame = 0;
+  const totalFrames = Math.floor(duration / 30);
+  const interval = setInterval(() => {
+    el.textContent = finalText
+      .split('')
+      .map((char, i) => {
+        if (char === ' ' || char === '.') return char;
+        if (frame / totalFrames > i / finalText.length) return char;
+        return CHARS[Math.floor(Math.random() * CHARS.length)];
+      })
+      .join('');
+    frame++;
+    if (frame >= totalFrames) {
+      el.textContent = finalText;
+      clearInterval(interval);
+    }
+  }, 30);
+};
+
+const useMagnetic = (strength = 0.3) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.innerWidth <= 768) return;
+
+    const onMouseMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distX = e.clientX - centerX;
+      const distY = e.clientY - centerY;
+      const distance = Math.sqrt(distX * distX + distY * distY);
+      const maxDist = 80;
+
+      if (distance < maxDist) {
+        const pull = (1 - distance / maxDist) * strength;
+        el.style.transform = `translate(${distX * pull}px, ${distY * pull}px)`;
+        el.style.transition = 'transform 0.1s ease';
+      }
+    };
+
+    const onMouseLeave = () => {
+      el.style.transform = 'translate(0, 0)';
+      el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    el.addEventListener('mouseleave', onMouseLeave);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      el.removeEventListener('mouseleave', onMouseLeave);
+    };
+  }, [strength]);
+  return ref;
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('For Anyone');
   const [activeSection, setActiveSection] = useState('intro');
@@ -243,6 +303,26 @@ export default function App() {
   const [showEndToast, setShowEndToast] = useState(false);
 
   const [showCopyToast, setShowCopyToast] = useState(false);
+
+  const logoRef = useMagnetic(0.35);
+  const themeRef = useMagnetic(0.3);
+  const tabRefs = [useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25)];
+  const socialRefs = [useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25)];
+
+  const [scrollY, setScrollY] = useState(0);
+  const [spotlightPos, setSpotlightPos] = useState({ x: -1000, y: -1000 });
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleMove = (e) => setSpotlightPos({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', handleMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -412,6 +492,10 @@ export default function App() {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            if (entry.target.classList.contains('section-heading') && entry.target.dataset.final && !entry.target.dataset.scrambled) {
+              entry.target.dataset.scrambled = 'true';
+              scrambleText(entry.target, entry.target.dataset.final, 600);
+            }
           }
         });
       },
@@ -680,7 +764,29 @@ export default function App() {
   };
 
   return (
-    <div className={glitchActive ? 'glitch-active' : ''}>
+    <div className={glitchActive ? 'glitch-active' : ''} style={{ position: 'relative', zIndex: 1 }}>
+      <div 
+        className="gradient-bg" 
+        style={{ 
+          display: isDark ? 'block' : 'none', 
+          transform: `translateY(${scrollY * 0.08}px)` 
+        }} 
+      />
+      {!isMobile && isDark && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+            background: `radial-gradient(circle 420px at ${spotlightPos.x}px ${spotlightPos.y}px,
+              rgba(255,255,255,0.032) 0%,
+              rgba(255,255,255,0.018) 25%,
+              transparent 70%
+            )`,
+          }}
+        />
+      )}
       {secretMessage && (
         <div style={{
           position: 'fixed',
@@ -887,13 +993,14 @@ export default function App() {
         }}>`</span>
         <span>terminal</span>
       </div>
-      <button className="theme-toggle" onClick={() => setIsDark(d => !d)} style={{ right: isMobile ? '16px' : '32px' }}>
+      <button ref={themeRef} className="theme-toggle" onClick={() => setIsDark(d => !d)} style={{ right: isMobile ? '16px' : '32px' }}>
         {isDark ? '◐' : '◑'}
       </button>
 
       {/* ========== TOP BAR ========== */}
       <header className="topbar">
         <a 
+          ref={logoRef}
           className={`topbar-logo ${logoShake ? 'logo-shake' : ''}`} 
           href="#intro" 
           onClick={(e) => {
@@ -928,9 +1035,10 @@ export default function App() {
           S
         </a>
         <div className="topbar-tabs" style={{ display: isMobile ? 'none' : 'flex' }}>
-          {tabs.map((t) => (
+          {tabs.map((t, i) => (
             <button
               key={t}
+              ref={tabRefs[i]}
               className={`tab-btn${activeTab === t ? ' active' : ''}`}
               onClick={() => switchTab(t)}
               style={{ color: activeTab === t ? (isDark ? '#fff' : '#111') : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)') }}
@@ -1076,7 +1184,7 @@ export default function App() {
 
         {/* ===== SECTION 2 — WORK ===== */}
         <section id="work" className="section">
-          <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>work.</h2>
+          <h2 className="section-heading" data-final="work." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)` }}>work.</h2>
           <div className="section-content">
             <div className="projects-stack">
               {projects.map((p, idx) => (
@@ -1258,7 +1366,7 @@ export default function App() {
 
         {/* ===== SECTION 3 — WRITING ===== */}
         <section id="writing" className="section">
-          <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>writing.</h2>
+          <h2 className="section-heading" data-final="writing." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)` }}>writing.</h2>
           <div className="section-content">
             <div className="articles-list" style={{ background: 'transparent' }}>
               <div style={{ marginBottom: '20px' }}> 
@@ -1395,7 +1503,7 @@ export default function App() {
 
         {/* ===== SECTION 4 — CERTS ===== */}
         <section id="certs" className="section">
-          <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>certs.</h2>
+          <h2 className="section-heading" data-final="certs." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)` }}>certs.</h2>
           <div className="section-content">
             <div className="articles-list" style={{ background: 'transparent' }}>
               {certs.map((c, i) => (
@@ -1452,6 +1560,7 @@ export default function App() {
 
         {/* ===== SECTION 5 — CONTACT ===== */}
         <section id="contact" className="section contact-section">
+          <h2 className="section-heading" data-final="about." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)`, marginBottom: '32px' }}>about.</h2>
           <div style={{
             position: 'relative',
             width: '260px',
@@ -1507,16 +1616,16 @@ export default function App() {
             <span className="dot" /> status : active
           </div>
           <div className="contact-socials">
-            <a href="https://www.linkedin.com/in/sampratigaurav/" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
+            <a ref={socialRefs[0]} href="https://www.linkedin.com/in/sampratigaurav/" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
               LinkedIn
             </a>
-            <a href="https://github.com/sampratigaurav" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
+            <a ref={socialRefs[1]} href="https://github.com/sampratigaurav" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
               GitHub
             </a>
-            <a href="https://x.com/Sampratigaurav0" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
+            <a ref={socialRefs[2]} href="https://x.com/Sampratigaurav0" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
               X
             </a>
-            <a href="https://sampratigaurav.hashnode.dev/" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
+            <a ref={socialRefs[3]} href="https://sampratigaurav.hashnode.dev/" target="_blank" rel="noopener noreferrer" style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#4A9EFF'} onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.5)'}>
               Hashnode
             </a>
           </div>
