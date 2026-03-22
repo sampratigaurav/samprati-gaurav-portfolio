@@ -1236,7 +1236,7 @@ export default function App() {
           ))}
         </div>
       ) : (
-        <nav className="sidebar">
+        <nav className="sidebar" role="navigation" aria-label="Main navigation">
           {sections.map((id, i) => (
             <a
               key={id}
@@ -1259,7 +1259,7 @@ export default function App() {
       )}
 
       {/* ========== MAIN CONTENT ========== */}
-      <div className="main-content" style={{ marginLeft: isMobile ? '0' : '120px', paddingLeft: isMobile ? '24px' : '40px', paddingRight: isMobile ? '24px' : '80px', paddingBottom: isMobile ? '80px' : '0' }}>
+      <main className="main-content" style={{ marginLeft: isMobile ? '0' : '120px', paddingLeft: isMobile ? '24px' : '40px', paddingRight: isMobile ? '24px' : '80px', paddingBottom: isMobile ? '80px' : '0' }}>
 
         {/* ===== SECTION 1 — INTRO ===== */}
         <section id="intro" className="section">
@@ -1780,7 +1780,7 @@ export default function App() {
             </a>
           </div>
         </section>
-      </div>
+      </main>
 
       <div style={{
         position: 'fixed',
