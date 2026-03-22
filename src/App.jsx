@@ -1813,19 +1813,7 @@ export default function App() {
         display: isMobile ? 'none' : 'block',
       }}>
         <div style={{ color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.4)', fontSize: '10px', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '6px' }}>Currently</div>
-        {istTime && ( 
-          <div style={{ 
-            fontSize: '13px', 
-            color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)', 
-            fontFamily: 'DM Mono, monospace', 
-            letterSpacing: '0.5px', 
-            marginBottom: '8px', 
-            paddingBottom: '8px', 
-            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, 
-          }}> 
-            {istTime} <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', marginLeft: '4px' }}>IST</span> 
-          </div> 
-        )}
+        <LiveClock isDark={isDark} />
         <div style={{ color: isDark ? '#fff' : '#111', fontSize: '13px' }}>2nd year @ DSU</div>
         <div style={{ marginTop: '4px' }}>Studying Cybersecurity</div>
         <div style={{ marginTop: '4px' }}>Building in public</div>
