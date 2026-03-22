@@ -481,15 +481,26 @@ button { cursor: none; }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 860px) {
+@media (max-width: 768px) {
+  * { cursor: auto !important; }
+
   .sidebar { display: none; }
   .main-content { margin-left: 0; padding: 0 20px; }
   .topbar { padding: 16px 20px; }
   .topbar-tabs { position: static; transform: none; gap: 12px; flex-wrap: wrap; }
   .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
-  .section-heading { padding-left: 0; }
+  .section-heading { padding-left: 0; font-size: clamp(36px, 10vw, 56px) !important; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-headline { font-size: clamp(24px, 6vw, 40px); }
+
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* Hide scrollbar on mobile tab row */
+.tab-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* ============================================================

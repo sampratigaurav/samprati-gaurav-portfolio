@@ -1,0 +1,33 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#000000"/>
+
+  <!-- Subtle grid -->
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Name -->
+  <text x="80" y="200" font-family="Georgia, serif" font-size="72" font-weight="400" fill="white" font-style="italic">Samprati Gaurav</text>
+
+  <!-- Tagline -->
+  <text x="80" y="280" font-family="Georgia, serif" font-size="32" fill="rgba(255,255,255,0.5)" font-style="italic">Cybersecurity Student · Builder · Writer</text>
+
+  <!-- Divider line -->
+  <line x1="80" y1="320" x2="400" y2="320" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+  <!-- Stats row -->
+  <text x="80" y="390" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.4)">15 articles</text>
+  <text x="240" y="390" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.2)">·</text>
+  <text x="270" y="390" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.4)">159 commits</text>
+  <text x="460" y="390" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.2)">·</text>
+  <text x="490" y="390" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.4)">6 certs</text>
+
+  <!-- URL -->
+  <text x="80" y="560" font-family="monospace" font-size="22" fill="rgba(255,255,255,0.3)">samprati.dev</text>
+
+  <!-- S logo top right -->
+  <text x="1100" y="100" font-family="Georgia, serif" font-size="64" fill="rgba(255,255,255,0.08)" font-style="italic">S</text>
+</svg>

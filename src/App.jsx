@@ -20,13 +20,22 @@ const ALL_ARTICLES = [
   { title: 'Why Your Fingerprint Reader May Not Work on Linux Mint', cat: 'Linux', date: 'Jul 19, 2025', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/troubleshooting-fingerprint-scanners-on-linux-mint' },
 ];
 
-const project = {
-  name: 'SyncWatch',
-  desc: 'Watch movies together with anyone — perfectly in sync. No uploads, no accounts, no streaming. Your video file never leaves your device.',
-  tags: ['TypeScript', 'WebSockets', 'Node.js', 'Vercel'],
-  liveUrl: 'https://syncwatch-eosin.vercel.app/',
-  githubUrl: 'https://github.com/sampratigaurav/syncwatch',
-};
+const projects = [
+  {
+    name: 'SyncWatch',
+    desc: 'Watch movies together with anyone — perfectly in sync. No uploads, no accounts, no streaming. Your video file never leaves your device.',
+    tags: ['TypeScript', 'WebSockets', 'Node.js', 'Vercel'],
+    liveUrl: 'https://syncwatch-eosin.vercel.app/',
+    githubUrl: 'https://github.com/sampratigaurav/syncwatch',
+  },
+  {
+    name: 'This Portfolio',
+    desc: 'The site you are looking at right now. Built from scratch with React — no templates, no UI libraries. Features a live GitHub heatmap, Hashnode API integration, terminal easter egg, cursor trail, dark/light mode, audience switcher, and more.',
+    tags: ['React', 'Vite', 'JavaScript', 'CSS'],
+    liveUrl: 'https://sampratigaurav.vercel.app',
+    githubUrl: 'https://github.com/sampratigaurav/samprati-gaurav-portfolio',
+  },
+];
 
 const tabs = ['For Anyone', 'For Recruiters', 'For Engineers', 'For Writers'];
 const sections = ['intro', 'work', 'writing', 'certs', 'about', 'contact'];
@@ -176,6 +185,7 @@ export default function App() {
   const [showKeyHint, setShowKeyHint] = useState(true);
   const [istTime, setIstTime] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalHistory, setTerminalHistory] = useState([
@@ -184,6 +194,12 @@ export default function App() {
   const terminalInputRef = useRef(null);
   const [lastCommit, setLastCommit] = useState(null);
   const [hoveredArticle, setHoveredArticle] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowKeyHint(false), 3000);
@@ -498,7 +514,7 @@ export default function App() {
     <>
       <div className="grain-overlay" />
       <div className="scroll-bar" style={{ width: scrollWidth, background: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)' }} />
-      <Cursor isDark={isDark} />
+      {!isMobile && <Cursor isDark={isDark} />}
       <div style={{ 
         position: 'fixed', 
         bottom: showToast ? '40px' : '20px', 
@@ -573,7 +589,7 @@ export default function App() {
         }}>`</span>
         <span>terminal</span>
       </div>
-      <button className="theme-toggle" onClick={() => setIsDark(d => !d)}>
+      <button className="theme-toggle" onClick={() => setIsDark(d => !d)} style={{ right: isMobile ? '16px' : '32px' }}>
         {isDark ? '◐' : '◑'}
       </button>
 
@@ -582,7 +598,7 @@ export default function App() {
         <a className="topbar-logo" href="#intro" onClick={() => scrollTo('intro')} style={{ color: isDark ? '#fff' : '#111' }}>
           S
         </a>
-        <div className="topbar-tabs">
+        <div className="topbar-tabs" style={{ display: isMobile ? 'none' : 'flex' }}>
           {tabs.map((t) => (
             <button
               key={t}
@@ -596,37 +612,111 @@ export default function App() {
         </div>
       </header>
 
-      {/* ========== LEFT SIDEBAR ========== */}
-      <nav className="sidebar">
-        {sections.map((id, i) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            className={`nav-link${activeSection === id ? ' active' : ''}`}
-            style={{
-              animationDelay: `${0.3 + i * 0.1}s`,
-              color: activeSection === id ? (isDark ? '#fff' : '#111') : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'),
-              borderColor: activeSection === id ? (isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)') : 'transparent'
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              scrollTo(id);
-            }}
-          >
-            {navLabels[i]}
-          </a>
-        ))}
-      </nav>
+      {/* ========== LEFT SIDEBAR / MOBILE BOTTOM NAV ========== */}
+      {isMobile ? (
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '56px',
+          background: isDark ? 'rgba(0,0,0,0.92)' : 'rgba(245,245,240,0.92)',
+          backdropFilter: 'blur(12px)',
+          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          zIndex: 1000,
+          paddingBottom: 'env(safe-area-inset-bottom)',
+        }}>
+          {['Intro','Work','Writing','Certs','About','Contact'].map(section => (
+            <button
+              key={section}
+              onClick={() => document.getElementById(section.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: activeSection === section.toLowerCase()
+                  ? (isDark ? '#fff' : '#111')
+                  : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'),
+                fontSize: '11px',
+                fontFamily: 'DM Sans, sans-serif',
+                cursor: 'pointer',
+                padding: '8px 4px',
+                fontWeight: activeSection === section.toLowerCase() ? 500 : 300,
+              }}
+            >
+              {section}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <nav className="sidebar">
+          {sections.map((id, i) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={`nav-link${activeSection === id ? ' active' : ''}`}
+              style={{
+                animationDelay: `${0.3 + i * 0.1}s`,
+                color: activeSection === id ? (isDark ? '#fff' : '#111') : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'),
+                borderColor: activeSection === id ? (isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)') : 'transparent'
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo(id);
+              }}
+            >
+              {navLabels[i]}
+            </a>
+          ))}
+        </nav>
+      )}
 
       {/* ========== MAIN CONTENT ========== */}
-      <div className="main-content">
+      <div className="main-content" style={{ marginLeft: isMobile ? '0' : '120px', paddingLeft: isMobile ? '24px' : '40px', paddingRight: isMobile ? '24px' : '80px', paddingBottom: isMobile ? '80px' : '0' }}>
 
         {/* ===== SECTION 1 — INTRO ===== */}
         <section id="intro" className="section">
           <div className="hero-wrapper">
-            <h1 key={heroKey} className="hero-headline hero-enter" style={{ color: isDark ? '#fff' : '#111' }}>
+            <h1 key={heroKey} className="hero-headline hero-enter" style={{ color: isDark ? '#fff' : '#111', fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : undefined }}>
               <HeroContent displayedText={displayedText} isTypingDone={isTypingDone} isDark={isDark} />
             </h1>
+            {isMobile && (
+              <div className="tab-scroll" style={{
+                display: 'flex',
+                gap: '8px',
+                overflowX: 'auto',
+                paddingBottom: '4px',
+                marginTop: '24px',
+                marginBottom: '16px',
+                scrollbarWidth: 'none',
+              }}>
+                {tabs.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => switchTab(tab)}
+                    style={{
+                      whiteSpace: 'nowrap',
+                      padding: '6px 14px',
+                      borderRadius: '100px',
+                      border: `1px solid ${activeTab === tab
+                        ? (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)')
+                        : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)')}`,
+                      background: 'transparent',
+                      color: activeTab === tab
+                        ? (isDark ? '#fff' : '#111')
+                        : (isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'),
+                      fontSize: '12px',
+                      fontFamily: 'DM Sans, sans-serif',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            )}
             <a
               href="/assets/resume.pdf"
               download="Samprati_Gaurav_Resume.pdf"
@@ -648,41 +738,57 @@ export default function App() {
           <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>work.</h2>
           <div className="section-content">
             <div className="projects-stack">
-              <div className="project-card" style={{ background: isDark ? 'transparent' : '#fff', border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}` }}>
-                <div className="project-card-icons">
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" title="Live Demo" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
-                    🌐
-                  </a>
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
-                    <GitHubIcon />
-                  </a>
-                </div>
-                <div className="project-name" style={{ color: isDark ? '#fff' : '#111' }}>{project.name}</div>
-                <p className="project-desc" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>{project.desc}</p>
-                <div className="project-tags">
-                  {project.tags.map((t) => (
-                    <span key={t} style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>{t}</span>
-                  ))}
-                </div>
-                {lastCommit && (
-                  <div style={{
-                    marginTop: '12px',
-                    paddingTop: '12px',
-                    borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-                    fontSize: '11px',
-                    color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
-                    fontFamily: 'DM Mono, monospace',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}>
-                    <span style={{ color: '#4ade80' }}>↑</span>
-                    <span>last commit:</span>
-                    <span style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>"{lastCommit.msg}"</span>
-                    <span>· {lastCommit.timeAgo}</span>
+              {projects.map((p, idx) => (
+                <div key={p.name} className="project-card" style={{ background: isDark ? 'transparent' : '#fff', border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}` }}>
+                  <div className="project-card-icons">
+                    <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" title="Live Demo" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                      🌐
+                    </a>
+                    <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                      <GitHubIcon />
+                    </a>
                   </div>
-                )}
-              </div>
+                  <div className="project-name" style={{ color: isDark ? '#fff' : '#111' }}>{p.name}</div>
+                  <p className="project-desc" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>{p.desc}</p>
+                  <div className="project-tags">
+                    {p.tags.map((t) => (
+                      <span key={t} style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>{t}</span>
+                    ))}
+                  </div>
+                  {/* SyncWatch — last commit badge */}
+                  {idx === 0 && lastCommit && (
+                    <div style={{
+                      marginTop: '12px',
+                      paddingTop: '12px',
+                      borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                      fontSize: '11px',
+                      color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
+                      fontFamily: 'DM Mono, monospace',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}>
+                      <span style={{ color: '#4ade80' }}>↑</span>
+                      <span>last commit:</span>
+                      <span style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>"{lastCommit.msg}"</span>
+                      <span>· {lastCommit.timeAgo}</span>
+                    </div>
+                  )}
+                  {/* Portfolio — self-referential note */}
+                  {idx === 1 && (
+                    <div style={{
+                      marginTop: '12px',
+                      paddingTop: '12px',
+                      borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                      fontSize: '11px',
+                      color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
+                      fontFamily: 'DM Mono, monospace',
+                    }}>
+                      ✦ you are currently viewing this project
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
             {contributions.length > 0 && (
@@ -979,7 +1085,7 @@ export default function App() {
         <section id="about" className="section">
           <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>about.</h2>
           <div className="section-content">
-            <div className="about-grid">
+            <div className="about-grid" style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '32px' : '80px 120px' }}>
               <p style={{ color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.75)' }}>
                 I'm a Cybersecurity undergrad at Dayananda Sagar University, Bengaluru. I got into
                 tech because I was curious about how systems break — and I stayed because I realized I
@@ -1091,6 +1197,7 @@ export default function App() {
         maxWidth: '200px',
         lineHeight: '1.6',
         zIndex: 500,
+        display: isMobile ? 'none' : 'block',
       }}>
         <div style={{ color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.4)', fontSize: '10px', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '6px' }}>Currently</div>
         {istTime && ( 
