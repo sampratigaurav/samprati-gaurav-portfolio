@@ -172,18 +172,70 @@ const ALL_ARTICLES = [
 
 const projects = [
   {
+    id: 'syncwatch',
     name: 'SyncWatch',
-    desc: 'Watch movies together with anyone — perfectly in sync. No uploads, no accounts, no streaming. Your video file never leaves your device.',
+    tagline: 'Watch movies together. Perfectly in sync.',
+    status: 'Live · Open Source',
     tags: ['TypeScript', 'WebSockets', 'Node.js', 'Vercel'],
     liveUrl: 'https://syncwatch-eosin.vercel.app/',
     githubUrl: 'https://github.com/sampratigaurav/syncwatch',
+    year: '2026',
+    duration: '2 weeks',
+    role: 'Solo · Full Stack',
+    problem: 'Every existing tool for watching movies together remotely either requires uploading your video to a server, paying for a subscription, creating an account, or all three. I wanted something completely free, completely private, and completely frictionless.',
+    solution: 'SyncWatch never touches your video file. It only sends 3 things over WebSockets: play, pause, and seek + timestamp. Your 8GB movie stays entirely on your device. The server is just a signal forwarder.',
+    thought: 'The insight was that you don\'t need to share the video — you just need to share the controls. Two people watching the same local file just need to know when to press play and when to pause. That\'s a few bytes of data, not gigabytes of video.',
+    architecture: [
+      { step: '01', title: 'Client A loads video', desc: 'Video file stays on device. Hash is computed to verify both users have the same file.' },
+      { step: '02', title: 'WebSocket room created', desc: 'Server creates a room ID. Host shares link. No accounts, no auth.' },
+      { step: '03', title: 'Control signals only', desc: 'Play/pause/seek events are forwarded by server. 3 signal types. That\'s it.' },
+      { step: '04', title: 'Drift correction', desc: 'Every 5 seconds, host broadcasts timestamp. Guests within 500ms are fine. Outside → silent seek.' },
+    ],
+    metrics: [
+      { val: '<500ms', label: 'max sync drift' },
+      { val: '3', label: 'signal types' },
+      { val: '0', label: 'bytes uploaded' },
+      { val: '5s', label: 'correction interval' },
+    ],
+    learnings: 'I learned more about WebSocket lifecycle management in 2 weeks than I had in months of reading. The hardest part wasn\'t the sync — it was handling edge cases: what happens when one person refreshes? When the host leaves? When both seek simultaneously? Each edge case taught me something real about distributed systems.',
+    techDeep: [
+      { name: 'TypeScript', reason: 'Strict typing on WebSocket message shapes prevented entire categories of bugs.' },
+      { name: 'WebSockets', reason: 'HTTP polling was too slow for sub-500ms sync. WS gave us persistent bidirectional channels.' },
+      { name: 'Vercel', reason: 'Free tier, zero config deployment. The Node.js server runs as a serverless function.' },
+    ],
   },
   {
+    id: 'portfolio',
     name: 'This Portfolio',
-    desc: 'The site you are looking at right now. Built from scratch with React — no templates, no UI libraries. Features a live GitHub heatmap, Hashnode API integration, terminal easter egg, cursor trail, dark/light mode, audience switcher, and more.',
+    tagline: 'A portfolio that is itself a project.',
+    status: 'Live · Open Source',
     tags: ['React', 'Vite', 'JavaScript', 'CSS'],
-    liveUrl: 'https://sampratigaurav.vercel.app',
+    liveUrl: 'https://samprati.dev',
     githubUrl: 'https://github.com/sampratigaurav/samprati-gaurav-portfolio',
+    year: '2026',
+    duration: '3 days',
+    role: 'Solo · Design + Dev',
+    problem: 'Most student portfolios are templates. They look the same, say the same things, and are forgotten immediately. I wanted a portfolio that was itself a demonstration of what I can build.',
+    solution: 'Built entirely from scratch — no UI libraries, no templates. Every interaction, animation, and feature was written by hand. The site is the proof of work.',
+    thought: 'I asked myself: what would make someone remember this site? The answer wasn\'t more content — it was more personality. A terminal easter egg, a cursor that reacts to speed, a live GitHub heatmap, section headings that scramble. Each feature is small but together they say: this person actually builds things.',
+    architecture: [
+      { step: '01', title: 'React + Vite', desc: 'No Next.js overhead. Pure Vite for sub-second HMR and optimised production builds.' },
+      { step: '02', title: 'Zero UI libraries', desc: 'Every component hand-written. No Tailwind, no MUI, no Chakra. Full control over every pixel.' },
+      { step: '03', title: 'Live APIs', desc: 'GitHub contributions API, Hashnode GraphQL API, CounterAPI for visitors. All real-time.' },
+      { step: '04', title: 'Performance', desc: 'Lighthouse 91/90/92/100. Memoized components, RAF-throttled events, vendor chunk splitting.' },
+    ],
+    metrics: [
+      { val: '91', label: 'lighthouse performance' },
+      { val: '100', label: 'lighthouse SEO' },
+      { val: '3', label: 'live APIs' },
+      { val: '0', label: 'UI libraries used' },
+    ],
+    learnings: 'Building in public forced me to think about every decision twice. Why this font? Why this animation timing? Why this layout? I developed a design instinct I didn\'t have before. The most important lesson: personality beats polish.',
+    techDeep: [
+      { name: 'React', reason: 'Component model made managing 20+ interactive features tractable without chaos.' },
+      { name: 'CSS Custom Properties', reason: 'Dark/light/system themes with zero JS — just variable swaps.' },
+      { name: 'IntersectionObserver', reason: 'Scroll animations without scroll event listeners. Better performance, cleaner code.' },
+    ],
   },
 ];
 
@@ -469,6 +521,23 @@ export default function App() {
   const [scrollY, setScrollY] = useState(0);
   const [spotlightPos, setSpotlightPos] = useState({ x: -1000, y: -1000 });
 
+  const [activeProject, setActiveProject] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openProject = useCallback((project) => {
+    setActiveProject(project);
+    setModalVisible(true);
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const closeProject = useCallback(() => {
+    setModalVisible(false);
+    setTimeout(() => {
+      setActiveProject(null);
+      document.body.style.overflow = '';
+    }, 400);
+  }, []);
+
   const scrollSpy = useCallback(() => {
     const current = sections.find(id => {
       const el = document.getElementById(id);
@@ -600,7 +669,11 @@ export default function App() {
         setTimeout(() => terminalInputRef.current?.focus(), 50);
         return;
       }
-      if (e.key === 'Escape') { setTerminalOpen(false); return; }
+      if (e.key === 'Escape') { 
+        if (modalVisible) { closeProject(); return; }
+        setTerminalOpen(false); 
+        return; 
+      }
       if (e.target.tagName === 'INPUT') return;
 
       if (tabKeys.includes(e.key)) {
@@ -634,7 +707,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, []);
+  }, [modalVisible, closeProject]);
 
   useEffect(() => {
     const headlines = {
@@ -1336,7 +1409,7 @@ export default function App() {
           <div className="section-content">
             <div className="projects-stack">
               {projects.map((p, idx) => (
-                <div key={p.name} className="project-card" style={{ background: isDark ? 'transparent' : '#fff', border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}` }}>
+                <div key={p.name} onClick={() => openProject(p)} className="project-card" style={{ cursor: 'pointer', background: isDark ? 'transparent' : '#fff', border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}` }}>
                   <div className="project-card-icons">
                     <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" title="Live Demo" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
                       🌐
@@ -1346,7 +1419,7 @@ export default function App() {
                     </a>
                   </div>
                   <div className="project-name" style={{ color: isDark ? '#fff' : '#111' }}>{p.name}</div>
-                  <p className="project-desc" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>{p.desc}</p>
+                  <p className="project-desc" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>{p.tagline}</p>
                   <div className="project-tags">
                     {p.tags.map((t) => (
                       <span key={t} style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>{t}</span>
@@ -1920,6 +1993,300 @@ export default function App() {
           </div>
           <div style={{ position:'absolute', bottom:'24px', left:'50%', transform:'translateX(-50%)', fontSize:'11px', color:'rgba(255,255,255,0.2)', fontFamily:'DM Sans, sans-serif' }}>
             press ESC or ` to close
+          </div>
+        </div>
+      )}
+
+      {/* MODAL JSX */}
+      {activeProject && (
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) closeProject(); }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.92)',
+            backdropFilter: 'blur(12px)',
+            zIndex: 20000,
+            overflowY: 'auto',
+            opacity: modalVisible ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+            padding: '40px 20px',
+          }}
+        >
+          <div style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            fontFamily: 'DM Sans, sans-serif',
+          }}>
+
+            {/* Close button */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '48px',
+            }}>
+              <span style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.3)',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+              }}>
+                Case Study
+              </span>
+              <button
+                onClick={closeProject}
+                style={{
+                  background: 'none',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.5)',
+                  borderRadius: '6px',
+                  padding: '6px 14px',
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '11px',
+                  cursor: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.color = '#fff'; }}
+                onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.5)'; }}
+              >
+                ESC to close ✕
+              </button>
+            </div>
+
+            {/* Hero */}
+            <div style={{ marginBottom: '64px' }}>
+              <div style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.3)',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
+              }}>
+                {activeProject.status}
+              </div>
+              <h1 style={{
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: 'clamp(48px, 7vw, 80px)',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                color: '#fff',
+                lineHeight: 1,
+                letterSpacing: '-2px',
+                marginBottom: '16px',
+              }}>
+                {activeProject.name}
+              </h1>
+              <p style={{
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: '22px',
+                fontStyle: 'italic',
+                color: 'rgba(255,255,255,0.5)',
+                marginBottom: '32px',
+              }}>
+                {activeProject.tagline}
+              </p>
+
+              {/* Meta row */}
+              <div style={{
+                display: 'flex',
+                gap: '32px',
+                flexWrap: 'wrap',
+                paddingTop: '24px',
+                borderTop: '1px solid rgba(255,255,255,0.08)',
+              }}>
+                {[
+                  { label: 'Year', val: activeProject.year },
+                  { label: 'Duration', val: activeProject.duration },
+                  { label: 'Role', val: activeProject.role },
+                ].map((m, i) => (
+                  <div key={i}>
+                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>{m.label}</div>
+                    <div style={{ fontSize: '14px', color: '#fff' }}>{m.val}</div>
+                  </div>
+                ))}
+                <div>
+                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stack</div>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    {activeProject.tags.map(t => (
+                      <span key={t} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontFamily: 'DM Mono, monospace', background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Metrics */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '12px',
+              marginBottom: '64px',
+            }}>
+              {activeProject.metrics.map((m, i) => (
+                <div key={i} style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '10px',
+                  padding: '20px 16px',
+                  textAlign: 'center',
+                }}>
+                  <div style={{ fontFamily: 'Instrument Serif, serif', fontSize: '32px', fontStyle: 'italic', color: '#fff', lineHeight: 1, marginBottom: '6px' }}>{m.val}</div>
+                  <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{m.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Problem */}
+            <div style={{ marginBottom: '48px' }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Problem</div>
+              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: 'Instrument Serif, serif', fontStyle: 'italic' }}>{activeProject.problem}</p>
+            </div>
+
+            {/* Solution */}
+            <div style={{ marginBottom: '48px' }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Solution</div>
+              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: 'Instrument Serif, serif', fontStyle: 'italic' }}>{activeProject.solution}</p>
+            </div>
+
+            {/* Thought process */}
+            <div style={{
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderLeft: '3px solid rgba(255,255,255,0.2)',
+              borderRadius: '0 10px 10px 0',
+              padding: '24px 28px',
+              marginBottom: '64px',
+            }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>My Thought Process</div>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>{activeProject.thought}</p>
+            </div>
+
+            {/* Architecture diagram */}
+            <div style={{ marginBottom: '64px' }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>How It Works</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                {activeProject.architecture.map((a, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '0', alignItems: 'stretch' }}>
+                    {/* Left — step number + line */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '24px' }}>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontFamily: 'DM Mono, monospace',
+                        fontSize: '11px',
+                        color: 'rgba(255,255,255,0.4)',
+                        flexShrink: 0,
+                        background: 'rgba(255,255,255,0.03)',
+                      }}>
+                        {a.step}
+                      </div>
+                      {i < activeProject.architecture.length - 1 && (
+                        <div style={{ width: '1px', flex: 1, background: 'rgba(255,255,255,0.06)', margin: '6px 0' }} />
+                      )}
+                    </div>
+                    {/* Right — content */}
+                    <div style={{ paddingBottom: i < activeProject.architecture.length - 1 ? '28px' : '0' }}>
+                      <div style={{ fontSize: '15px', color: '#fff', fontWeight: 500, marginBottom: '6px', marginTop: '6px' }}>{a.title}</div>
+                      <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, fontFamily: 'DM Mono, monospace' }}>{a.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tech deep dive */}
+            <div style={{ marginBottom: '64px' }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Technical Decisions</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {activeProject.techDeep.map((t, i) => (
+                  <div key={i} style={{
+                    display: 'flex',
+                    gap: '20px',
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: '10px',
+                    padding: '16px 20px',
+                    alignItems: 'flex-start',
+                  }}>
+                    <div style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '12px',
+                      color: '#fff',
+                      background: 'rgba(255,255,255,0.06)',
+                      padding: '4px 10px',
+                      borderRadius: '4px',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    }}>{t.name}</div>
+                    <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>{t.reason}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Learnings */}
+            <div style={{ marginBottom: '64px' }}>
+              <div style={{ fontFamily: 'DM Mono, monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>What I Learned</div>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85 }}>{activeProject.learnings}</p>
+            </div>
+
+            {/* CTA */}
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              paddingTop: '32px',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              marginBottom: '80px',
+            }}>
+              <a
+                href={activeProject.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  padding: '12px 24px',
+                  background: '#fff',
+                  color: '#000',
+                  borderRadius: '6px',
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '12px',
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s',
+                }}
+                onMouseEnter={e => e.target.style.opacity = '0.85'}
+                onMouseLeave={e => e.target.style.opacity = '1'}
+              >
+                ↗ View Live
+              </a>
+              <a
+                href={activeProject.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  color: 'rgba(255,255,255,0.6)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: '6px',
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '12px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.color = '#fff'; }}
+                onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.6)'; }}
+              >
+                GitHub ↗
+              </a>
+            </div>
+
           </div>
         </div>
       )}
