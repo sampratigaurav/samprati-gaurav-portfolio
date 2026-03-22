@@ -236,6 +236,14 @@ export default function App() {
 
   const [greeting, setGreeting] = useState(getTimeGreeting());
 
+  const [timeOnSite, setTimeOnSite] = useState(0);
+  const siteStartTime = useRef(Date.now());
+
+  const [endToastShown, setEndToastShown] = useState(false);
+  const [showEndToast, setShowEndToast] = useState(false);
+
+  const [showCopyToast, setShowCopyToast] = useState(false);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
@@ -252,6 +260,51 @@ export default function App() {
       setGreeting(getTimeGreeting());
     }, 60000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const minutes = Math.floor((Date.now() - siteStartTime.current) / 60000);
+      setTimeOnSite(minutes);
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const contactEl = document.getElementById('contact');
+    if (!contactEl) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !endToastShown) {
+            setEndToastShown(true);
+            setShowEndToast(true);
+            setTimeout(() => setShowEndToast(false), 3000);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(contactEl);
+    return () => observer.disconnect();
+  }, [endToastShown]);
+
+  useEffect(() => {
+    const handleCopy = (e) => {
+      // Don't trigger if copying from terminal input or search input
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+      const selectedText = window.getSelection()?.toString().trim();
+      if (!selectedText || selectedText.length < 10) return;
+
+      setShowCopyToast(true);
+      setTimeout(() => setShowCopyToast(false), 3000);
+    };
+
+    document.addEventListener('copy', handleCopy);
+    return () => document.removeEventListener('copy', handleCopy);
   }, []);
 
   useEffect(() => {
@@ -689,6 +742,71 @@ export default function App() {
           whiteSpace: 'nowrap',
         }}>
           easy there 😅
+        </div>
+      )}
+
+      {showEndToast && (
+        <div style={{
+          position: 'fixed',
+          bottom: '40px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+          backdropFilter: 'blur(12px)',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'}`,
+          color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+          padding: '10px 24px',
+          borderRadius: '100px',
+          fontSize: '13px',
+          fontFamily: 'Instrument Serif, serif',
+          fontStyle: 'italic',
+          pointerEvents: 'none',
+          zIndex: 9996,
+          whiteSpace: 'nowrap',
+          animation: 'fadeInOut 3s ease forwards',
+        }}>
+          you made it to the end.
+        </div>
+      )}
+
+      {showCopyToast && (
+        <div style={{
+          position: 'fixed',
+          bottom: '80px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+          backdropFilter: 'blur(12px)',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'}`,
+          color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+          padding: '10px 20px',
+          borderRadius: '100px',
+          fontSize: '13px',
+          fontFamily: 'DM Sans, sans-serif',
+          pointerEvents: 'none',
+          zIndex: 9996,
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          animation: 'fadeInOut 3s ease forwards',
+        }}>
+          <span>sharing is caring</span>
+          <a
+            href="https://samprati.dev"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+              textDecoration: 'none',
+              fontSize: '12px',
+              pointerEvents: 'all',
+            }}
+            onMouseEnter={e => e.target.style.color = '#4A9EFF'}
+            onMouseLeave={e => e.target.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+          >
+            samprati.dev ↗
+          </a>
         </div>
       )}
 
@@ -1449,6 +1567,18 @@ export default function App() {
             fontFamily: 'DM Sans, sans-serif',
           }}>
             {visitors.toLocaleString()} visits
+          </div>
+        )}
+        {timeOnSite >= 2 && (
+          <div style={{
+            marginTop: '10px',
+            paddingTop: '10px',
+            borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+            fontSize: '11px',
+            color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+            fontFamily: 'DM Mono, monospace',
+          }}>
+            you've been here {timeOnSite} min
           </div>
         )}
       </div>
