@@ -371,7 +371,7 @@ const Cursor = React.memo(({ isDark }) => {
             borderRadius: '50%',
             background: isDark ? '#ffffff' : '#111111',
             pointerEvents: 'none',
-            zIndex: 99999,
+            zIndex: 999999,
             willChange: 'transform',
             mixBlendMode: 'normal',
           }}
@@ -2004,7 +2004,7 @@ export default function App() {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.97)',
+            background: isDark ? 'rgba(0,0,0,0.97)' : 'rgba(245,245,240,0.97)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             zIndex: 100000,
@@ -2030,7 +2030,7 @@ export default function App() {
               <span style={{
                 fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: '11px',
-                color: 'rgba(255,255,255,0.3)',
+                color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
               }}>
@@ -2040,8 +2040,8 @@ export default function App() {
                 onClick={closeProject}
                 style={{
                   background: 'none',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  color: 'rgba(255,255,255,0.5)',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
+                  color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
                   borderRadius: '6px',
                   padding: '6px 14px',
                   fontFamily: "'Iosevka Charon Mono', monospace",
@@ -2049,8 +2049,8 @@ export default function App() {
                   cursor: 'none',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.color = '#fff'; }}
-                onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.5)'; }}
+                onMouseEnter={e => { e.target.style.borderColor = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'; e.target.style.color = isDark ? '#fff' : '#111'; }}
+                onMouseLeave={e => { e.target.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; e.target.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
               >
                 ESC to close ✕
               </button>
@@ -2061,7 +2061,7 @@ export default function App() {
               <div style={{
                 fontFamily: "'Iosevka Charon Mono', monospace",
                 fontSize: '11px',
-                color: 'rgba(255,255,255,0.3)',
+                color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
                 marginBottom: '16px',
@@ -2073,7 +2073,7 @@ export default function App() {
                 fontSize: 'clamp(48px, 7vw, 80px)',
                 fontStyle: 'italic',
                 fontWeight: 300,
-                color: '#fff',
+                color: isDark ? '#fff' : '#111',
                 lineHeight: 1,
                 letterSpacing: '-1px',
                 marginBottom: '16px',
@@ -2085,7 +2085,7 @@ export default function App() {
                 fontSize: '22px',
                 fontStyle: 'italic',
                 fontWeight: 300,
-                color: 'rgba(255,255,255,0.5)',
+                color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
                 marginBottom: '32px',
               }}>
                 {activeProject.tagline}
@@ -2097,7 +2097,7 @@ export default function App() {
                 gap: '32px',
                 flexWrap: 'wrap',
                 paddingTop: '24px',
-                borderTop: '1px solid rgba(255,255,255,0.08)',
+                borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
               }}>
                 {[
                   { label: 'Year', val: activeProject.year },
@@ -2105,15 +2105,15 @@ export default function App() {
                   { label: 'Role', val: activeProject.role },
                 ].map((m, i) => (
                   <div key={i}>
-                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>{m.label}</div>
-                    <div style={{ fontSize: '14px', color: '#fff' }}>{m.val}</div>
+                    <div style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>{m.label}</div>
+                    <div style={{ fontSize: '14px', color: isDark ? '#fff' : '#111' }}>{m.val}</div>
                   </div>
                 ))}
                 <div>
-                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stack</div>
+                  <div style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', fontFamily: "'Iosevka Charon Mono', monospace", textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '4px' }}>Stack</div>
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                     {activeProject.tags.map(t => (
-                      <span key={t} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontFamily: "'Iosevka Charon Mono', monospace", background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
+                      <span key={t} style={{ fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontFamily: "'Iosevka Charon Mono', monospace", background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
                     ))}
                   </div>
                 </div>
@@ -2129,46 +2129,46 @@ export default function App() {
             }}>
               {activeProject.metrics.map((m, i) => (
                 <div key={i} style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
                   borderRadius: '10px',
                   padding: '20px 16px',
                   textAlign: 'center',
                 }}>
-                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '32px', fontStyle: 'italic', color: '#fff', lineHeight: 1, marginBottom: '6px' }}>{m.val}</div>
-                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{m.label}</div>
+                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '32px', fontStyle: 'italic', color: isDark ? '#fff' : '#111', lineHeight: 1, marginBottom: '6px' }}>{m.val}</div>
+                  <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{m.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Problem */}
             <div style={{ marginBottom: '48px' }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Problem</div>
-              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.problem}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Problem</div>
+              <p style={{ fontSize: '17px', color: isDark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.problem}</p>
             </div>
 
             {/* Solution */}
             <div style={{ marginBottom: '48px' }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Solution</div>
-              <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.solution}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>The Solution</div>
+              <p style={{ fontSize: '17px', color: isDark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)', lineHeight: 1.85, fontFamily: "'Iosevka Charon Mono', monospace", fontStyle: 'italic' }}>{activeProject.solution}</p>
             </div>
 
             {/* Thought process */}
             <div style={{
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.06)',
-              borderLeft: '3px solid rgba(255,255,255,0.2)',
+              background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+              borderLeft: `3px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
               borderRadius: '0 10px 10px 0',
               padding: '24px 28px',
               marginBottom: '64px',
             }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>My Thought Process</div>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>{activeProject.thought}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>My Thought Process</div>
+              <p style={{ fontSize: '15px', color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)', lineHeight: 1.8 }}>{activeProject.thought}</p>
             </div>
 
             {/* Architecture diagram */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>How It Works</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>How It Works</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                 {activeProject.architecture.map((a, i) => (
                   <div key={i} style={{ display: 'flex', gap: '0', alignItems: 'stretch' }}>
@@ -2178,26 +2178,26 @@ export default function App() {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '1px solid rgba(255,255,255,0.15)',
+                        border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontFamily: "'Iosevka Charon Mono', monospace",
                         fontSize: '11px',
-                        color: 'rgba(255,255,255,0.4)',
+                        color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
                         flexShrink: 0,
-                        background: 'rgba(255,255,255,0.03)',
+                        background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
                       }}>
                         {a.step}
                       </div>
                       {i < activeProject.architecture.length - 1 && (
-                        <div style={{ width: '1px', flex: 1, background: 'rgba(255,255,255,0.06)', margin: '6px 0' }} />
+                        <div style={{ width: '1px', flex: 1, background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)', margin: '6px 0' }} />
                       )}
                     </div>
                     {/* Right — content */}
                     <div style={{ paddingBottom: i < activeProject.architecture.length - 1 ? '28px' : '0' }}>
-                      <div style={{ fontSize: '15px', color: '#fff', fontWeight: 500, marginBottom: '6px', marginTop: '6px' }}>{a.title}</div>
-                      <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, fontFamily: "'Iosevka Charon Mono', monospace" }}>{a.desc}</div>
+                      <div style={{ fontSize: '15px', color: isDark ? '#fff' : '#111', fontWeight: 500, marginBottom: '6px', marginTop: '6px' }}>{a.title}</div>
+                      <div style={{ fontSize: '13px', color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)', lineHeight: 1.7, fontFamily: "'Iosevka Charon Mono', monospace" }}>{a.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -2206,14 +2206,14 @@ export default function App() {
 
             {/* Tech deep dive */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Technical Decisions</div>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>Technical Decisions</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {activeProject.techDeep.map((t, i) => (
                   <div key={i} style={{
                     display: 'flex',
                     gap: '20px',
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.06)',
+                    background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
                     borderRadius: '10px',
                     padding: '16px 20px',
                     alignItems: 'flex-start',
@@ -2221,14 +2221,14 @@ export default function App() {
                     <div style={{
                       fontFamily: "'Iosevka Charon Mono', monospace",
                       fontSize: '12px',
-                      color: '#fff',
-                      background: 'rgba(255,255,255,0.06)',
+                      color: isDark ? '#fff' : '#111',
+                      background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
                       padding: '4px 10px',
                       borderRadius: '4px',
                       whiteSpace: 'nowrap',
                       flexShrink: 0,
                     }}>{t.name}</div>
-                    <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>{t.reason}</div>
+                    <div style={{ fontSize: '13px', color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', lineHeight: 1.7 }}>{t.reason}</div>
                   </div>
                 ))}
               </div>
@@ -2236,8 +2236,8 @@ export default function App() {
 
             {/* Learnings */}
             <div style={{ marginBottom: '64px' }}>
-              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>What I Learned</div>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85 }}>{activeProject.learnings}</p>
+              <div style={{ fontFamily: "'Iosevka Charon Mono', monospace", fontSize: '11px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px' }}>What I Learned</div>
+              <p style={{ fontSize: '15px', color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)', lineHeight: 1.85 }}>{activeProject.learnings}</p>
             </div>
 
             {/* CTA */}
@@ -2245,7 +2245,7 @@ export default function App() {
               display: 'flex',
               gap: '12px',
               paddingTop: '32px',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
+              borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
               marginBottom: '80px',
             }}>
               <a
@@ -2274,16 +2274,16 @@ export default function App() {
                 style={{
                   padding: '12px 24px',
                   background: 'transparent',
-                  color: 'rgba(255,255,255,0.6)',
-                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
                   borderRadius: '6px',
                   fontFamily: "'Iosevka Charon Mono', monospace",
                   fontSize: '12px',
                   textDecoration: 'none',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.target.style.borderColor = 'rgba(255,255,255,0.4)'; e.target.style.color = '#fff'; }}
-                onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.6)'; }}
+                onMouseEnter={e => { e.target.style.borderColor = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'; e.target.style.color = isDark ? '#fff' : '#111'; }}
+                onMouseLeave={e => { e.target.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; e.target.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; }}
               >
                 GitHub ↗
               </a>
