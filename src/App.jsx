@@ -14,9 +14,11 @@ const LiveClock = React.memo(({ isDark }) => {
       }).format(new Date()));
     };
     update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
   }, []);
+
+  if (!time) return null;
 
   return (
     <div style={{
@@ -574,22 +576,7 @@ export default function App() {
     return () => document.removeEventListener('copy', handleCopy);
   }, []);
 
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const ist = new Intl.DateTimeFormat('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-      }).format(now);
-      setIstTime(ist);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+
 
   useEffect(() => {
     const sections = ['intro', 'work', 'writing', 'certs', 'about', 'contact'];
