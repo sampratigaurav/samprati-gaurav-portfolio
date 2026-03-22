@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.samprati.dev"
+        }
+      ],
+      "destination": "https://samprati.dev/:path*",
+      "permanent": true
+    }
+  ]
+}
