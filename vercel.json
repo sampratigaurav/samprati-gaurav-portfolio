@@ -1,15 +1,13 @@
 {
-  "redirects": [
+  "headers": [
     {
-      "source": "/:path*",
-      "has": [
+      "source": "/(.*)",
+      "headers": [
         {
-          "type": "host",
-          "value": "www.samprati.dev"
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
         }
-      ],
-      "destination": "https://samprati.dev/:path*",
-      "permanent": true
+      ]
     }
   ]
 }
