@@ -107,8 +107,18 @@ const Cursor = ({ isDark }) => {
   const mouse = useRef({ x: -20, y: -20 });
   const rafRef = useRef(null);
 
+  const lastPos = useRef({ x: -20, y: -20, time: Date.now() });
+  const currentSpeed = useRef(0);
+
   useEffect(() => {
     const onMove = (e) => {
+      const now = Date.now();
+      const dt = now - lastPos.current.time;
+      const dx = e.clientX - lastPos.current.x;
+      const dy = e.clientY - lastPos.current.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      currentSpeed.current = dt > 0 ? Math.min(distance / dt * 10, 1) : 0;
+      lastPos.current = { x: e.clientX, y: e.clientY, time: now };
       mouse.current = { x: e.clientX, y: e.clientY };
     };
     window.addEventListener('mousemove', onMove);
@@ -121,10 +131,15 @@ const Cursor = ({ isDark }) => {
           y: positions.current[i].y + (positions.current[i-1].y - positions.current[i].y) * 0.45,
         };
       }
+      
+      const speed = currentSpeed.current;
+      const leadSize = 4 + speed * 12; // 4px slow → 16px fast
+      const trailFade = 0.3 + speed * 0.55; // faster = more visible trail
+      
       trailRefs.current.forEach((ref, i) => {
         if (ref.current) {
-          const size = 8 - i * 0.9;
-          const opacity = (1 - i / trailCount) * 0.85;
+          const size = i === 0 ? leadSize : Math.max(2, leadSize - i * 1.8);
+          const opacity = i === 0 ? 0.9 : (1 - i / trailCount) * trailFade;
           ref.current.style.transform = `translate(${positions.current[i].x - size/2}px, ${positions.current[i].y - size/2}px)`;
           ref.current.style.width = `${size}px`;
           ref.current.style.height = `${size}px`;
@@ -195,6 +210,19 @@ export default function App() {
   const [lastCommit, setLastCommit] = useState(null);
   const [hoveredArticle, setHoveredArticle] = useState(null);
 
+  /* ---- Easter Egg States ---- */
+  const [keyBuffer, setKeyBuffer] = useState('');
+  const [glitchActive, setGlitchActive] = useState(false);
+  const [secretMessage, setSecretMessage] = useState(false);
+
+  const [logoClicks, setLogoClicks] = useState(0);
+  const [logoShake, setLogoShake] = useState(false);
+
+  const [rageClicks, setRageClicks] = useState(0);
+  const [ragePos, setRagePos] = useState({ x: 0, y: 0 });
+  const [showRageToast, setShowRageToast] = useState(false);
+  const rageTimer = useRef(null);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
@@ -229,6 +257,16 @@ export default function App() {
     const tabValues = ['For Anyone', 'For Recruiters', 'For Engineers', 'For Writers'];
 
     const handleKey = (e) => {
+      // Secret word detection — type "samprati" anywhere
+      setKeyBuffer(prev => {
+        const next = (prev + e.key).slice(-8).toLowerCase();
+        if (next === 'samprati') {
+          triggerSecretWord();
+          return '';
+        }
+        return next;
+      });
+
       if (e.key === '`') {
         e.preventDefault();
         setTerminalOpen(prev => !prev);
@@ -499,6 +537,64 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  /* ---- Feature 4 Rage Click Detector ---- */
+  useEffect(() => {
+    const handleClick = (e) => {
+      // ignore clicks on interactive elements
+      if (['BUTTON','A','INPUT'].includes(e.target.tagName)) return;
+
+      setRagePos({ x: e.clientX, y: e.clientY });
+      setRageClicks(prev => {
+        const next = prev + 1;
+        if (next >= 5) {
+          setShowRageToast(true);
+          setTimeout(() => setShowRageToast(false), 2500);
+          clearTimeout(rageTimer.current);
+          return 0;
+        }
+        clearTimeout(rageTimer.current);
+        rageTimer.current = setTimeout(() => setRageClicks(0), 800);
+        return next;
+      });
+    };
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
+
+  /* ---- Feature 1 Secret Word Action ---- */
+  const triggerSecretWord = () => {
+    setGlitchActive(true);
+    setSecretMessage(true);
+    setTimeout(() => setGlitchActive(false), 600);
+    setTimeout(() => setSecretMessage(false), 3000);
+  };
+
+  /* ---- Feature 2 Confetti Generator ---- */
+  const triggerConfetti = () => {
+    const colors = ['#ffffff', '#4ade80', '#a855f7', '#f59e0b', '#3b82f6'];
+    const container = document.body;
+    for (let i = 0; i < 80; i++) {
+      const particle = document.createElement('div');
+      particle.style.cssText = `
+        position: fixed;
+        left: 32px;
+        top: 20px;
+        width: ${Math.random() * 8 + 4}px;
+        height: ${Math.random() * 8 + 4}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        pointer-events: none;
+        z-index: 99999;
+        animation: confettiFly ${Math.random() * 1.5 + 1}s ease-out forwards;
+        --tx: ${(Math.random() - 0.5) * 600}px;
+        --ty: ${Math.random() * -400 - 100}px;
+        --rot: ${Math.random() * 720}deg;
+      `;
+      container.appendChild(particle);
+      setTimeout(() => particle.remove(), 2500);
+    }
+  };
+
   /* ---- Tab switch handler ---- */
   const switchTab = (tab) => {
     setActiveTab(tab);
@@ -511,7 +607,71 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className={glitchActive ? 'glitch-active' : ''}>
+      {secretMessage && (
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 99998,
+          textAlign: 'center',
+          pointerEvents: 'none',
+          animation: 'fadeInOut 3s ease forwards',
+        }}>
+          <div style={{
+            fontFamily: 'DM Mono, monospace',
+            fontSize: '13px',
+            color: 'rgba(255,255,255,0.4)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '8px',
+          }}>
+            you found me.
+          </div>
+          <div style={{
+            fontFamily: 'Instrument Serif, serif',
+            fontSize: '48px',
+            fontStyle: 'italic',
+            color: '#fff',
+            lineHeight: 1,
+          }}>
+            Samprati Gaurav
+          </div>
+          <div style={{
+            fontFamily: 'DM Mono, monospace',
+            fontSize: '11px',
+            color: 'rgba(255,255,255,0.25)',
+            marginTop: '12px',
+            letterSpacing: '2px',
+          }}>
+            samprati.dev
+          </div>
+        </div>
+      )}
+
+      {showRageToast && (
+        <div style={{
+          position: 'fixed',
+          left: Math.min(ragePos.x, window.innerWidth - 200),
+          top: ragePos.y - 48,
+          background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+          backdropFilter: 'blur(12px)',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'}`,
+          color: isDark ? '#fff' : '#111',
+          padding: '8px 16px',
+          borderRadius: '100px',
+          fontSize: '13px',
+          fontFamily: 'DM Sans, sans-serif',
+          pointerEvents: 'none',
+          zIndex: 9998,
+          animation: 'fadeInOut 2.5s ease forwards',
+          whiteSpace: 'nowrap',
+        }}>
+          easy there 😅
+        </div>
+      )}
+
       <div className="grain-overlay" />
       <div className="scroll-bar" style={{ width: scrollWidth, background: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)' }} />
       {!isMobile && <Cursor isDark={isDark} />}
@@ -595,7 +755,38 @@ export default function App() {
 
       {/* ========== TOP BAR ========== */}
       <header className="topbar">
-        <a className="topbar-logo" href="#intro" onClick={() => scrollTo('intro')} style={{ color: isDark ? '#fff' : '#111' }}>
+        <a 
+          className={`topbar-logo ${logoShake ? 'logo-shake' : ''}`} 
+          href="#intro" 
+          onClick={(e) => {
+            e.preventDefault();
+            const newCount = logoClicks + 1;
+            setLogoClicks(newCount);
+
+            if (newCount === 3) {
+              setLogoShake(true);
+              setTimeout(() => setLogoShake(false), 400);
+            }
+            if (newCount === 7) {
+              setTerminalOpen(true);
+              setTerminalHistory(prev => [...prev, {
+                type: 'system',
+                text: 'samprati@portfolio:~$ okay okay I see you 👀'
+              }]);
+              setTimeout(() => terminalInputRef.current?.focus(), 50);
+            }
+            if (newCount === 10) {
+              triggerConfetti();
+              setLogoClicks(0);
+            }
+
+            // still navigate to intro on first click
+            if (newCount === 1) {
+              document.getElementById('intro')?.scrollIntoView({ behavior: 'smooth' });
+            }
+          }} 
+          style={{ color: isDark ? '#fff' : '#111' }}
+        >
           S
         </a>
         <div className="topbar-tabs" style={{ display: isMobile ? 'none' : 'flex' }}>
@@ -1324,6 +1515,6 @@ export default function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

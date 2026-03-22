@@ -569,3 +569,46 @@ body.light-theme .article-cat {
   from { width: 0%; }
   to { width: 100%; }
 }
+
+/* ============================================================
+   EASTER EGGS
+   ============================================================ */
+@keyframes glitchEffect {
+  0% { transform: translate(0); filter: none; }
+  10% { transform: translate(-3px, 2px); filter: hue-rotate(90deg); }
+  20% { transform: translate(3px, -2px); filter: hue-rotate(180deg); }
+  30% { transform: translate(-2px, 3px); filter: hue-rotate(270deg); }
+  40% { transform: translate(2px, -1px); filter: none; }
+  50% { transform: translate(-1px, 2px); filter: hue-rotate(90deg); }
+  60% { transform: translate(3px, 1px); filter: none; }
+  70% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+  80% { transform: translate(1px, 3px); filter: none; }
+  90% { transform: translate(-1px, -1px); filter: hue-rotate(270deg); }
+  100% { transform: translate(0); filter: none; }
+}
+.glitch-active {
+  animation: glitchEffect 0.6s steps(1) forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -45%); }
+  15% { opacity: 1; transform: translate(-50%, -50%); }
+  75% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(-50%, -55%); }
+}
+
+@keyframes shakeAnim {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-4px) rotate(-2deg); }
+  40% { transform: translateX(4px) rotate(2deg); }
+  60% { transform: translateX(-3px) rotate(-1deg); }
+  80% { transform: translateX(3px) rotate(1deg); }
+}
+.logo-shake {
+  animation: shakeAnim 0.4s ease forwards;
+}
+
+@keyframes confettiFly {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
+}
