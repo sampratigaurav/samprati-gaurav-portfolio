@@ -612,3 +612,8 @@ body.light-theme .article-cat {
   0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
   100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
 }
+
+@keyframes fadeInGreeting {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

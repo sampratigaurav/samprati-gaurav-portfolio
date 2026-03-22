@@ -182,6 +182,17 @@ const Cursor = ({ isDark }) => {
 /* ============================================================
    APP
    ============================================================ */
+const getTimeGreeting = () => {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const hour = ist.getHours();
+
+  if (hour >= 6 && hour < 12) return 'Good morning.';
+  if (hour >= 12 && hour < 18) return 'Good afternoon.';
+  if (hour >= 18 && hour < 24) return 'Good evening.';
+  return "You're up late.";
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('For Anyone');
   const [activeSection, setActiveSection] = useState('intro');
@@ -223,6 +234,8 @@ export default function App() {
   const [showRageToast, setShowRageToast] = useState(false);
   const rageTimer = useRef(null);
 
+  const [greeting, setGreeting] = useState(getTimeGreeting());
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
@@ -232,6 +245,13 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => setShowKeyHint(false), 3000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGreeting(getTimeGreeting());
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -870,6 +890,18 @@ export default function App() {
         {/* ===== SECTION 1 — INTRO ===== */}
         <section id="intro" className="section">
           <div className="hero-wrapper">
+            <div style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '12px',
+              color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.3)',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              marginBottom: '20px',
+              animation: 'fadeInGreeting 1s ease forwards',
+              opacity: 0,
+            }}>
+              {greeting}
+            </div>
             <h1 key={heroKey} className="hero-headline hero-enter" style={{ color: isDark ? '#fff' : '#111', fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : undefined }}>
               <HeroContent displayedText={displayedText} isTypingDone={isTypingDone} isDark={isDark} />
             </h1>
