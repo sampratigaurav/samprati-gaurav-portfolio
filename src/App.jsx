@@ -1,23 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /* ============================================================
    DATA
    ============================================================ */
 const ALL_ARTICLES = [
-  { title: 'The Pendrive Problem: Origins of Version Control', cat: 'Developer Tools', date: 'Jan 17, 2026', url: 'https://sampratigaurav.hashnode.dev/version-control-origins-of-the-pendrive-problem' },
-  { title: 'How Git Works: What the .git Folder Does', cat: 'Developer Tools', date: 'Jan 17, 2026', url: 'https://sampratigaurav.hashnode.dev/inside-git-understanding-the-git-folder' },
-  { title: "Git 101: The Developer's Essential Save Tool", cat: 'Developer Tools', date: 'Jan 26, 2026', url: 'https://sampratigaurav.hashnode.dev/git-basics-developers-essential-save-tool' },
-  { title: 'cURL: Talk to Servers from Your Terminal', cat: 'Developer Tools', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/curl-basics-communicate-with-servers-via-terminal' },
-  { title: "TCP vs UDP: The Internet's Traffic Rules", cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/tcp-vs-udp-internet-traffic-explained' },
-  { title: "DNS Explained: The Internet's Phonebook", cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/understanding-dns-the-internets-phonebook' },
-  { title: 'TCP Explained: How Your Data Always Arrives', cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/how-tcp-ensures-reliable-internet-data-transfer' },
-  { title: 'DNS Anatomy: Tracing the Internet with dig', cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/understanding-dns-tracing-with-dig' },
-  { title: 'Modems, Routers & Load Balancers Explained', cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/modems-routers-balancers-explained' },
-  { title: 'How a Browser Works: Behind the Scenes', cat: 'Networking', date: 'Jan 27, 2026', url: 'https://sampratigaurav.hashnode.dev/understanding-how-browsers-work' },
-  { title: 'HTML Basics: The Skeleton of the Web', cat: 'Web Dev', date: 'Jan 30, 2026', url: 'https://sampratigaurav.hashnode.dev/html-basics-webs-structural-foundation' },
-  { title: 'CSS Selectors 101: Targeting Elements with Precision', cat: 'Web Dev', date: 'Jan 30, 2026', url: 'https://sampratigaurav.hashnode.dev/mastering-css-selectors-precise-element-targeting' },
-  { title: "Stop Typing HTML: A Beginner's Guide to Emmet", cat: 'Web Dev', date: 'Jan 30, 2026', url: 'https://sampratigaurav.hashnode.dev/learn-emmet-simplify-html-coding' },
-  { title: 'Why Your Fingerprint Reader May Not Work on Linux Mint', cat: 'Linux', date: 'Jul 19, 2025', url: 'https://sampratigaurav.hashnode.dev/troubleshooting-fingerprint-scanners-on-linux-mint' },
+  { title: 'The Pendrive Problem: Origins of Version Control', cat: 'Developer Tools', date: 'Jan 17, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/version-control-origins-of-the-pendrive-problem' },
+  { title: 'How Git Works: What the .git Folder Does', cat: 'Developer Tools', date: 'Jan 17, 2026', readTime: '5 min read', url: 'https://sampratigaurav.hashnode.dev/inside-git-understanding-the-git-folder' },
+  { title: "Git 101: The Developer's Essential Save Tool", cat: 'Developer Tools', date: 'Jan 26, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/git-basics-developers-essential-save-tool' },
+  { title: 'cURL: Talk to Servers from Your Terminal', cat: 'Developer Tools', date: 'Jan 27, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/curl-basics-communicate-with-servers-via-terminal' },
+  { title: "TCP vs UDP: The Internet's Traffic Rules", cat: 'Networking', date: 'Jan 27, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/tcp-vs-udp-internet-traffic-explained' },
+  { title: "DNS Explained: The Internet's Phonebook", cat: 'Networking', date: 'Jan 27, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/understanding-dns-the-internets-phonebook' },
+  { title: 'TCP Explained: How Your Data Always Arrives', cat: 'Networking', date: 'Jan 27, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/how-tcp-ensures-reliable-internet-data-transfer' },
+  { title: 'DNS Anatomy: Tracing the Internet with dig', cat: 'Networking', date: 'Jan 27, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/understanding-dns-tracing-with-dig' },
+  { title: 'Modems, Routers & Load Balancers Explained', cat: 'Networking', date: 'Jan 27, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/modems-routers-balancers-explained' },
+  { title: 'How a Browser Works: Behind the Scenes', cat: 'Networking', date: 'Jan 27, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/understanding-how-browsers-work' },
+  { title: 'HTML Basics: The Skeleton of the Web', cat: 'Web Dev', date: 'Jan 30, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/html-basics-webs-structural-foundation' },
+  { title: 'CSS Selectors 101: Targeting Elements with Precision', cat: 'Web Dev', date: 'Jan 30, 2026', readTime: '3 min read', url: 'https://sampratigaurav.hashnode.dev/mastering-css-selectors-precise-element-targeting' },
+  { title: "Stop Typing HTML: A Beginner's Guide to Emmet", cat: 'Web Dev', date: 'Jan 30, 2026', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/learn-emmet-simplify-html-coding' },
+  { title: 'Why Your Fingerprint Reader May Not Work on Linux Mint', cat: 'Linux', date: 'Jul 19, 2025', readTime: '4 min read', url: 'https://sampratigaurav.hashnode.dev/troubleshooting-fingerprint-scanners-on-linux-mint' },
 ];
 
 const project = {
@@ -92,35 +92,66 @@ function GitHubIcon() {
 }
 
 const Cursor = ({ isDark }) => {
-  const cursorRef = useRef(null);
+  const trailCount = 6;
+  const trailRefs = useRef(Array.from({ length: trailCount }, () => React.createRef()));
+  const positions = useRef(Array.from({ length: trailCount }, () => ({ x: -20, y: -20 })));
+  const mouse = useRef({ x: -20, y: -20 });
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    const move = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
-      }
+    const onMove = (e) => {
+      mouse.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener('mousemove', move);
-    return () => window.removeEventListener('mousemove', move);
+    window.addEventListener('mousemove', onMove);
+
+    const animate = () => {
+      positions.current[0] = { ...mouse.current };
+      for (let i = 1; i < trailCount; i++) {
+        positions.current[i] = {
+          x: positions.current[i].x + (positions.current[i-1].x - positions.current[i].x) * 0.45,
+          y: positions.current[i].y + (positions.current[i-1].y - positions.current[i].y) * 0.45,
+        };
+      }
+      trailRefs.current.forEach((ref, i) => {
+        if (ref.current) {
+          const size = 8 - i * 0.9;
+          const opacity = (1 - i / trailCount) * 0.85;
+          ref.current.style.transform = `translate(${positions.current[i].x - size/2}px, ${positions.current[i].y - size/2}px)`;
+          ref.current.style.width = `${size}px`;
+          ref.current.style.height = `${size}px`;
+          ref.current.style.opacity = opacity;
+        }
+      });
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
-    <div
-      ref={cursorRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '8px',
-        height: '8px',
-        borderRadius: '50%',
-        background: isDark ? '#fff' : '#111',
-        pointerEvents: 'none',
-        zIndex: 99999,
-        willChange: 'transform',
-        mixBlendMode: 'normal',
-      }}
-    />
+    <>
+      {Array.from({ length: trailCount }, (_, i) => (
+        <div
+          key={i}
+          ref={trailRefs.current[i]}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            borderRadius: '50%',
+            background: isDark ? '#ffffff' : '#111111',
+            pointerEvents: 'none',
+            zIndex: 99999,
+            willChange: 'transform',
+            mixBlendMode: 'normal',
+          }}
+        />
+      ))}
+    </>
   );
 };
 
@@ -145,6 +176,14 @@ export default function App() {
   const [showKeyHint, setShowKeyHint] = useState(true);
   const [istTime, setIstTime] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [terminalOpen, setTerminalOpen] = useState(false);
+  const [terminalInput, setTerminalInput] = useState('');
+  const [terminalHistory, setTerminalHistory] = useState([
+    { type: 'system', text: "samprati@portfolio:~$ type 'help' to see available commands" }
+  ]);
+  const terminalInputRef = useRef(null);
+  const [lastCommit, setLastCommit] = useState(null);
+  const [hoveredArticle, setHoveredArticle] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowKeyHint(false), 3000);
@@ -174,6 +213,13 @@ export default function App() {
     const tabValues = ['For Anyone', 'For Recruiters', 'For Engineers', 'For Writers'];
 
     const handleKey = (e) => {
+      if (e.key === '`') {
+        e.preventDefault();
+        setTerminalOpen(prev => !prev);
+        setTimeout(() => terminalInputRef.current?.focus(), 50);
+        return;
+      }
+      if (e.key === 'Escape') { setTerminalOpen(false); return; }
       if (e.target.tagName === 'INPUT') return;
 
       if (tabKeys.includes(e.key)) {
@@ -294,6 +340,65 @@ export default function App() {
     window.addEventListener('scroll', updateScroll, { passive: true });
     return () => window.removeEventListener('scroll', updateScroll);
   }, []);
+
+  /* ---- Last commit fetch (Feature 2) ---- */
+  useEffect(() => {
+    fetch('https://api.github.com/repos/sampratigaurav/syncwatch/commits?per_page=1')
+      .then(r => r.json())
+      .then(data => {
+        if (data[0]) {
+          const msg = data[0].commit.message.split('\n')[0];
+          const date = new Date(data[0].commit.author.date);
+          const now = new Date();
+          const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+          const timeAgo = diffDays === 0 ? 'today' : diffDays === 1 ? 'yesterday' : `${diffDays} days ago`;
+          setLastCommit({ msg, timeAgo });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  /* ---- Terminal command handler (Feature 1) ---- */
+  const handleTerminalCommand = (cmd) => {
+    const c = cmd.trim().toLowerCase();
+    const newHistory = [...terminalHistory, { type: 'input', text: `samprati@portfolio:~$ ${cmd}` }];
+
+    const responses = {
+      help: [
+        '  whoami          → who is Samprati?',
+        '  ls projects     → list all projects',
+        '  cat resume      → open resume',
+        '  contact         → get contact info',
+        '  clear           → clear terminal',
+        '  exit            → close terminal',
+      ].join('\n'),
+      whoami: '  Samprati Gaurav — 2nd year Cybersecurity undergrad at DSU Bengaluru.\n  Builder. Writer. Learning in public.\n  github.com/sampratigaurav',
+      'ls projects': '  syncwatch/     → real-time video sync app\n  [more coming soon...]',
+      'ls': '  syncwatch/     → real-time video sync app\n  [more coming soon...]',
+      'cat resume': '  Opening resume...',
+      contact: '  email  → sampratigaurav123@gmail.com\n  github → github.com/sampratigaurav\n  x      → @Sampratigaurav0\n  blog   → sampratigaurav.hashnode.dev',
+      exit: '__EXIT__',
+      clear: '__CLEAR__',
+    };
+
+    if (c === 'clear') {
+      setTerminalHistory([{ type: 'system', text: "samprati@portfolio:~$ type 'help' to see available commands" }]);
+      setTerminalInput('');
+      return;
+    }
+    if (c === 'exit') {
+      setTerminalOpen(false);
+      setTerminalInput('');
+      return;
+    }
+    if (c === 'cat resume') {
+      window.open('/assets/resume.pdf', '_blank');
+    }
+
+    const output = responses[c] ?? `  command not found: ${cmd}. Type 'help' for available commands.`;
+    setTerminalHistory([...newHistory, { type: 'output', text: output }]);
+    setTerminalInput('');
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText('sampratigaurav123@gmail.com');
@@ -458,6 +563,15 @@ export default function App() {
           }}>{k}</span> 
         ))} 
         <span>navigate sections</span> 
+        <span style={{ margin: '0 4px', opacity: 0.3 }}>·</span>
+        <span style={{
+          background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+          borderRadius: '4px',
+          padding: '2px 7px',
+          fontFamily: 'DM Mono, monospace',
+          fontSize: '11px',
+        }}>`</span>
+        <span>terminal</span>
       </div>
       <button className="theme-toggle" onClick={() => setIsDark(d => !d)}>
         {isDark ? '◐' : '◑'}
@@ -550,6 +664,24 @@ export default function App() {
                     <span key={t} style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>{t}</span>
                   ))}
                 </div>
+                {lastCommit && (
+                  <div style={{
+                    marginTop: '12px',
+                    paddingTop: '12px',
+                    borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                    fontSize: '11px',
+                    color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
+                    fontFamily: 'DM Mono, monospace',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}>
+                    <span style={{ color: '#4ade80' }}>↑</span>
+                    <span>last commit:</span>
+                    <span style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>"{lastCommit.msg}"</span>
+                    <span>· {lastCommit.timeAgo}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -757,10 +889,40 @@ export default function App() {
                         background: 'transparent', 
                         borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` 
                       }}
+                      onMouseEnter={() => setHoveredArticle(i)}
+                      onMouseLeave={() => setHoveredArticle(null)}
                     >
                       <div>
                         <div className="article-cat" style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)' }}>{cat}</div>
                         <div className="article-title" style={{ color: isDark ? '#fff' : '#111' }}>{title}</div>
+                        {hoveredArticle === i && (
+                          <div style={{
+                            fontSize: '11px',
+                            color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)',
+                            fontFamily: 'DM Mono, monospace',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            marginTop: '6px',
+                          }}>
+                            <div style={{
+                              width: '60px',
+                              height: '2px',
+                              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+                              borderRadius: '2px',
+                              overflow: 'hidden',
+                            }}>
+                              <div style={{
+                                height: '100%',
+                                background: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
+                                borderRadius: '2px',
+                                width: '0%',
+                                animation: 'readingBar 0.4s ease forwards',
+                              }} />
+                            </div>
+                            {article.readTime ?? '3 min read'}
+                          </div>
+                        )}
                       </div>
                       <div className="article-right">
                         <span className="article-date" style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)' }}>
@@ -960,6 +1122,101 @@ export default function App() {
           </div>
         )}
       </div>
+      {terminalOpen && (
+        <div
+          onClick={() => terminalInputRef.current?.focus()}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.92)',
+            backdropFilter: 'blur(8px)',
+            zIndex: 10000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '40px',
+          }}
+        >
+          <div style={{
+            width: '100%',
+            maxWidth: '640px',
+            background: '#0a0a0a',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            fontFamily: 'DM Mono, monospace',
+          }}>
+            {/* Title bar */}
+            <div style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              {['#ff5f57','#febc2e','#28c840'].map((c,i) => (
+                <div key={i} onClick={i===0 ? () => setTerminalOpen(false) : undefined} style={{ width:12, height:12, borderRadius:'50%', background:c, cursor: i===0 ? 'none' : 'default' }} />
+              ))}
+              <span style={{ color:'rgba(255,255,255,0.3)', fontSize:'12px', marginLeft:'8px' }}>samprati@portfolio — terminal</span>
+            </div>
+            {/* Output */}
+            <div style={{
+              padding: '16px',
+              minHeight: '280px',
+              maxHeight: '400px',
+              overflowY: 'auto',
+              fontSize: '13px',
+              lineHeight: '1.8',
+              color: 'rgba(255,255,255,0.8)',
+            }}>
+              {terminalHistory.map((line, i) => (
+                <div key={i} style={{
+                  color: line.type === 'input' ? '#fff' : line.type === 'system' ? 'rgba(255,255,255,0.35)' : '#4ade80',
+                  whiteSpace: 'pre-wrap',
+                  marginBottom: '2px',
+                }}>
+                  {line.text}
+                </div>
+              ))}
+            </div>
+            {/* Input */}
+            <div style={{
+              padding: '8px 16px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              <span style={{ color:'rgba(255,255,255,0.4)', fontSize:'13px', whiteSpace:'nowrap' }}>samprati@portfolio:~$</span>
+              <input
+                ref={terminalInputRef}
+                value={terminalInput}
+                onChange={e => setTerminalInput(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') handleTerminalCommand(terminalInput);
+                  if (e.key === 'Escape') setTerminalOpen(false);
+                }}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontFamily: 'DM Mono, monospace',
+                  caretColor: '#4ade80',
+                  cursor: 'none',
+                }}
+                spellCheck={false}
+                autoComplete="off"
+              />
+            </div>
+          </div>
+          <div style={{ position:'absolute', bottom:'24px', left:'50%', transform:'translateX(-50%)', fontSize:'11px', color:'rgba(255,255,255,0.2)', fontFamily:'DM Sans, sans-serif' }}>
+            press ESC or ` to close
+          </div>
+        </div>
+      )}
     </>
   );
 }

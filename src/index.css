@@ -550,3 +550,11 @@ body.light-theme .article-date,
 body.light-theme .article-cat {
   color: rgba(0,0,0,0.4) !important;
 }
+
+/* ============================================================
+   READING BAR ANIMATION (Feature 3)
+   ============================================================ */
+@keyframes readingBar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
