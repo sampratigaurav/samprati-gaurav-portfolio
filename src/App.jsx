@@ -1680,7 +1680,7 @@ export default function App() {
 
         {/* ===== SECTION 5 — ABOUT ===== */}
         <section id="about" className="section">
-          <h2 className="section-heading" style={{ color: isDark ? '#fff' : '#111' }}>about.</h2>
+          <h2 className="section-heading" data-final="about." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)`, marginBottom: '32px' }}>about.</h2>
           <div className="section-content">
             <div className="about-grid" style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '32px' : '80px 120px' }}>
               <p style={{ color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.75)' }}>
@@ -1708,7 +1708,6 @@ export default function App() {
 
         {/* ===== SECTION 5 — CONTACT ===== */}
         <section id="contact" className="section contact-section">
-          <h2 className="section-heading" data-final="about." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)`, marginBottom: '32px' }}>about.</h2>
           <div style={{
             position: 'relative',
             width: '260px',
