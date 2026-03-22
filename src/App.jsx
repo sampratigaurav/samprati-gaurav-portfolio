@@ -1,5 +1,153 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
+const LiveClock = React.memo(({ isDark }) => {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const update = () => {
+      setTime(new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      }).format(new Date()));
+    };
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div style={{
+      fontSize: '13px',
+      color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)',
+      fontFamily: 'DM Mono, monospace',
+      letterSpacing: '0.5px',
+      marginBottom: '8px',
+      paddingBottom: '8px',
+      borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+    }}>
+      {time} <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', marginLeft: '4px' }}>IST</span>
+    </div>
+  );
+});
+
+const GitHubHeatmap = React.memo(({ contributions, contribTotal, isDark }) => {
+  return (
+    <div style={{
+      maxWidth: '760px',
+      margin: '56px auto 0',
+      padding: '28px 32px',
+      border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+      borderRadius: '12px',
+      background: isDark ? 'transparent' : '#fff',
+      overflowX: 'auto',
+      overflowY: 'hidden',
+      boxSizing: 'border-box',
+    }}>
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{
+          fontSize: '10px',
+          color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          fontFamily: 'DM Sans, sans-serif',
+          marginBottom: '6px',
+        }}>
+          GitHub Activity
+        </div>
+        <div style={{
+          fontSize: '14px',
+          color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+          fontFamily: 'DM Sans, sans-serif',
+        }}>
+          {contribTotal} contributions in the last year
+        </div>
+      </div>
+
+      <div style={{ minWidth: 'max-content' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(52, 11px)',
+          gridTemplateRows: 'repeat(7, 11px)',
+          gap: '3px',
+          width: 'fit-content',
+          margin: '0 auto',
+        }}>
+          {(() => {
+            const days = contributions.slice(-364);
+            const firstDow = new Date(days[0]?.date).getDay();
+            const padStart = firstDow === 0 ? 6 : firstDow - 1;
+            const padded = [...Array(padStart).fill(null), ...days];
+            const colors = isDark
+              ? ['rgba(255,255,255,0.04)', '#1a3a1a', '#2d6a2d', '#3d9e3d', '#4ade80']
+              : ['rgba(0,0,0,0.07)', '#1a3a1a', '#2d6a2d', '#3d9e3d', '#4ade80'];
+            const borders = isDark
+              ? ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0.14)', 'rgba(255,255,255,0.18)', 'rgba(74,222,128,0.4)']
+              : ['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.14)', 'rgba(0,0,0,0.18)', 'rgba(74,222,128,0.4)'];
+            while (padded.length < 52 * 7) padded.push(null);
+
+            return padded.map((day, i) => (
+              <div
+                key={i}
+                title={day ? `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}` : ''}
+                style={{
+                  width: '11px',
+                  height: '11px',
+                  borderRadius: '2px',
+                  background: day ? (colors[day.level] ?? colors[0]) : 'transparent',
+                  border: day ? `1px solid ${borders[day.level] ?? borders[0]}` : 'none',
+                  transition: 'transform 0.15s ease',
+                  cursor: day ? 'none' : 'default',
+                }}
+                onMouseEnter={e => { if (day) e.currentTarget.style.transform = 'scale(1.8)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+              />
+            ));
+          })()}
+        </div>
+      </div>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: '14px',
+      }}>
+        <a
+          href="https://github.com/sampratigaurav"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            fontSize: '11px',
+            color: 'rgba(255,255,255,0.25)',
+            textDecoration: 'none',
+            fontFamily: 'DM Sans, sans-serif',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => e.target.style.color = '#4A9EFF'}
+          onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.25)'}
+        >
+          github.com/sampratigaurav ↗
+        </a>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)', fontFamily: 'DM Sans, sans-serif' }}>Less</span>
+          {(isDark ? ['rgba(255,255,255,0.04)','#1a3a1a','#2d6a2d','#3d9e3d','#4ade80'] : ['rgba(0,0,0,0.07)','#1a3a1a','#2d6a2d','#3d9e3d','#4ade80']).map((c, i) => (
+            <div key={i} style={{
+              width: '11px', height: '11px',
+              borderRadius: '2px',
+              background: c,
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)'}`,
+            }} />
+          ))}
+          <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)', fontFamily: 'DM Sans, sans-serif' }}>More</span>
+        </div>
+      </div>
+    </div>
+  );
+});
 /* ============================================================
    DATA
    ============================================================ */
@@ -100,7 +248,7 @@ function GitHubIcon() {
   );
 }
 
-const Cursor = ({ isDark }) => {
+const Cursor = React.memo(({ isDark }) => {
   const trailCount = 6;
   const trailRefs = useRef(Array.from({ length: trailCount }, () => React.createRef()));
   const positions = useRef(Array.from({ length: trailCount }, () => ({ x: -20, y: -20 })));
@@ -177,21 +325,11 @@ const Cursor = ({ isDark }) => {
       ))}
     </>
   );
-};
+});
 
 /* ============================================================
    APP
    ============================================================ */
-const getTimeGreeting = () => {
-  const now = new Date();
-  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-  const hour = ist.getHours();
-
-  if (hour >= 6 && hour < 12) return 'Good morning.';
-  if (hour >= 12 && hour < 18) return 'Good afternoon.';
-  if (hour >= 18 && hour < 24) return 'Good evening.';
-  return "You're up late.";
-};
 
 const CHARS = '!<>-_\\/[]{}—=+*^?#@$%&ABCDEFabcdef0123456789';
 
@@ -254,6 +392,16 @@ const useMagnetic = (strength = 0.3) => {
 };
 
 export default function App() {
+  const getTimeGreeting = useCallback(() => {
+    const now = new Date();
+    const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const hour = ist.getHours();
+    if (hour >= 6 && hour < 12) return 'Good morning.';
+    if (hour >= 12 && hour < 18) return 'Good afternoon.';
+    if (hour >= 18 && hour < 24) return 'Good evening.';
+    return "You're up late.";
+  }, []);
+
   const [activeTab, setActiveTab] = useState('For Anyone');
   const [activeSection, setActiveSection] = useState('intro');
   const [heroKey, setHeroKey] = useState(0);
@@ -269,7 +417,6 @@ export default function App() {
   const [visitors, setVisitors] = useState(null);
   const [isDark, setIsDark] = useState(true);
   const [showKeyHint, setShowKeyHint] = useState(true);
-  const [istTime, setIstTime] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -294,7 +441,15 @@ export default function App() {
   const [showRageToast, setShowRageToast] = useState(false);
   const rageTimer = useRef(null);
 
-  const [greeting, setGreeting] = useState(getTimeGreeting());
+  const [greeting, setGreeting] = useState(() => {
+    const now = new Date();
+    const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const hour = ist.getHours();
+    if (hour >= 6 && hour < 12) return 'Good morning.';
+    if (hour >= 12 && hour < 18) return 'Good afternoon.';
+    if (hour >= 18 && hour < 24) return 'Good evening.';
+    return "You're up late.";
+  });
 
   const [timeOnSite, setTimeOnSite] = useState(0);
   const siteStartTime = useRef(Date.now());
@@ -312,16 +467,48 @@ export default function App() {
   const [scrollY, setScrollY] = useState(0);
   const [spotlightPos, setSpotlightPos] = useState({ x: -1000, y: -1000 });
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+  const scrollSpy = useCallback(() => {
+    const current = sections.find(id => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top >= -100 && rect.top <= window.innerHeight / 2;
+    });
+    if (current) setActiveSection(current);
   }, []);
 
   useEffect(() => {
-    const handleMove = (e) => setSpotlightPos({ x: e.clientX, y: e.clientY });
+    let rafId;
+    const updateScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+        setScrollWidth(pct + '%');
+        setScrollY(window.scrollY);
+        scrollSpy();
+      });
+    };
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', updateScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, [scrollSpy]);
+
+  useEffect(() => {
+    let rafId;
+    const handleMove = (e) => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setSpotlightPos({ x: e.clientX, y: e.clientY });
+      });
+    };
     window.addEventListener('mousemove', handleMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   useEffect(() => {
@@ -543,14 +730,7 @@ export default function App() {
     fetchContributions();
   }, []);
 
-  useEffect(() => {
-    const updateScroll = () => {
-      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-      setScrollWidth(pct + '%');
-    };
-    window.addEventListener('scroll', updateScroll, { passive: true });
-    return () => window.removeEventListener('scroll', updateScroll);
-  }, []);
+
 
   /* ---- Last commit fetch (Feature 2) ---- */
   useEffect(() => {
@@ -570,7 +750,7 @@ export default function App() {
   }, []);
 
   /* ---- Terminal command handler (Feature 1) ---- */
-  const handleTerminalCommand = (cmd) => {
+  const handleTerminalCommand = useCallback((cmd) => {
     const c = cmd.trim().toLowerCase();
     const newHistory = [...terminalHistory, { type: 'input', text: `samprati@portfolio:~$ ${cmd}` }];
 
@@ -609,13 +789,13 @@ export default function App() {
     const output = responses[c] ?? `  command not found: ${cmd}. Type 'help' for available commands.`;
     setTerminalHistory([...newHistory, { type: 'output', text: output }]);
     setTerminalInput('');
-  };
+  }, [terminalHistory]);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     navigator.clipboard.writeText('sampratigaurav123@gmail.com');
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
-  };
+  }, []);
 
   useEffect(() => {
     const fallbackPosts = ALL_ARTICLES.slice(0, 3).map(a => ({
@@ -673,26 +853,7 @@ export default function App() {
     fetchArticleCount();
   }, []);
 
-  /* ---- Scroll spy ---- */
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
 
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   /* ---- Feature 4 Rage Click Detector ---- */
   useEffect(() => {
@@ -719,15 +880,15 @@ export default function App() {
   }, []);
 
   /* ---- Feature 1 Secret Word Action ---- */
-  const triggerSecretWord = () => {
+  const triggerSecretWord = useCallback(() => {
     setGlitchActive(true);
     setSecretMessage(true);
     setTimeout(() => setGlitchActive(false), 600);
     setTimeout(() => setSecretMessage(false), 3000);
-  };
+  }, []);
 
   /* ---- Feature 2 Confetti Generator ---- */
-  const triggerConfetti = () => {
+  const triggerConfetti = useCallback(() => {
     const colors = ['#ffffff', '#4ade80', '#a855f7', '#f59e0b', '#3b82f6'];
     const container = document.body;
     for (let i = 0; i < 80; i++) {
@@ -750,7 +911,7 @@ export default function App() {
       container.appendChild(particle);
       setTimeout(() => particle.remove(), 2500);
     }
-  };
+  }, []);
 
   /* ---- Tab switch handler ---- */
   const switchTab = (tab) => {
@@ -1571,6 +1732,8 @@ export default function App() {
             <img
               src="/assets/avatar.png"
               alt="Samprati Gaurav"
+              loading="lazy"
+              decoding="async"
               onError={e => e.currentTarget.style.display = 'none'}
               style={{
                 width: '100%',
