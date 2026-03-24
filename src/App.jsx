@@ -1728,24 +1728,57 @@ export default function App() {
         <section id="certs" className="section">
           <h2 className="section-heading" data-final="certs." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)` }}>certs.</h2>
           <div className="section-content">
-            <div className="articles-list" style={{ background: 'transparent' }}>
+            <div className="articles-list" style={{ 
+              display: 'grid', 
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', 
+              gap: '16px',
+              background: 'transparent'
+            }}>
               {certs.map((c, i) => (
                 <div 
                   key={i} 
-                  className="article-row" 
                   style={{ 
-                    paddingTop: '18px', 
-                    paddingBottom: '18px', 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '24px', 
                     background: 'transparent', 
-                    borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` 
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
+                    borderRadius: '8px',
+                    minHeight: '160px',
+                    transition: 'border-color 0.2s ease',
                   }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}
                 >
                   <div>
-                    <div className="article-cat" style={{ fontFamily: 'monospace', color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)' }}>{c.issuer}</div>
-                    <div className="article-title" style={{ color: isDark ? '#fff' : '#111' }}>{c.name}</div>
+                    <div style={{ 
+                      fontSize: '10px', 
+                      color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', 
+                      letterSpacing: '1.5px', 
+                      textTransform: 'uppercase', 
+                      fontFamily: 'DM Sans, sans-serif',
+                      marginBottom: '12px'
+                    }}>
+                      {c.issuer}
+                    </div>
+                    <div style={{ 
+                      fontSize: '18px', 
+                      color: isDark ? '#fff' : '#111', 
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontWeight: 400,
+                      lineHeight: 1.4
+                    }}>
+                      {c.name}
+                    </div>
                   </div>
-                  <div className="article-right">
-                    <span className="article-date" style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)' }}>{c.date}</span>
+                  <div style={{ 
+                    fontSize: '11px', 
+                    color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', 
+                    fontFamily: 'DM Mono, monospace',
+                    marginTop: '32px'
+                  }}>
+                    {c.date}
                   </div>
                 </div>
               ))}
