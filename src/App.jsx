@@ -244,8 +244,10 @@ const sections = ['intro', 'work', 'writing', 'certs', 'about', 'contact'];
 const navLabels = ['Intro', 'Work', 'Writing', 'Certs', 'About', 'Contact'];
 
 const certs = [
+  { issuer: 'Codecademy', name: 'Command Line Course', date: 'Jul 2025' },
+  { issuer: 'Codecademy', name: 'Fundamentals of Cybersecurity', date: 'Jul 2025' },
   { issuer: 'Deloitte × Forage', name: 'Cyber Job Simulation', date: 'Nov 2025' },
-  { issuer: 'Cisco', name: 'ICS/SCADA Security Certificate', date: 'Feb 2026' },
+  { issuer: 'Cisco Networking Academy', name: 'Introduction to Cybersecurity', date: 'Feb 2026' },
   { issuer: 'MathWorks', name: 'MATLAB Onramp', date: '2025' },
   { issuer: 'MathWorks', name: 'Make and Manipulate Matrices', date: '2025' },
   { issuer: 'MathWorks', name: 'Calculations with Vectors & Matrices', date: '2025' },
