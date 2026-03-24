@@ -244,14 +244,14 @@ const sections = ['intro', 'work', 'writing', 'certs', 'about', 'contact'];
 const navLabels = ['Intro', 'Work', 'Writing', 'Certs', 'About', 'Contact'];
 
 const certs = [
-  { issuer: 'Codecademy', name: 'Command Line Course', date: 'Jul 2025' },
-  { issuer: 'Codecademy', name: 'Fundamentals of Cybersecurity', date: 'Jul 2025' },
-  { issuer: 'Deloitte × Forage', name: 'Cyber Job Simulation', date: 'Nov 2025' },
-  { issuer: 'Cisco Networking Academy', name: 'Introduction to Cybersecurity', date: 'Feb 2026' },
-  { issuer: 'MathWorks', name: 'MATLAB Onramp', date: '2025' },
-  { issuer: 'MathWorks', name: 'Make and Manipulate Matrices', date: '2025' },
-  { issuer: 'MathWorks', name: 'Calculations with Vectors & Matrices', date: '2025' },
-  { issuer: 'MathWorks', name: 'Solving ODEs with MATLAB', date: '2025' },
+  { issuer: 'Codecademy', name: 'Command Line Course', date: 'Jul 2025', tag: 'Developer Tools' },
+  { issuer: 'Codecademy', name: 'Fundamentals of Cybersecurity', date: 'Jul 2025', tag: 'Cybersecurity' },
+  { issuer: 'Deloitte × Forage', name: 'Cyber Job Simulation', date: 'Nov 2025', tag: 'Cybersecurity' },
+  { issuer: 'Cisco Networking Academy', name: 'Introduction to Cybersecurity', date: 'Feb 2026', tag: 'Cybersecurity' },
+  { issuer: 'MathWorks', name: 'MATLAB Onramp', date: '2025', tag: 'Programming' },
+  { issuer: 'MathWorks', name: 'Make and Manipulate Matrices', date: '2025', tag: 'Mathematics' },
+  { issuer: 'MathWorks', name: 'Calculations with Vectors & Matrices', date: '2025', tag: 'Mathematics' },
+  { issuer: 'MathWorks', name: 'Solving ODEs with MATLAB', date: '2025', tag: 'Engineering' },
 ];
 
 const HASHNODE_QUERY = `
@@ -1729,56 +1729,82 @@ export default function App() {
           <h2 className="section-heading" data-final="certs." style={{ color: isDark ? '#fff' : '#111', transform: `translateY(${-scrollY * 0.02}px)` }}>certs.</h2>
           <div className="section-content">
             <div className="articles-list" style={{ 
-              display: 'grid', 
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', 
-              gap: '16px',
-              background: 'transparent'
+              display: 'grid',
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+              gap: '1px',
+              background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+              borderRadius: '12px',
+              overflow: 'hidden',
             }}>
-              {certs.map((c, i) => (
-                <div 
-                  key={i} 
-                  style={{ 
+              {certs.map((cert, i) => (
+                <div
+                  key={i}
+                  className="reveal-row"
+                  style={{
+                    transitionDelay: `${i * 0.06}s`,
+                    background: isDark ? '#0a0a0a' : '#fafaf7',
+                    padding: '28px 24px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    padding: '24px', 
-                    background: 'transparent', 
-                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
-                    borderRadius: '8px',
-                    minHeight: '160px',
-                    transition: 'border-color 0.2s ease',
+                    minHeight: '140px',
+                    transition: 'background 0.2s ease',
+                    cursor: 'default',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}
+                  onMouseEnter={e => e.currentTarget.style.background = isDark ? '#111' : '#f0f0eb'}
+                  onMouseLeave={e => e.currentTarget.style.background = isDark ? '#0a0a0a' : '#fafaf7'}
                 >
-                  <div>
-                    <div style={{ 
-                      fontSize: '10px', 
-                      color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', 
-                      letterSpacing: '1.5px', 
-                      textTransform: 'uppercase', 
-                      fontFamily: 'DM Sans, sans-serif',
-                      marginBottom: '12px'
-                    }}>
-                      {c.issuer}
-                    </div>
-                    <div style={{ 
-                      fontSize: '18px', 
-                      color: isDark ? '#fff' : '#111', 
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontWeight: 400,
-                      lineHeight: 1.4
-                    }}>
-                      {c.name}
-                    </div>
-                  </div>
-                  <div style={{ 
-                    fontSize: '11px', 
-                    color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', 
+                  {/* Top — issuer */}
+                  <div style={{
                     fontFamily: 'DM Mono, monospace',
-                    marginTop: '32px'
+                    fontSize: '10px',
+                    color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.3)',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    marginBottom: '12px',
                   }}>
-                    {c.date}
+                    {cert.issuer}
+                  </div>
+
+                  {/* Middle — cert name */}
+                  <div style={{
+                    fontSize: '15px',
+                    color: isDark ? '#fff' : '#111',
+                    lineHeight: 1.4,
+                    fontWeight: 400,
+                    flex: 1,
+                  }}>
+                    {cert.name}
+                  </div>
+
+                  {/* Bottom — date + tag */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginTop: '20px',
+                    paddingTop: '16px',
+                    borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                  }}>
+                    <span style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '11px',
+                      color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.3)',
+                    }}>
+                      {cert.date}
+                    </span>
+                    <span style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '10px',
+                      color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.25)',
+                      background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                      padding: '2px 8px',
+                      borderRadius: '100px',
+                      letterSpacing: '0.5px',
+                    }}>
+                      {cert.tag}
+                    </span>
                   </div>
                 </div>
               ))}
