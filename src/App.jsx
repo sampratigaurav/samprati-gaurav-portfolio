@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import SpotlightBackground from './components/SpotlightBackground';
+import ProgressBar from './components/ProgressBar';
+import TypingHeadline from './components/TypingHeadline';
 
 const LiveClock = React.memo(({ isDark }) => {
   const [time, setTime] = useState('');
@@ -274,24 +277,7 @@ const HASHNODE_QUERY = `
 /* ============================================================
    HEADLINE CONTENT PER TAB
    ============================================================ */
-function HeroContent({ displayedText, isTypingDone, isDark }) {
-  return (
-    <>
-      {displayedText}
-      {!isTypingDone && (
-        <span style={{ 
-          display: 'inline-block', 
-          width: '3px', 
-          height: '0.85em', 
-          background: isDark ? '#fff' : '#111', 
-          marginLeft: '4px', 
-          verticalAlign: 'middle', 
-          animation: 'cursorBlink 0.8s step-end infinite', 
-        }} />
-      )}
-    </>
-  );
-}
+// HeroContent moved to TypingHeadline component
 
 /* ============================================================
    GITHUB SVG ICON
@@ -461,12 +447,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('For Anyone');
   const [activeSection, setActiveSection] = useState('intro');
   const [heroKey, setHeroKey] = useState(0);
-  const [displayedText, setDisplayedText] = useState('');
-  const [isTypingDone, setIsTypingDone] = useState(false);
   const sectionRefs = useRef({});
   const [posts, setPosts] = useState([]);
   const [showToast, setShowToast] = useState(false);
-  const [scrollWidth, setScrollWidth] = useState('0%');
   const [contributions, setContributions] = useState([]);
   const [contribTotal, setContribTotal] = useState(0);
   const [articleCount, setArticleCount] = useState(15);
@@ -521,7 +504,6 @@ export default function App() {
   const socialRefs = [useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25), useMagnetic(0.25)];
 
   const [scrollY, setScrollY] = useState(0);
-  const [spotlightPos, setSpotlightPos] = useState({ x: -1000, y: -1000 });
 
   const [activeProject, setActiveProject] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -555,9 +537,6 @@ export default function App() {
     const updateScroll = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        const docHeight = document.body.scrollHeight - window.innerHeight;
-        const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-        setScrollWidth(pct + '%');
         setScrollY(window.scrollY);
         scrollSpy();
       });
@@ -569,20 +548,7 @@ export default function App() {
     };
   }, [scrollSpy]);
 
-  useEffect(() => {
-    let rafId;
-    const handleMove = (e) => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        setSpotlightPos({ x: e.clientX, y: e.clientY });
-      });
-    };
-    window.addEventListener('mousemove', handleMove, { passive: true });
-    return () => {
-      window.removeEventListener('mousemove', handleMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
+  // mousemove logic for spotlight moved to colocation component
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -711,29 +677,7 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [modalVisible, closeProject]);
 
-  useEffect(() => {
-    const headlines = {
-      'For Anyone': 'Building things, breaking them, understanding why.',
-      'For Recruiters': "2nd-year Cybersecurity student. I ship real things. Here's proof.",
-      'For Engineers': 'Driven by curiosity, open source, and the question — how does this actually work?',
-      'For Writers': `${articleCount} technical articles. If I can't explain it clearly, I don't understand it yet.`
-    };
-
-    const fullText = headlines[activeTab] || '';
-    setDisplayedText('');
-    setIsTypingDone(false);
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < fullText.length) {
-        setDisplayedText(fullText.slice(0, i + 1));
-        i++;
-      } else {
-        setIsTypingDone(true);
-        clearInterval(interval);
-      }
-    }, 28);
-    return () => clearInterval(interval);
-  }, [activeTab, articleCount]);
+  // typing headline logic moved to colocation component
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -995,21 +939,7 @@ export default function App() {
           transform: `translateY(${scrollY * 0.08}px)` 
         }} 
       />
-      {!isMobile && isDark && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            pointerEvents: 'none',
-            zIndex: 2,
-            background: `radial-gradient(circle 420px at ${spotlightPos.x}px ${spotlightPos.y}px,
-              rgba(255,255,255,0.032) 0%,
-              rgba(255,255,255,0.018) 25%,
-              transparent 70%
-            )`,
-          }}
-        />
-      )}
+      <SpotlightBackground isDark={isDark} />
       {secretMessage && (
         <div style={{
           position: 'fixed',
@@ -1140,7 +1070,7 @@ export default function App() {
       )}
 
       <div className="grain-overlay" style={{ zIndex: 1 }} />
-      <div className="scroll-bar" style={{ width: scrollWidth, background: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)' }} />
+      <ProgressBar isDark={isDark} />
       {!isMobile && <Cursor isDark={isDark} />}
       <div style={{ 
         position: 'fixed', 
@@ -1351,9 +1281,7 @@ export default function App() {
             }}>
               {greeting}
             </div>
-            <h1 key={heroKey} className="hero-headline hero-enter" style={{ color: isDark ? '#fff' : '#111', fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : undefined }}>
-              <HeroContent displayedText={displayedText} isTypingDone={isTypingDone} isDark={isDark} />
-            </h1>
+            <TypingHeadline key={heroKey} activeTab={activeTab} isMobile={isMobile} isDark={isDark} articleCount={articleCount} />
             {isMobile && (
               <div className="tab-scroll" style={{
                 display: 'flex',
