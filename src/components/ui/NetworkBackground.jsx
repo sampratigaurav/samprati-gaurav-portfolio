@@ -60,7 +60,7 @@ const NetworkBackground = ({ isDark }) => {
     window.addEventListener('click', handleClick);
 
     const lineColor = isDark ? [255, 255, 255] : [0, 0, 0];
-    const nodeColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
+    const nodeColor = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.2)';
 
     const draw = (timestamp) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -82,7 +82,7 @@ const NetworkBackground = ({ isDark }) => {
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < CONNECTION_DISTANCE) {
-            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.08;
+            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.4;
             ctx.strokeStyle = `rgba(${lineColor[0]},${lineColor[1]},${lineColor[2]},${opacity})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
@@ -97,7 +97,7 @@ const NetworkBackground = ({ isDark }) => {
         const mdy = nodes[i].y - mouse.y;
         const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
         if (mDist < MOUSE_CONNECTION_DISTANCE) {
-          const opacity = (1 - mDist / MOUSE_CONNECTION_DISTANCE) * 0.15;
+          const opacity = (1 - mDist / MOUSE_CONNECTION_DISTANCE) * 0.6;
           ctx.strokeStyle = `rgba(${lineColor[0]},${lineColor[1]},${lineColor[2]},${opacity})`;
           ctx.lineWidth = 0.8;
           ctx.beginPath();
@@ -111,7 +111,7 @@ const NetworkBackground = ({ isDark }) => {
       for (const node of nodes) {
         ctx.fillStyle = nodeColor;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
         ctx.fill();
       }
 
