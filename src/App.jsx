@@ -1139,117 +1139,144 @@ export default function App() {
                     cursor: 'pointer',
                     background: isDark ? 'transparent' : '#fff',
                     border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}`,
+                    position: 'relative',
+                  }}
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+                    const rotateY = (x - 0.5) * 10;
+                    const rotateX = (0.5 - y) * 10;
+                    const inner = e.currentTarget.querySelector(
+                      '.project-card-inner'
+                    );
+                    const glare = e.currentTarget.querySelector('.card-glare');
+                    if (inner)
+                      inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    if (glare) {
+                      glare.style.setProperty('--gx', `${x * 100}%`);
+                      glare.style.setProperty('--gy', `${y * 100}%`);
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const inner = e.currentTarget.querySelector(
+                      '.project-card-inner'
+                    );
+                    if (inner) inner.style.transform = 'rotateX(0) rotateY(0)';
                   }}
                 >
-                  <div className="project-card-icons">
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="Live Demo"
-                      style={{
-                        color: isDark
-                          ? 'rgba(255,255,255,0.5)'
-                          : 'rgba(0,0,0,0.4)',
-                      }}
-                    >
-                      🌐
-                    </a>
-                    <a
-                      href={p.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="GitHub"
-                      style={{
-                        color: isDark
-                          ? 'rgba(255,255,255,0.5)'
-                          : 'rgba(0,0,0,0.4)',
-                      }}
-                    >
-                      <GitHubIcon />
-                    </a>
-                  </div>
-                  <div
-                    className="project-name"
-                    style={{ color: isDark ? '#fff' : '#111' }}
-                  >
-                    {p.name}
-                  </div>
-                  <p
-                    className="project-desc"
-                    style={{
-                      color: isDark
-                        ? 'rgba(255,255,255,0.6)'
-                        : 'rgba(0,0,0,0.6)',
-                    }}
-                  >
-                    {p.tagline}
-                  </p>
-                  <div className="project-tags">
-                    {p.tags.map((t) => (
-                      <span
-                        key={t}
+                  <div className="project-card-inner">
+                    <div className="project-card-icons">
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Live Demo"
                         style={{
                           color: isDark
-                            ? 'rgba(255,255,255,0.4)'
+                            ? 'rgba(255,255,255,0.5)'
                             : 'rgba(0,0,0,0.4)',
-                          background: isDark
-                            ? 'rgba(255,255,255,0.1)'
-                            : 'rgba(0,0,0,0.05)',
                         }}
                       >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  {/* SyncWatch — last commit badge */}
-                  {idx === 0 && lastCommit && (
-                    <div
-                      style={{
-                        marginTop: '12px',
-                        paddingTop: '12px',
-                        borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-                        fontSize: '11px',
-                        color: isDark
-                          ? 'rgba(255,255,255,0.3)'
-                          : 'rgba(0,0,0,0.35)',
-                        fontFamily: 'DM Mono, monospace',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                      }}
-                    >
-                      <span style={{ color: '#4ade80' }}>↑</span>
-                      <span>last commit:</span>
-                      <span
+                        🌐
+                      </a>
+                      <a
+                        href={p.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="GitHub"
                         style={{
                           color: isDark
-                            ? 'rgba(255,255,255,0.6)'
-                            : 'rgba(0,0,0,0.6)',
+                            ? 'rgba(255,255,255,0.5)'
+                            : 'rgba(0,0,0,0.4)',
                         }}
                       >
-                        "{lastCommit.msg}"
-                      </span>
-                      <span>· {lastCommit.timeAgo}</span>
+                        <GitHubIcon />
+                      </a>
                     </div>
-                  )}
-                  {/* Portfolio — self-referential note */}
-                  {idx === 1 && (
                     <div
+                      className="project-name"
+                      style={{ color: isDark ? '#fff' : '#111' }}
+                    >
+                      {p.name}
+                    </div>
+                    <p
+                      className="project-desc"
                       style={{
-                        marginTop: '12px',
-                        paddingTop: '12px',
-                        borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-                        fontSize: '11px',
                         color: isDark
-                          ? 'rgba(255,255,255,0.3)'
-                          : 'rgba(0,0,0,0.35)',
-                        fontFamily: 'DM Mono, monospace',
+                          ? 'rgba(255,255,255,0.6)'
+                          : 'rgba(0,0,0,0.6)',
                       }}
                     >
-                      ✦ you are currently viewing this project
+                      {p.tagline}
+                    </p>
+                    <div className="project-tags">
+                      {p.tags.map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            color: isDark
+                              ? 'rgba(255,255,255,0.4)'
+                              : 'rgba(0,0,0,0.4)',
+                            background: isDark
+                              ? 'rgba(255,255,255,0.1)'
+                              : 'rgba(0,0,0,0.05)',
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                  )}
+                    {/* SyncWatch — last commit badge */}
+                    {idx === 0 && lastCommit && (
+                      <div
+                        style={{
+                          marginTop: '12px',
+                          paddingTop: '12px',
+                          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                          fontSize: '11px',
+                          color: isDark
+                            ? 'rgba(255,255,255,0.3)'
+                            : 'rgba(0,0,0,0.35)',
+                          fontFamily: 'DM Mono, monospace',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                      >
+                        <span style={{ color: '#4ade80' }}>↑</span>
+                        <span>last commit:</span>
+                        <span
+                          style={{
+                            color: isDark
+                              ? 'rgba(255,255,255,0.6)'
+                              : 'rgba(0,0,0,0.6)',
+                          }}
+                        >
+                          "{lastCommit.msg}"
+                        </span>
+                        <span>· {lastCommit.timeAgo}</span>
+                      </div>
+                    )}
+                    {/* Portfolio — self-referential note */}
+                    {idx === 1 && (
+                      <div
+                        style={{
+                          marginTop: '12px',
+                          paddingTop: '12px',
+                          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                          fontSize: '11px',
+                          color: isDark
+                            ? 'rgba(255,255,255,0.3)'
+                            : 'rgba(0,0,0,0.35)',
+                          fontFamily: 'DM Mono, monospace',
+                        }}
+                      >
+                        ✦ you are currently viewing this project
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-glare" />
                 </div>
               ))}
             </div>

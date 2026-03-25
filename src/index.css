@@ -921,3 +921,35 @@ body.light-theme .article-cat {
     transform: translateY(0);
   }
 }
+
+/* ============================================================
+   3D TILT PROJECT CARDS
+   ============================================================ */
+.project-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.project-card-inner {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+  height: 100%;
+}
+
+.card-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+.project-card:hover .card-glare {
+  opacity: 1;
+}

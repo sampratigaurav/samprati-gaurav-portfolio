@@ -25,7 +25,7 @@ const SpotlightBackground = ({ isDark }) => {
     };
   }, []);
 
-  if (isMobile || !isDark) return null;
+  if (isMobile) return null;
 
   return (
     <div
@@ -34,11 +34,13 @@ const SpotlightBackground = ({ isDark }) => {
         inset: 0,
         pointerEvents: 'none',
         zIndex: 2,
-        background: `radial-gradient(circle 420px at ${spotlightPos.x}px ${spotlightPos.y}px,
-          rgba(255,255,255,0.032) 0%,
-          rgba(255,255,255,0.018) 25%,
-          transparent 70%
-        )`,
+        backgroundImage: `
+          linear-gradient(to right, ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'} 1px, transparent 1px),
+          linear-gradient(to bottom, ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'} 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        WebkitMaskImage: `radial-gradient(circle 350px at ${spotlightPos.x}px ${spotlightPos.y}px, black 10%, transparent 80%)`,
+        maskImage: `radial-gradient(circle 350px at ${spotlightPos.x}px ${spotlightPos.y}px, black 10%, transparent 80%)`,
       }}
     />
   );
