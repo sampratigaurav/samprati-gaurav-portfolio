@@ -318,6 +318,7 @@ export default function App() {
 
   const logoRef = useMagnetic(0.35);
   const themeRef = useMagnetic(0.3);
+  const terminalBtnRef = useMagnetic(0.3);
   const tabRefs = [
     useMagnetic(0.25),
     useMagnetic(0.25),
@@ -913,6 +914,24 @@ export default function App() {
         </span>
         <span>terminal</span>
       </div>
+      <button
+        ref={terminalBtnRef}
+        className="theme-toggle"
+        onClick={() => {
+          setTerminalOpen(true);
+          setTimeout(() => terminalInputRef.current?.focus(), 50);
+        }}
+        style={{
+          right: isMobile ? '60px' : '84px',
+          fontFamily: 'DM Mono, monospace',
+          fontSize: '13px',
+          fontWeight: 500,
+          letterSpacing: '-1px',
+        }}
+        title="Open Terminal"
+      >
+        {'>_'}
+      </button>
       <button
         ref={themeRef}
         className="theme-toggle"
