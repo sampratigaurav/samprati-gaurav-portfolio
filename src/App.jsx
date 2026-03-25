@@ -38,16 +38,45 @@ const Cursor = React.memo(({ isDark }) => {
   const trailRefs = useRef(
     Array.from({ length: trailCount }, () => React.createRef())
   );
-  const positions = useRef(
-    Array.from({ length: trailCount }, () => ({ x: -20, y: -20 }))
-  );
-  const mouse = useRef({ x: -20, y: -20 });
-  const rafRef = useRef(null);
+  const textRef = useRef(null);
+  const cursorState = useRef({ variant: 'default', text: '' });
 
-  const lastPos = useRef({ x: -20, y: -20, time: Date.now() });
+  const positions = useRef(
+    Array.from({ length: trailCount }, () => ({ x: -100, y: -100 }))
+  );
+  const mouse = useRef({ x: -100, y: -100 });
+  const rafRef = useRef(null);
   const currentSpeed = useRef(0);
+  const lastPos = useRef({ x: -100, y: -100, time: Date.now() });
 
   useEffect(() => {
+    // 1. Hover Detection (No React State)
+    const onMouseOver = (e) => {
+      const target = e.target.closest('[data-cursor]');
+      const leadNode = trailRefs.current[0].current;
+      const textNode = textRef.current;
+
+      if (target) {
+        const variant = target.getAttribute('data-cursor');
+        const text = target.getAttribute('data-cursor-text') || '';
+        cursorState.current = { variant, text };
+
+        leadNode.className = `smart-cursor-lead active variant-${variant}`;
+        textNode.textContent = text;
+      } else if (
+        window.getComputedStyle(e.target).cursor === 'pointer' ||
+        e.target.tagName.match(/^(A|BUTTON)$/)
+      ) {
+        cursorState.current = { variant: 'pointer', text: '' };
+        leadNode.className = 'smart-cursor-lead active variant-pointer';
+        textNode.textContent = '';
+      } else {
+        cursorState.current = { variant: 'default', text: '' };
+        leadNode.className = 'smart-cursor-lead';
+        textNode.textContent = '';
+      }
+    };
+
     const onMove = (e) => {
       const now = Date.now();
       const dt = now - lastPos.current.time;
@@ -58,8 +87,11 @@ const Cursor = React.memo(({ isDark }) => {
       lastPos.current = { x: e.clientX, y: e.clientY, time: now };
       mouse.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener('mousemove', onMove);
 
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseover', onMouseOver, { passive: true });
+
+    // 2. Animation Loop
     const animate = () => {
       positions.current[0] = { ...mouse.current };
       for (let i = 1; i < trailCount; i++) {
@@ -74,35 +106,46 @@ const Cursor = React.memo(({ isDark }) => {
       }
 
       const speed = currentSpeed.current;
-      const leadSize = 4 + speed * 12; // 4px slow → 16px fast
-      const trailFade = 0.3 + speed * 0.55; // faster = more visible trail
+      const isDefault = cursorState.current.variant === 'default';
 
       trailRefs.current.forEach((ref, i) => {
-        if (ref.current) {
-          const size = i === 0 ? leadSize : Math.max(2, leadSize - i * 1.8);
-          const opacity = i === 0 ? 0.9 : (1 - i / trailCount) * trailFade;
-          ref.current.style.transform = `translate(${positions.current[i].x - size / 2}px, ${positions.current[i].y - size / 2}px)`;
-          ref.current.style.width = `${size}px`;
-          ref.current.style.height = `${size}px`;
-          ref.current.style.opacity = opacity;
+        if (!ref.current) return;
+        const node = ref.current;
+
+        if (i === 0) {
+          node.style.transform = `translate(${positions.current[i].x}px, ${positions.current[i].y}px) translate(-50%, -50%)`;
+        } else {
+          const leadSize = 4 + speed * 12;
+          const size = Math.max(2, leadSize - i * 1.8);
+          const opacity = isDefault
+            ? (1 - i / trailCount) * (0.3 + speed * 0.55)
+            : 0;
+
+          node.style.transform = `translate(${positions.current[i].x}px, ${positions.current[i].y}px) translate(-50%, -50%)`;
+          node.style.width = `${size}px`;
+          node.style.height = `${size}px`;
+          node.style.opacity = opacity;
         }
       });
+
       rafRef.current = requestAnimationFrame(animate);
     };
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', onMouseOver);
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <>
-      {Array.from({ length: trailCount }, (_, i) => (
+      {/* The Trail */}
+      {Array.from({ length: trailCount - 1 }, (_, i) => (
         <div
-          key={i}
-          ref={trailRefs.current[i]}
+          key={i + 1}
+          ref={trailRefs.current[i + 1]}
           style={{
             position: 'fixed',
             top: 0,
@@ -110,12 +153,26 @@ const Cursor = React.memo(({ isDark }) => {
             borderRadius: '50%',
             background: isDark ? '#ffffff' : '#111111',
             pointerEvents: 'none',
-            zIndex: 999999,
-            willChange: 'transform',
-            mixBlendMode: 'normal',
+            zIndex: 999998,
+            willChange: 'transform, opacity',
           }}
         />
       ))}
+      {/* The Lead Cursor */}
+      <div
+        ref={trailRefs.current[0]}
+        className="smart-cursor-lead"
+        style={{
+          borderColor: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)',
+          background: isDark ? '#ffffff' : '#111111',
+        }}
+      >
+        <span
+          ref={textRef}
+          className="smart-cursor-text"
+          style={{ color: isDark ? '#fff' : '#000' }}
+        ></span>
+      </div>
     </>
   );
 });
@@ -1135,6 +1192,8 @@ export default function App() {
                   key={p.name}
                   onClick={() => openProject(p)}
                   className="project-card"
+                  data-cursor="project"
+                  data-cursor-text="EXPLORE"
                   style={{
                     cursor: 'pointer',
                     background: isDark ? 'transparent' : '#fff',

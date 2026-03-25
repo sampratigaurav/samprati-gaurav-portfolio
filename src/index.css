@@ -953,3 +953,69 @@ body.light-theme .article-cat {
 .project-card:hover .card-glare {
   opacity: 1;
 }
+
+/* ============================================================
+   SMART CURSOR STYLES
+   ============================================================ */
+.smart-cursor-lead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  will-change: transform, width, height, border-radius;
+  transition:
+    width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease,
+    border 0.3s ease,
+    border-radius 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.smart-cursor-lead.variant-project {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(4px);
+  border-color: inherit !important;
+}
+
+.smart-cursor-lead.variant-terminal {
+  width: 48px;
+  height: 48px;
+  background: transparent !important;
+  border-radius: 8px;
+  border-color: #4af626 !important;
+}
+
+.smart-cursor-lead.variant-pointer {
+  width: 32px;
+  height: 32px;
+  background: transparent !important;
+  border-color: inherit !important;
+}
+
+.smart-cursor-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.1s;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.smart-cursor-lead.active .smart-cursor-text {
+  opacity: 1;
+}
+
+body.light-theme .smart-cursor-lead.variant-project {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
