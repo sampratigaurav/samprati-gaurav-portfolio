@@ -16,10 +16,12 @@ import LiveClock from './components/ui/LiveClock';
 import GitHubIcon from './components/ui/GitHubIcon';
 import TerminalModal from './components/ui/TerminalModal';
 import ProjectModal from './components/ui/ProjectModal';
+import SyslogTicker from './components/ui/SyslogTicker';
 import {
   useVisitorCount,
   useGitHubContributions,
   useHashnodeArticles,
+  useGitHubActivity,
 } from './hooks/usePortfolioData';
 
 /* ============================================================
@@ -200,6 +202,7 @@ export default function App() {
   const { contributions, contribTotal } = useGitHubContributions();
   const { visitors } = useVisitorCount();
   const [isDark, setIsDark] = useState(true);
+  const { logs } = useGitHubActivity();
   const [showKeyHint, setShowKeyHint] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -556,7 +559,7 @@ export default function App() {
         height: ${Math.random() * 8 + 4}px;
         background: ${colors[Math.floor(Math.random() * colors.length)]};
         border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-        pointer-events: none;
+        pointerEvents: none;
         z-index: 99999;
         animation: confettiFly ${Math.random() * 1.5 + 1}s ease-out forwards;
         --tx: ${(Math.random() - 0.5) * 600}px;
@@ -1033,6 +1036,8 @@ export default function App() {
               isDark={isDark}
               articleCount={articleCount}
             />
+
+            <SyslogTicker logs={logs} isDark={isDark} />
             {isMobile && (
               <div
                 className="tab-scroll"
