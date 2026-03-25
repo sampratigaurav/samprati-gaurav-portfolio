@@ -21,6 +21,7 @@ import BiosReboot from './components/ui/BiosReboot';
 import { triggerSystemWipe } from './hooks/useDomWiper';
 import NetworkBackground from './components/ui/NetworkBackground';
 import TracerouteLink from './components/ui/TracerouteLink';
+import Preloader from './components/ui/Preloader';
 import {
   useVisitorCount,
   useGitHubContributions,
@@ -263,6 +264,8 @@ export default function App() {
   const { contributions, contribTotal } = useGitHubContributions();
   const { visitors } = useVisitorCount();
   const [isDark, setIsDark] = useState(true);
+  const [isBooting, setIsBooting] = useState(true);
+  const prevScrollY = useRef(0);
   const { logs } = useGitHubActivity();
   const [showKeyHint, setShowKeyHint] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -365,7 +368,16 @@ export default function App() {
     const updateScroll = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        setScrollY(window.scrollY);
+        const currentScroll = window.scrollY;
+        const velocity = currentScroll - prevScrollY.current;
+        prevScrollY.current = currentScroll;
+        const skew = Math.max(-3, Math.min(3, velocity * 0.03));
+        document
+          .querySelectorAll('.project-card, .article-row, .reveal-row')
+          .forEach((el) => {
+            el.style.transform = `skewY(${skew}deg)`;
+          });
+        setScrollY(currentScroll);
         scrollSpy();
       });
     };
@@ -649,6 +661,7 @@ export default function App() {
       className={glitchActive ? 'glitch-active' : ''}
       style={{ position: 'relative', zIndex: 1 }}
     >
+      {isBooting && <Preloader onComplete={() => setIsBooting(false)} />}
       <NetworkBackground isDark={isDark} />
       <div
         className="gradient-bg"
@@ -1980,27 +1993,19 @@ export default function App() {
         {/* ===== SECTION 5 — CONTACT ===== */}
         <section id="contact" className="section contact-section">
           <div
+            className="glitch-wrapper"
             style={{
-              position: 'relative',
-              width: '260px',
-              height: '340px',
-              margin: '0 auto 32px',
               background: isDark ? '#000' : '#f5f5f0',
             }}
           >
             <img
+              className="glitch-img"
               src="/assets/avatar.png"
               alt="Samprati Gaurav"
               loading="lazy"
               decoding="async"
               onError={(e) => (e.currentTarget.style.display = 'none')}
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'top center',
-                display: 'block',
-                filter: 'grayscale(100%)',
                 WebkitMaskImage: isDark
                   ? 'linear-gradient(to bottom, black 40%, transparent 100%)'
                   : 'linear-gradient(to bottom, black 40%, transparent 100%)',
