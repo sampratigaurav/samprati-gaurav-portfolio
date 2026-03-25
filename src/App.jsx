@@ -19,6 +19,8 @@ import ProjectModal from './components/ui/ProjectModal';
 import SyslogTicker from './components/ui/SyslogTicker';
 import BiosReboot from './components/ui/BiosReboot';
 import { triggerSystemWipe } from './hooks/useDomWiper';
+import NetworkBackground from './components/ui/NetworkBackground';
+import TracerouteLink from './components/ui/TracerouteLink';
 import {
   useVisitorCount,
   useGitHubContributions,
@@ -590,6 +592,7 @@ export default function App() {
       className={glitchActive ? 'glitch-active' : ''}
       style={{ position: 'relative', zIndex: 1 }}
     >
+      <NetworkBackground isDark={isDark} />
       <div
         className="gradient-bg"
         style={{
@@ -1972,86 +1975,50 @@ export default function App() {
             <span className="dot" /> status : active
           </div>
           <div className="contact-socials">
-            <a
-              ref={socialRefs[0]}
+            <TracerouteLink
               href="https://www.linkedin.com/in/sampratigaurav/"
-              target="_blank"
-              rel="noopener noreferrer"
               style={{
                 color: isDark
                   ? 'rgba(255, 255, 255, 0.65)'
                   : 'rgba(0, 0, 0, 0.65)',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#4A9EFF')}
-              onMouseLeave={(e) =>
-                (e.target.style.color = isDark
-                  ? 'rgba(255, 255, 255, 0.65)'
-                  : 'rgba(0, 0, 0, 0.65)')
-              }
             >
               LinkedIn
-            </a>
-            <a
-              ref={socialRefs[1]}
+            </TracerouteLink>
+            <TracerouteLink
               href="https://github.com/sampratigaurav"
-              target="_blank"
-              rel="noopener noreferrer"
               style={{
                 color: isDark
                   ? 'rgba(255, 255, 255, 0.65)'
                   : 'rgba(0, 0, 0, 0.65)',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#4A9EFF')}
-              onMouseLeave={(e) =>
-                (e.target.style.color = isDark
-                  ? 'rgba(255, 255, 255, 0.65)'
-                  : 'rgba(0, 0, 0, 0.65)')
-              }
             >
               GitHub
-            </a>
-            <a
-              ref={socialRefs[2]}
+            </TracerouteLink>
+            <TracerouteLink
               href="https://x.com/Sampratigaurav0"
-              target="_blank"
-              rel="noopener noreferrer"
               style={{
                 color: isDark
                   ? 'rgba(255, 255, 255, 0.65)'
                   : 'rgba(0, 0, 0, 0.65)',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#4A9EFF')}
-              onMouseLeave={(e) =>
-                (e.target.style.color = isDark
-                  ? 'rgba(255, 255, 255, 0.65)'
-                  : 'rgba(0, 0, 0, 0.65)')
-              }
             >
               X
-            </a>
-            <a
-              ref={socialRefs[3]}
+            </TracerouteLink>
+            <TracerouteLink
               href="https://sampratigaurav.hashnode.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
               style={{
                 color: isDark
                   ? 'rgba(255, 255, 255, 0.65)'
                   : 'rgba(0, 0, 0, 0.65)',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#4A9EFF')}
-              onMouseLeave={(e) =>
-                (e.target.style.color = isDark
-                  ? 'rgba(255, 255, 255, 0.65)'
-                  : 'rgba(0, 0, 0, 0.65)')
-              }
             >
               Hashnode
-            </a>
+            </TracerouteLink>
           </div>
         </section>
       </main>
