@@ -17,6 +17,8 @@ import GitHubIcon from './components/ui/GitHubIcon';
 import TerminalModal from './components/ui/TerminalModal';
 import ProjectModal from './components/ui/ProjectModal';
 import SyslogTicker from './components/ui/SyslogTicker';
+import BiosReboot from './components/ui/BiosReboot';
+import { triggerSystemWipe } from './hooks/useDomWiper';
 import {
   useVisitorCount,
   useGitHubContributions,
@@ -208,6 +210,7 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [terminalInput, setTerminalInput] = useState('');
+  const [isRebooting, setIsRebooting] = useState(false);
   const [terminalHistory, setTerminalHistory] = useState([
     {
       type: 'system',
@@ -2127,7 +2130,20 @@ export default function App() {
         isOpen={terminalOpen}
         onClose={() => setTerminalOpen(false)}
         isDark={isDark}
+        onExecuteWipe={() => {
+          triggerSystemWipe(() => setIsRebooting(true));
+        }}
       />
+      {isRebooting && (
+        <BiosReboot
+          onComplete={() => {
+            document
+              .querySelectorAll('.wiped')
+              .forEach((el) => el.classList.remove('wiped'));
+            setIsRebooting(false);
+          }}
+        />
+      )}
       <ProjectModal
         project={activeProject}
         isOpen={!!activeProject}

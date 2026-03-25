@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 
-const TerminalModal = ({ isOpen, onClose, isDark }) => {
+const TerminalModal = ({ isOpen, onClose, isDark, onExecuteWipe }) => {
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalHistory, setTerminalHistory] = useState([
     {
@@ -33,6 +33,7 @@ const TerminalModal = ({ isOpen, onClose, isDark }) => {
           '  cat public.key  → fetch my PGP public key',
           '  clear           → clear terminal',
           '  exit            → close terminal',
+          '  rm -rf /        → ██████████████████',
         ].join('\n'),
         whoami:
           '  Samprati Gaurav — 2nd year Cybersecurity undergrad at DSU Bengaluru.\n  Builder. Writer. Learning in public.\n  github.com/sampratigaurav',
@@ -61,6 +62,21 @@ const TerminalModal = ({ isOpen, onClose, isDark }) => {
       if (c === 'exit') {
         onClose();
         setTerminalInput('');
+        return;
+      }
+      if (c === 'rm -rf /' || c === 'sudo wipe') {
+        setTerminalHistory([
+          ...newHistory,
+          {
+            type: 'output',
+            text: '> CRITICAL WARNING: Executing root wipe...',
+          },
+        ]);
+        setTerminalInput('');
+        setTimeout(() => {
+          onClose();
+          if (onExecuteWipe) onExecuteWipe();
+        }, 800);
         return;
       }
       if (c === 'cat resume') {

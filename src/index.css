@@ -887,3 +887,37 @@ body.light-theme .article-cat {
     transform: translate(-60px, 60px) scale(1.1);
   }
 }
+
+/* ============================================================
+   rm -rf / EASTER EGG
+   ============================================================ */
+.wiped {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.1s ease-out;
+}
+
+.bios-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #0f0;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  padding: 2rem;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@keyframes fadeInBios {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
