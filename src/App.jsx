@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import useSound from 'use-sound';
 import SpotlightBackground from './components/SpotlightBackground';
 import ProgressBar from './components/ProgressBar';
 import TypingHeadline from './components/TypingHeadline';
@@ -22,6 +23,8 @@ import { triggerSystemWipe } from './hooks/useDomWiper';
 import NetworkBackground from './components/ui/NetworkBackground';
 import TracerouteLink from './components/ui/TracerouteLink';
 import Preloader from './components/ui/Preloader';
+import AdminHoneypot from './components/AdminHoneypot';
+import CommandPalette from './components/ui/CommandPalette';
 import {
   useVisitorCount,
   useGitHubContributions,
@@ -255,6 +258,20 @@ export default function App() {
     return "You're up late.";
   }, []);
 
+  const [isMuted, setIsMuted] = useState(false);
+  const [playHover] = useSound('/assets/sounds/hover.mp3', {
+    volume: 0.2,
+    soundEnabled: !isMuted,
+  });
+  const [playClack] = useSound('/assets/sounds/clack.mp3', {
+    volume: 0.4,
+    soundEnabled: !isMuted,
+  });
+  const [playThump] = useSound('/assets/sounds/thump.mp3', {
+    volume: 0.6,
+    soundEnabled: !isMuted,
+  });
+
   const [activeTab, setActiveTab] = useState('For Anyone');
   const [activeSection, setActiveSection] = useState('intro');
   const [heroKey, setHeroKey] = useState(0);
@@ -318,6 +335,7 @@ export default function App() {
 
   const logoRef = useMagnetic(0.35);
   const themeRef = useMagnetic(0.3);
+  const muteRef = useMagnetic(0.3);
   const terminalBtnRef = useMagnetic(0.3);
   const tabRefs = [
     useMagnetic(0.25),
@@ -657,12 +675,26 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  if (
+    window.location.pathname === '/admin' ||
+    window.location.pathname === '/wp-admin'
+  ) {
+    return <AdminHoneypot />;
+  }
+
   return (
     <div
       className={glitchActive ? 'glitch-active' : ''}
       style={{ position: 'relative', zIndex: 1 }}
     >
-      {isBooting && <Preloader onComplete={() => setIsBooting(false)} />}
+      {isBooting && (
+        <Preloader
+          onComplete={() => {
+            setIsBooting(false);
+            playThump();
+          }}
+        />
+      )}
       <NetworkBackground isDark={isDark} />
       <div
         className="gradient-bg"
@@ -914,6 +946,20 @@ export default function App() {
         </span>
         <span>terminal</span>
       </div>
+      <button
+        ref={muteRef}
+        className="theme-toggle"
+        onClick={() => setIsMuted((m) => !m)}
+        style={{
+          right: isMobile ? '104px' : '136px',
+          fontFamily: 'DM Mono, monospace',
+          fontSize: '13px',
+          fontWeight: 500,
+        }}
+        title="Toggle Sound"
+      >
+        {isMuted ? '🔇' : '🔊'}
+      </button>
       <button
         ref={terminalBtnRef}
         className="theme-toggle"
@@ -1232,6 +1278,7 @@ export default function App() {
                     border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}`,
                     position: 'relative',
                   }}
+                  onMouseEnter={() => playHover()}
                   onMouseMove={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = (e.clientX - rect.left) / rect.width;
@@ -2207,6 +2254,7 @@ export default function App() {
         isOpen={terminalOpen}
         onClose={() => setTerminalOpen(false)}
         isDark={isDark}
+        playSound={playClack}
         onExecuteWipe={() => {
           triggerSystemWipe(() => setIsRebooting(true));
         }}
@@ -2226,6 +2274,11 @@ export default function App() {
         isOpen={!!activeProject}
         onClose={closeProject}
         isDark={isDark}
+      />
+      <CommandPalette
+        isDark={isDark}
+        toggleTheme={() => setIsDark((d) => !d)}
+        onExecuteWipe={() => triggerSystemWipe(() => setIsRebooting(true))}
       />
     </div>
   );

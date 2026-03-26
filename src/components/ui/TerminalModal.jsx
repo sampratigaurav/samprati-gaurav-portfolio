@@ -1,6 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 
-const TerminalModal = ({ isOpen, onClose, isDark, onExecuteWipe }) => {
+const TerminalModal = ({
+  isOpen,
+  onClose,
+  isDark,
+  onExecuteWipe,
+  playSound,
+}) => {
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalHistory, setTerminalHistory] = useState([
     {
@@ -218,6 +224,14 @@ const TerminalModal = ({ isOpen, onClose, isDark, onExecuteWipe }) => {
             value={terminalInput}
             onChange={(e) => setTerminalInput(e.target.value)}
             onKeyDown={(e) => {
+              if (
+                playSound &&
+                e.key !== 'Shift' &&
+                e.key !== 'Control' &&
+                e.key !== 'Alt' &&
+                e.key !== 'Meta'
+              )
+                playSound();
               if (e.key === 'Enter') handleTerminalCommand(terminalInput);
               if (e.key === 'Escape') onClose();
             }}
