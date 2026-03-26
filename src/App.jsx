@@ -22,7 +22,6 @@ import BiosReboot from './components/ui/BiosReboot';
 import { triggerSystemWipe } from './hooks/useDomWiper';
 import NetworkBackground from './components/ui/NetworkBackground';
 import TracerouteLink from './components/ui/TracerouteLink';
-import Preloader from './components/ui/Preloader';
 import AdminHoneypot from './components/AdminHoneypot';
 import CommandPalette from './components/ui/CommandPalette';
 import {
@@ -281,7 +280,6 @@ export default function App() {
   const { contributions, contribTotal } = useGitHubContributions();
   const { visitors } = useVisitorCount();
   const [isDark, setIsDark] = useState(true);
-  const [isBooting, setIsBooting] = useState(true);
   const prevScrollY = useRef(0);
   const { logs } = useGitHubActivity();
   const [showKeyHint, setShowKeyHint] = useState(true);
@@ -687,14 +685,6 @@ export default function App() {
       className={glitchActive ? 'glitch-active' : ''}
       style={{ position: 'relative', zIndex: 1 }}
     >
-      {isBooting && (
-        <Preloader
-          onComplete={() => {
-            setIsBooting(false);
-            playThump();
-          }}
-        />
-      )}
       <NetworkBackground isDark={isDark} />
       <div
         className="gradient-bg"
