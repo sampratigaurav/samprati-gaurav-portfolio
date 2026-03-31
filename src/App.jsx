@@ -1726,7 +1726,7 @@ export default function App() {
 
                 return filteredArticles.map((article, i) => {
                   const title = article.title;
-                  const url = article.url;
+                  const url = article.url?.startsWith('https://') ? article.url : '#';
                   const date = article.date
                     ? article.date
                     : article.publishedAt

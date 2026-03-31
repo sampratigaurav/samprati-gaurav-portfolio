@@ -86,7 +86,7 @@ const TerminalModal = ({
         return;
       }
       if (c === 'cat resume') {
-        window.open('/assets/resume.pdf', '_blank');
+        window.open('/assets/resume.pdf', '_blank', 'noopener,noreferrer');
       }
 
       const output =

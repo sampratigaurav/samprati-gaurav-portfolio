@@ -48,7 +48,7 @@ const CommandPalette = ({ isDark, toggleTheme, onExecuteWipe }) => {
     } else if (action.id === 'theme') {
       if (toggleTheme) toggleTheme();
     } else if (action.id === 'resume') {
-      window.open('/assets/resume.pdf', '_blank');
+      window.open('/assets/resume.pdf', '_blank', 'noopener,noreferrer');
     } else if (action.id === 'wipe') {
       if (onExecuteWipe) onExecuteWipe();
     }

@@ -50,16 +50,6 @@ const AdminHoneypot = () => {
             {'> INITIATING LOCKDOWN...'}
           </div>
         </div>
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-          @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-          }
-        `,
-          }}
-        />
       </div>
     );
   }
