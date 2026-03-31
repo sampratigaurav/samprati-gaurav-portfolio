@@ -103,6 +103,7 @@ export const HASHNODE_QUERY = `
   query {
     publication(host: "sampratigaurav.hashnode.dev") {
       posts(first: 3) {
+        totalDocuments
         edges {
           node {
             title

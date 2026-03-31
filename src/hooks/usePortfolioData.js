@@ -67,46 +67,22 @@ export const useHashnodeArticles = () => {
           body: JSON.stringify({ query: HASHNODE_QUERY }),
         });
         const data = await res.json();
-        const fetchedPosts = data?.data?.publication?.posts?.edges?.map(
-          (e) => e.node
-        );
+        const postsData = data?.data?.publication?.posts;
+        const fetchedPosts = postsData?.edges?.map((e) => e.node);
         if (fetchedPosts && fetchedPosts.length > 0) {
           setPosts(fetchedPosts);
         } else {
           setPosts(fallbackPosts);
+        }
+        if (postsData?.totalDocuments) {
+          setArticleCount(postsData.totalDocuments);
         }
       } catch {
         setPosts(fallbackPosts);
       }
     };
 
-    const fetchArticleCount = async () => {
-      try {
-        const res = await fetch('https://gql.hashnode.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: `
-              query {
-                publication(host: "sampratigaurav.hashnode.dev") {
-                  posts(first: 50) {
-                    totalDocuments
-                  }
-                }
-              }
-            `,
-          }),
-        });
-        const data = await res.json();
-        const count = data?.data?.publication?.posts?.totalDocuments;
-        if (count) setArticleCount(count);
-      } catch {
-        // keep fallback 15
-      }
-    };
-
     fetchPosts();
-    fetchArticleCount();
   }, []);
 
   return { posts, articleCount };
