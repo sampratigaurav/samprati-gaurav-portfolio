@@ -1,27 +1,54 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
   <defs>
+    <!-- Background Hatch -->
     <pattern id="hatch" width="8" height="8" patternTransform="rotate(-45)" patternUnits="userSpaceOnUse">
-      <line x1="0" y1="0" x2="0" y2="8" stroke="#17130D" stroke-width="2" stroke-opacity="0.2"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#17130D" stroke-width="1.5" stroke-opacity="0.15"/>
     </pattern>
   </defs>
   <rect width="300" height="400" fill="url(#hatch)"/>
   
-  <!-- Dog (Left, looking right) -->
-  <path d="M 40 320 L 40 220 C 40 180, 70 140, 110 140 C 120 140, 130 145, 140 150 C 150 140, 160 160, 140 180 C 130 190, 120 200, 120 220 L 120 320 Z" fill="none" stroke="#17130D" stroke-width="8" stroke-linejoin="round"/>
-  <!-- Dog ear -->
-  <path d="M 70 140 L 80 80 L 110 140" fill="#17130D" stroke="#17130D" stroke-width="8" stroke-linejoin="round"/>
-  <!-- Dog nose -->
-  <circle cx="140" cy="150" r="8" fill="#17130D"/>
-  
-  <!-- Cat (Right, looking left) -->
-  <path d="M 260 320 L 260 230 C 260 190, 230 160, 190 160 C 180 160, 170 165, 160 170 C 150 160, 140 175, 150 190 C 160 200, 170 210, 170 230 L 170 320 Z" fill="#17130D"/>
-  <!-- Cat ears -->
-  <path d="M 190 160 L 180 110 L 210 145" fill="#17130D"/>
-  <path d="M 220 170 L 240 120 L 240 160" fill="#17130D"/>
-  <!-- Cat tail -->
-  <path d="M 260 290 C 290 290, 300 250, 280 220 C 270 200, 250 210, 260 230" fill="none" stroke="#17130D" stroke-width="8" stroke-linecap="round"/>
-  
-  <!-- Red ball/yarn shared between them -->
-  <circle cx="150" cy="90" r="14" fill="none" stroke="#C62E22" stroke-width="6"/>
-  <path d="M 150 76 C 140 82, 160 102, 150 108" fill="none" stroke="#C62E22" stroke-width="3"/>
+  <!-- DOG (Left, looking right) - Outlined Style -->
+  <!-- Dog Silhouette -->
+  <path d="M 40 320 
+           C 45 250, 55 190, 60 170 
+           C 70 140, 90 140, 100 150 
+           L 125 155 
+           C 135 155, 135 165, 125 170 
+           C 110 175, 110 185, 115 200 
+           C 130 250, 140 300, 140 320 Z" 
+        fill="none" stroke="#17130D" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Dog Ear (Floppy) -->
+  <path d="M 80 155 C 95 160, 100 190, 85 210 C 65 215, 65 170, 80 155 Z" fill="#17130D"/>
+  <!-- Dog Eye -->
+  <circle cx="100" cy="158" r="3" fill="#17130D"/>
+  <!-- Dog Nose -->
+  <circle cx="130" cy="160" r="4" fill="#17130D"/>
+  <!-- Dog Collar -->
+  <path d="M 115 195 L 75 185" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- CAT (Right, looking left) - Solid Filled Style -->
+  <!-- Cat Silhouette -->
+  <path d="M 260 320 
+           C 255 250, 245 190, 240 170 
+           C 230 140, 210 140, 200 150 
+           L 175 155 
+           C 165 155, 165 165, 175 170 
+           C 190 175, 190 185, 185 200 
+           C 170 250, 160 300, 160 320 Z" 
+        fill="#17130D"/>
+  <!-- Cat Ears (Pointy) -->
+  <path d="M 230 145 L 235 110 L 210 145 Z" fill="#17130D"/>
+  <path d="M 200 150 L 190 115 L 180 152 Z" fill="#17130D"/>
+  <!-- Cat Eye (Negative space) -->
+  <circle cx="200" cy="158" r="3" fill="#E9E3D4"/>
+  <!-- Cat Tail -->
+  <path d="M 255 290 C 290 290, 300 230, 275 200 C 255 180, 245 200, 260 220" fill="none" stroke="#17130D" stroke-width="8" stroke-linecap="round"/>
+  <!-- Cat Collar -->
+  <path d="M 185 195 L 225 185" stroke="#C62E22" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Shared Element (Ball of Yarn) -->
+  <circle cx="150" cy="300" r="12" fill="none" stroke="#C62E22" stroke-width="4"/>
+  <path d="M 144 294 C 150 300, 156 300, 156 306" fill="none" stroke="#C62E22" stroke-width="2"/>
+  <!-- Yarn String -->
+  <path d="M 150 288 C 140 250, 160 220, 150 190" fill="none" stroke="#C62E22" stroke-width="2" stroke-dasharray="4 4"/>
 </svg>
