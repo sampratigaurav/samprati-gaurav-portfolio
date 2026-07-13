@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function Footer() {
-  const [visitorCount, setVisitorCount] = useState(null);
-
-  useEffect(() => {
-    // Automatically increments the count and returns the updated value
-    fetch('https://api.counterapi.dev/v1/sampratigaurav/portfolio/up')
-      .then((res) => res.json())
-      .then((data) => setVisitorCount(data.count))
-      .catch((err) => console.error('Failed to count visitor:', err));
-  }, []);
-
   return (
-    <footer className="relative z-2 max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] pt-[26px] pb-11 flex flex-wrap gap-3 justify-between items-center font-mono text-[11.5px] text-ink2">
+    <footer className="relative z-2 max-w-[1240px] mx-auto px-[clamp(20px,5vw,64px)] pt-[26px] pb-11 flex flex-wrap gap-4 justify-between items-center font-mono text-[11.5px] text-ink2">
       <span>© 2026 SAMPRATI GAURAV · VOL.2026</span>
-      <span>
+      <span className="flex items-center gap-2">
         BENGALURU, IN — BUILT IN PUBLIC ✳
-        {visitorCount !== null && (
-          <span className="text-red ml-2">
-            [{visitorCount.toLocaleString()} VISITS]
-          </span>
-        )}
+        <img
+          src="https://hits.sh/sampratigaurav.vercel.app.svg?style=for-the-badge&label=VISITS&color=c62e22&labelColor=17130D"
+          alt="Visitor Count"
+          className="h-[18px] ml-1 opacity-90 hover:opacity-100 transition-opacity"
+        />
       </span>
       <a href="#top" className="text-ink2 hover:text-red transition-colors">
         BACK TO TOP ↑
