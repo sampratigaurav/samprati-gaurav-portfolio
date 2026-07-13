@@ -1,6 +1,6 @@
 export const NAV_LINKS = [
-  { href: '#work', label: '/work' },
   { href: '#arcs', label: '/arcs' },
+  { href: '#work', label: '/work' },
   { href: '#skills', label: '/arsenal' },
   { href: '#writing', label: '/writing' },
   { href: '/assets/resume.pdf', label: '/resume↗', external: true },
