@@ -202,7 +202,7 @@ export const CERTS = [
 export const EDUCATION = {
   eyebrow: '07 / EDU',
   name: 'Dayananda Sagar University, Bengaluru',
-  meta: 'B.Tech, Computer Science (Cybersecurity) · ID ENG24CY0156 · Activities: E-Cell, Basketball, Badminton',
+  meta: 'B.Tech, Computer Science (Cybersecurity) · ID ENG24CY0156 · Activities: E-Cell, Running, Tennis',
   years: '2024 — 2028',
 };
 
