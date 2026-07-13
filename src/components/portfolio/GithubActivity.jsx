@@ -73,7 +73,10 @@ export default function GithubActivity() {
       : 'NO RECENT TRANSMISSIONS';
 
   return (
-    <div className="mt-5 font-mono text-[10.5px] text-red flex items-center gap-[8px] tracking-[0.06em] bg-[#c62e22]/10 border-[1.5px] border-[#c62e22]/30 px-[10px] py-[8px] rounded-sm inline-flex max-w-full shadow-[2px_2px_0_rgba(198,46,34,0.15)] overflow-hidden">
+    <div
+      title="Live Activity"
+      className="mt-5 font-mono text-[10.5px] text-red flex items-center gap-[8px] tracking-[0.06em] bg-[#c62e22]/10 border-[1.5px] border-[#c62e22]/30 px-[10px] py-[8px] rounded-sm inline-flex max-w-full shadow-[2px_2px_0_rgba(198,46,34,0.15)] overflow-hidden cursor-help"
+    >
       <span className="shrink-0 w-[6px] h-[6px] rounded-full bg-red opacity-90 animate-pulse"></span>
       <span className="truncate select-none">
         <span className="text-ink2 mr-[6px]">SYS.LOG &gt;</span>
