@@ -1,4 +1,12 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" fill="#000"/>
-  <text x="50%" y="50%" font-family="Georgia, serif" font-size="20" fill="white" text-anchor="middle" dominant-baseline="central" font-style="italic">S</text>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" fill="#E9E3D4"/>
+  
+  <!-- Red accent (Hinomaru style) -->
+  <circle cx="32" cy="32" r="20" fill="#C62E22"/>
+
+  <!-- Ink border -->
+  <rect width="64" height="64" fill="none" stroke="#17130D" stroke-width="6"/>
+  
+  <!-- Bold italic Serif S -->
+  <text x="50%" y="54%" font-family="Times New Roman, Georgia, serif" font-size="38" font-weight="bold" fill="#17130D" text-anchor="middle" dominant-baseline="central" font-style="italic">S</text>
 </svg>
