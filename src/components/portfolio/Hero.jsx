@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Reveal, Magnetic } from './primitives';
 import useReducedMotion from '../../hooks/useReducedMotion';
+import GithubActivity from './GithubActivity';
 
 function AnimatedWord({ text, startIndex, italic, reducedMotion }) {
   const [shown, setShown] = useState(reducedMotion);
@@ -82,6 +83,10 @@ export default function Hero() {
             <span className="px-[12px] py-[6px] border-[1.5px] border-ink rounded-sm">
               15+ articles
             </span>
+          </Reveal>
+
+          <Reveal>
+            <GithubActivity />
           </Reveal>
 
           <Reveal className="flex flex-wrap gap-3 mt-[30px]">

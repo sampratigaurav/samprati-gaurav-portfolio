@@ -98,3 +98,20 @@
     animation: none;
   }
 }
+
+/* ============================================================
+   CUSTOM TERMINAL BLINK
+   ============================================================ */
+@keyframes sg-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.sg-blink {
+  animation: sg-blink 1s step-end infinite;
+}
