@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
+  <defs>
+    <!-- Speedlines Pattern -->
+    <pattern id="speedlines" width="300" height="400" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="50" x2="300" y2="50" stroke="#17130D" stroke-width="1" stroke-dasharray="40 20 10 30"/>
+      <line x1="0" y1="80" x2="300" y2="80" stroke="#17130D" stroke-width="2" stroke-dasharray="100 40 20 60"/>
+      <line x1="0" y1="120" x2="300" y2="120" stroke="#17130D" stroke-width="1.5" stroke-dasharray="20 50 150 30"/>
+      <line x1="0" y1="280" x2="300" y2="280" stroke="#17130D" stroke-width="2.5" stroke-dasharray="80 20 40 50"/>
+      <line x1="0" y1="320" x2="300" y2="320" stroke="#17130D" stroke-width="1" stroke-dasharray="30 70 50 20"/>
+      <line x1="0" y1="350" x2="300" y2="350" stroke="#17130D" stroke-width="3" stroke-dasharray="200 50"/>
+    </pattern>
+  </defs>
+  <rect width="300" height="400" fill="#E9E3D4"/>
+  <rect width="300" height="400" fill="url(#speedlines)"/>
+
+  <!-- F1 Car Abstract Silhouette -->
+  <!-- Front Wing -->
+  <path d="M -50 240 L 120 250 L 120 220 L 50 200 Z" fill="#17130D"/>
+  <path d="M 120 220 L 150 180 L 350 180 L 350 250 L 120 250 Z" fill="#17130D"/>
+  
+  <!-- Red Highlight on the wing -->
+  <path d="M 50 200 L 120 220 L 120 230 L 30 220 Z" fill="#C62E22"/>
+
+  <!-- Wheel (Front Right) -->
+  <circle cx="120" cy="220" r="45" fill="#E9E3D4" stroke="#17130D" stroke-width="12"/>
+  <circle cx="120" cy="220" r="15" fill="#17130D"/>
+
+  <!-- Red Center Nut -->
+  <circle cx="120" cy="220" r="5" fill="#C62E22"/>
+
+  <!-- Driver Helmet (abstract) -->
+  <circle cx="240" cy="150" r="25" fill="#C62E22"/>
+  <path d="M 220 150 L 260 150 L 260 130 L 220 140 Z" fill="#E9E3D4"/>
+</svg>

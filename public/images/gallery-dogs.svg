@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
+  <defs>
+    <pattern id="dot2" width="15" height="15" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#17130D" fill-opacity="0.2"/>
+    </pattern>
+  </defs>
+  <rect width="300" height="400" fill="#E9E3D4"/>
+  <rect width="300" height="400" fill="url(#dot2)"/>
+
+  <!-- Dog Profile (Shiba Inu / Wolf) -->
+  <path d="M -50 350 C 50 350, 100 250, 100 150 L 120 70 L 160 120 L 200 120 C 250 140, 280 180, 280 200 C 280 230, 200 250, 150 250 L 150 350 Z" fill="none" stroke="#17130D" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Ear -->
+  <path d="M 130 90 L 160 120" fill="none" stroke="#17130D" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Nose -->
+  <circle cx="275" cy="195" r="8" fill="#C62E22"/>
+
+  <!-- Eye -->
+  <path d="M 180 150 Q 200 140, 210 160 Q 190 170, 180 150" fill="#17130D"/>
+
+  <!-- Collar -->
+  <path d="M 100 250 Q 125 280, 150 250" fill="none" stroke="#C62E22" stroke-width="12" stroke-linecap="round"/>
+</svg>

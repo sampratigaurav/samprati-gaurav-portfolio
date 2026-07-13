@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <rect width="400" height="400" fill="#E9E3D4"/>
+  
+  <!-- Minimalist Red Circle (Hinomaru style) -->
+  <circle cx="220" cy="180" r="130" fill="#C62E22"/>
+
+  <!-- Pure, clean, unified black silhouette tracing the photo's exact contour -->
+  <path d="
+    M 40 400 
+    L 40 310 
+    C 80 280, 120 280, 140 250
+    C 145 220, 150 180, 160 110
+    L 170 90 L 190 80 L 210 75 L 230 75 L 250 85 L 260 100
+    C 265 105, 260 125, 265 135
+    L 275 140
+    L 285 145
+    L 280 155
+    L 305 170 L 300 180
+    L 290 185 L 295 190 L 290 195
+    L 292 200 L 285 205
+    L 295 220 L 290 235 L 270 245
+    L 230 255
+    L 230 265
+    C 280 270, 320 280, 360 400
+    Z
+  " fill="#17130D"/>
+</svg>

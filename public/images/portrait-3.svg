@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Background halftone -->
+    <pattern id="halftone" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <circle cx="4" cy="4" r="2" fill="#17130D" fill-opacity="0.15"/>
+    </pattern>
+    <!-- Jacket texture (hatch) -->
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#17130D" stroke-width="2" stroke-opacity="0.8"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="400" fill="#E9E3D4"/>
+  <rect width="400" height="400" fill="url(#halftone)"/>
+
+  <!-- T-shirt -->
+  <path d="M 140 250 C 170 270, 230 270, 260 250 L 280 400 L 120 400 Z" fill="#17130D"/>
+
+  <!-- Left Jacket Panel -->
+  <path d="M 140 250 C 120 280, 60 280, 20 310 L 20 400 L 150 400 C 145 350, 140 300, 140 250 Z" fill="url(#hatch)"/>
+  <path d="M 140 250 C 120 280, 60 280, 20 310 L 20 400 L 150 400 C 145 350, 140 300, 140 250 Z" fill="none" stroke="#17130D" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- Right Jacket Panel -->
+  <path d="M 260 250 C 280 280, 340 280, 380 310 L 380 400 L 250 400 C 255 350, 260 300, 260 250 Z" fill="url(#hatch)"/>
+  <path d="M 260 250 C 280 280, 340 280, 380 310 L 380 400 L 250 400 C 255 350, 260 300, 260 250 Z" fill="none" stroke="#17130D" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- Head Silhouette (Filled) -->
+  <path d="M 160 260 
+           C 150 200, 140 140, 160 100
+           L 165 85 L 175 95
+           L 180 75 L 195 85
+           L 210 65 L 220 80
+           L 235 65 L 245 75
+           L 260 70 L 255 90
+           C 265 95, 260 115, 265 125
+           L 275 130
+           L 285 135
+           L 280 145
+           L 305 160 L 300 170
+           L 290 175 L 295 180 L 290 185
+           L 292 190 L 285 195
+           L 295 210 L 290 225 L 270 235
+           L 230 245
+           L 210 270
+           Z" 
+        fill="#17130D"/>
+
+  <!-- Ear Cutout -->
+  <path d="M 180 160 C 160 160, 160 200, 180 200 C 190 200, 200 180, 185 170 Z" fill="#E9E3D4"/>
+  <!-- Inner ear detail -->
+  <path d="M 180 170 C 175 175, 175 185, 180 190" fill="none" stroke="#17130D" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Red REDACTED box over eyes -->
+  <rect x="210" y="130" width="110" height="25" fill="#C62E22"/>
+  <text x="225" y="147" font-family="'JetBrains Mono', monospace" font-size="12" fill="#E9E3D4" font-weight="bold">REDACTED</text>
+  
+  <!-- Cyber line -->
+  <line x1="50" y1="50" x2="100" y2="50" stroke="#C62E22" stroke-width="2"/>
+  <line x1="100" y1="50" x2="120" y2="70" stroke="#C62E22" stroke-width="2"/>
+  <circle cx="120" cy="70" r="3" fill="#C62E22"/>
+</svg>

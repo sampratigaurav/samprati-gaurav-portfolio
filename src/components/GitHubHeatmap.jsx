@@ -1,125 +1,67 @@
 import React, { useMemo } from 'react';
 
-const GitHubHeatmap = React.memo(({ contributions, contribTotal, isDark }) => {
-  // UseMemo to prevent calculating the 364 days array on every render!
-  const gridCells = useMemo(() => {
-    if (!contributions || contributions.length === 0) return [];
+const SHADES = [
+  'bg-paper2 border border-line',
+  'bg-[rgba(198,46,34,0.30)]',
+  'bg-[rgba(198,46,34,0.55)]',
+  'bg-[rgba(198,46,34,0.80)]',
+  'bg-red',
+];
+
+/** Deterministic seeded fallback so the graph never renders empty while data loads/fails. */
+function seededCells(count) {
+  let seed = 42;
+  const rnd = () => {
+    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+    return seed / 0x7fffffff;
+  };
+  const cells = [];
+  for (let i = 0; i < count; i++) {
+    const v = rnd();
+    let level = 0;
+    if (v > 0.42) level = 1;
+    if (v > 0.62) level = 2;
+    if (v > 0.8) level = 3;
+    if (v > 0.92) level = 4;
+    cells.push({ level, date: null, count: null });
+  }
+  return cells;
+}
+
+export default function GitHubHeatmap({ contributions }) {
+  const cells = useMemo(() => {
+    if (!contributions || contributions.length === 0)
+      return seededCells(52 * 7);
 
     const days = contributions.slice(-364);
     const firstDow = new Date(days[0]?.date).getDay();
     const padStart = firstDow === 0 ? 6 : firstDow - 1;
     const padded = [...Array(padStart).fill(null), ...days];
-    const colors = isDark
-      ? ['rgba(255,255,255,0.04)', '#1a3a1a', '#2d6a2d', '#3d9e3d', '#4ade80']
-      : ['rgba(0,0,0,0.07)', '#1a3a1a', '#2d6a2d', '#3d9e3d', '#4ade80'];
-    const borders = isDark
-      ? ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0.14)', 'rgba(255,255,255,0.18)', 'rgba(74,222,128,0.4)']
-      : ['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.14)', 'rgba(0,0,0,0.18)', 'rgba(74,222,128,0.4)'];
-    
     while (padded.length < 52 * 7) padded.push(null);
 
-    return padded.map((day, i) => (
-      <div
-        key={i}
-        title={day ? `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}` : ''}
-        style={{
-          width: '11px',
-          height: '11px',
-          borderRadius: '2px',
-          background: day ? (colors[day.level] ?? colors[0]) : 'transparent',
-          border: day ? `1px solid ${borders[day.level] ?? borders[0]}` : 'none',
-          transition: 'transform 0.15s ease',
-          cursor: day ? 'none' : 'default',
-        }}
-        onMouseEnter={e => { if (day) e.currentTarget.style.transform = 'scale(1.8)'; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-      />
-    ));
-  }, [contributions, isDark]);
+    return padded.map((day) =>
+      day
+        ? { level: Math.min(day.level, 4), date: day.date, count: day.count }
+        : { level: -1 }
+    );
+  }, [contributions]);
 
   return (
-    <div style={{
-      maxWidth: '760px',
-      margin: '56px auto 0',
-      padding: '28px 32px',
-      border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-      borderRadius: '12px',
-      background: isDark ? 'transparent' : '#fff',
-      overflowX: 'auto',
-      overflowY: 'hidden',
-      boxSizing: 'border-box',
-    }}>
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{
-          fontSize: '10px',
-          color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)',
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          fontFamily: 'DM Sans, sans-serif',
-          marginBottom: '6px',
-        }}>
-          GitHub Activity
-        </div>
-        <div style={{
-          fontSize: '14px',
-          color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-          fontFamily: 'DM Sans, sans-serif',
-        }}>
-          {contribTotal} contributions in the last year
-        </div>
-      </div>
-
-      <div style={{ minWidth: 'max-content' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(52, 11px)',
-          gridTemplateRows: 'repeat(7, 11px)',
-          gap: '3px',
-          width: 'fit-content',
-          margin: '0 auto',
-        }}>
-          {gridCells}
-        </div>
-      </div>
-
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: '14px',
-      }}>
-        <a
-          href="https://github.com/sampratigaurav"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            fontSize: '11px',
-            color: 'rgba(255,255,255,0.25)',
-            textDecoration: 'none',
-            fontFamily: 'DM Sans, sans-serif',
-            transition: 'color 0.2s',
-          }}
-          onMouseEnter={e => e.target.style.color = '#4A9EFF'}
-          onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.25)'}
-        >
-          github.com/sampratigaurav ↗
-        </a>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)', fontFamily: 'DM Sans, sans-serif' }}>Less</span>
-          {(isDark ? ['rgba(255,255,255,0.04)','#1a3a1a','#2d6a2d','#3d9e3d','#4ade80'] : ['rgba(0,0,0,0.07)','#1a3a1a','#2d6a2d','#3d9e3d','#4ade80']).map((c, i) => (
-            <div key={i} style={{
-              width: '11px', height: '11px',
-              borderRadius: '2px',
-              background: c,
-              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)'}`,
-            }} />
-          ))}
-          <span style={{ fontSize: '10px', color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.3)', fontFamily: 'DM Sans, sans-serif' }}>More</span>
-        </div>
-      </div>
+    <div
+      className="grid gap-[3px] overflow-x-auto"
+      style={{ gridTemplateRows: 'repeat(7,1fr)', gridAutoFlow: 'column' }}
+    >
+      {cells.map((cell, i) => (
+        <div
+          key={i}
+          title={
+            cell.date
+              ? `${cell.date}: ${cell.count} contribution${cell.count !== 1 ? 's' : ''}`
+              : ''
+          }
+          className={`w-[11px] h-[11px] rounded-sm ${cell.level < 0 ? '' : SHADES[cell.level]}`}
+        />
+      ))}
     </div>
   );
-});
-
-export default GitHubHeatmap;
+}

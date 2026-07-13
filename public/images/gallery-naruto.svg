@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
+  <defs>
+    <pattern id="dot" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" fill="#17130D" fill-opacity="0.15"/>
+    </pattern>
+  </defs>
+  <rect width="300" height="400" fill="#E9E3D4"/>
+  <rect width="300" height="400" fill="url(#dot)"/>
+  
+  <g transform="translate(150, 200) rotate(45)">
+    <!-- Kunai Handle -->
+    <rect x="-10" y="30" width="20" height="60" fill="#17130D"/>
+    <!-- Kunai Ring -->
+    <circle cx="0" cy="110" r="15" fill="none" stroke="#17130D" stroke-width="8"/>
+    <!-- Kunai Blade -->
+    <path d="M 0 -120 L 30 30 L -30 30 Z" fill="#E9E3D4" stroke="#17130D" stroke-width="8" stroke-linejoin="round"/>
+    <line x1="0" y1="-120" x2="0" y2="30" stroke="#17130D" stroke-width="4"/>
+  </g>
+  
+  <!-- Hidden Leaf Symbol Accent in Red -->
+  <path d="M 50 80 C 80 50, 120 70, 100 100 C 80 120, 50 100, 70 70 C 85 55, 105 85, 85 95" fill="none" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 50 80 L 30 90" fill="none" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+</svg>

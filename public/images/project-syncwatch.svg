@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 605" width="100%" height="100%">
+  <defs>
+    <pattern id="halftone" width="5" height="5" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="1.5" fill="#17130D" fill-opacity="0.3"/>
+    </pattern>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#17130D" stroke-width="0.5" stroke-opacity="0.1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="880" height="605" fill="#E9E3D4"/>
+  <rect width="880" height="605" fill="url(#grid)"/>
+  
+  <!-- Outer Frame -->
+  <rect x="6" y="6" width="868" height="593" fill="none" stroke="#17130D" stroke-width="1.5"/>
+  <rect x="18" y="18" width="14" height="14" fill="#C62E22"/>
+
+  <!-- Top Nav -->
+  <text x="60" y="50" font-family="'JetBrains Mono', monospace" font-weight="bold" font-size="18" fill="#17130D">SYNCWATCH</text>
+  <text x="440" y="48" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#5A5140">DOCS &#160;&#160;&#160;&#160; EXTENSION</text>
+  
+  <!-- Sign In Button -->
+  <rect x="750" y="30" width="90" height="32" fill="none" stroke="#17130D" stroke-width="1.5" rx="2"/>
+  <text x="795" y="50" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#17130D" font-weight="600">SIGN IN</text>
+
+  <!-- Hero Content -->
+  <text x="440" y="150" text-anchor="middle" font-family="'Instrument Serif', Georgia, serif" font-size="64" fill="#17130D">Watch together.</text>
+  <text x="440" y="215" text-anchor="middle" font-family="'Instrument Serif', Georgia, serif" font-style="italic" font-size="64" fill="#17130D">In perfect sync.</text>
+  
+  <text x="440" y="270" text-anchor="middle" font-family="'Space Grotesk', monospace" font-size="15" fill="#5A5140">Experience media with friends in real-time, no matter where they are.</text>
+  
+  <!-- Start Watching Button -->
+  <rect x="340" y="305" width="200" height="46" fill="#C62E22" rx="3"/>
+  <text x="440" y="333" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="bold" font-size="14" fill="#E9E3D4">▶ START WATCHING</text>
+
+  <!-- App Window Mockup -->
+  <!-- Window Shadow -->
+  <rect x="106" y="416" width="668" height="240" fill="#17130D"/>
+  
+  <!-- Window Body -->
+  <rect x="98" y="408" width="668" height="240" fill="#E0D8C4" stroke="#17130D" stroke-width="1.5"/>
+  
+  <!-- Window Top Bar -->
+  <rect x="98" y="408" width="668" height="28" fill="#E9E3D4" stroke="#17130D" stroke-width="1.5"/>
+  
+  <!-- Dots -->
+  <circle cx="118" cy="422" r="5" fill="#C62E22" stroke="#17130D" stroke-width="1.5"/>
+  <circle cx="136" cy="422" r="5" fill="#E9E3D4" stroke="#17130D" stroke-width="1.5"/>
+  <circle cx="154" cy="422" r="5" fill="#E9E3D4" stroke="#17130D" stroke-width="1.5"/>
+  
+  <!-- Video Area Background (Halftone) -->
+  <rect x="98" y="436" width="668" height="212" fill="url(#halftone)"/>
+  
+  <!-- Abstract Topography / Video Content (Ink Lines) -->
+  <path d="M 300 648 C 300 500, 500 550, 550 436" fill="none" stroke="#E9E3D4" stroke-width="8"/>
+  <path d="M 300 648 C 300 500, 500 550, 550 436" fill="none" stroke="#17130D" stroke-width="1.5" stroke-dasharray="8 4"/>
+
+  <!-- Multiplayer Cursors (Pam & Sam) -->
+  <g transform="translate(260, 480)">
+    <!-- Cursor shape -->
+    <path d="M0,0 L14,21 L9.5,21 L12,30.5 L7,32 L4.5,22.5 L0,28 Z" fill="#E9E3D4" stroke="#17130D" stroke-width="1.5" transform="rotate(-15)"/>
+    <!-- Label -->
+    <rect x="14" y="24" width="40" height="20" fill="#17130D" rx="2"/>
+    <text x="34" y="38" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#E9E3D4">Pam</text>
+  </g>
+
+  <g transform="translate(600, 540)">
+    <path d="M0,0 L14,21 L9.5,21 L12,30.5 L7,32 L4.5,22.5 L0,28 Z" fill="#C62E22" stroke="#17130D" stroke-width="1.5" transform="rotate(-15)"/>
+    <rect x="14" y="24" width="40" height="20" fill="#C62E22" rx="2"/>
+    <text x="34" y="38" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#E9E3D4">Sam</text>
+  </g>
+
+  <!-- Latency Badge -->
+  <rect x="630" y="450" width="108" height="26" fill="#E9E3D4" stroke="#17130D" stroke-width="1.5" rx="13"/>
+  <text x="684" y="467" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#17130D">LATENCY: <tspan fill="#C62E22">12ms</tspan></text>
+
+</svg>

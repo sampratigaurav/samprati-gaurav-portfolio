@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #E9E3D4; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #C62E22; }
+  ::selection { background: #C62E22; color: #E9E3D4; }
+  image-slot { display:block; width:100%; height:100%; }
+  @keyframes sgMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes sgBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  @keyframes sgSpin { to { transform: rotate(360deg); } }
+  @media (max-width: 860px) {
+    .sg-navlinks { display:none !important; }
+    .sg-two { grid-template-columns: 1fr !important; }
+    .sg-two-b { grid-template-columns: 1fr !important; }
+  }
+</style>
+</helmet>
+<div id="sg-portfolio" style="--paper:#E9E3D4; --paper2:#E0D8C4; --ink:#17130D; --ink2:#5A5140; --red:#C62E22; --line:#C8BEA6; position:relative; background:var(--paper); color:var(--ink); font-family:'Space Grotesk',system-ui,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; min-height:100vh;">
+
+  <!-- grain + cursor -->
+  <div id="sg-grain" style="position:fixed; inset:0; z-index:9997; pointer-events:none; opacity:0.05; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
+  <div id="sg-cursor" style="position:fixed; top:0; left:0; width:22px; height:22px; margin:-11px 0 0 -11px; z-index:9996; pointer-events:none; border-radius:50%; border:2px solid var(--red); opacity:0.7; will-change:transform; transform:translate(-1000px,-1000px);"></div>
+
+  <!-- NAV -->
+  <nav style="position:fixed; top:0; left:0; right:0; z-index:9998; height:62px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(18px,4vw,44px); background:color-mix(in srgb, var(--paper) 82%, transparent); backdrop-filter:blur(8px); border-bottom:1.5px solid var(--ink);">
+    <a href="#top" style="display:flex; align-items:center; gap:10px; font-weight:700; font-size:15px; letter-spacing:0.02em;">
+      <span style="width:15px; height:15px; border-radius:50%; background:var(--red); display:inline-block;"></span>
+      SAMPRATI GAURAV
+    </a>
+    <div class="sg-navlinks" style="display:flex; align-items:center; gap:clamp(12px,2vw,26px); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.04em;">
+      <a href="#work" style="color:var(--ink2);">/work</a>
+      <a href="#arcs" style="color:var(--ink2);">/arcs</a>
+      <a href="#skills" style="color:var(--ink2);">/arsenal</a>
+      <a href="#writing" style="color:var(--ink2);">/writing</a>
+      <a href="uploads/Samprati_Gaurav_Resume.pdf" target="_blank" rel="noopener" style="color:var(--ink2);">/resume↗</a>
+      <a href="#contact" data-magnetic style="display:inline-flex; align-items:center; padding:7px 15px; background:var(--red); color:var(--paper); font-weight:600; border-radius:2px;">Let's talk</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:clamp(96px,15vh,150px) clamp(20px,5vw,64px) clamp(20px,5vh,50px);">
+    <div class="sg-two" style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(28px,4vw,64px); align-items:center;">
+      <div>
+        <div data-reveal style="display:inline-flex; align-items:center; gap:10px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--red); margin-bottom:22px;">
+          <span style="width:7px; height:7px; background:var(--red); display:inline-block;"></span>
+          Portfolio — Vol.2026 · Built in public
+        </div>
+        <h1 id="sg-hero-name" style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(56px,11vw,148px); line-height:0.86; letter-spacing:-0.01em; margin:0; color:var(--ink);">
+          <span style="display:block; overflow:hidden; padding-bottom:0.02em;">
+            <span data-letter>S</span><span data-letter>a</span><span data-letter>m</span><span data-letter>p</span><span data-letter>r</span><span data-letter>a</span><span data-letter>t</span><span data-letter>i</span>
+          </span>
+          <span style="display:block; overflow:hidden; padding-bottom:0.04em; font-style:italic; color:var(--red);">
+            <span data-letter>G</span><span data-letter>a</span><span data-letter>u</span><span data-letter>r</span><span data-letter>a</span><span data-letter>v</span>
+          </span>
+        </h1>
+        <p data-reveal style="max-width:500px; margin:26px 0 0; font-size:clamp(16px,1.7vw,19px); line-height:1.55; color:var(--ink2); font-weight:500;">
+          Full-stack developer & cybersecurity student. I build real-time systems, AI-integrated apps, and secure browser extensions — shipped loudly, in public.
+        </p>
+        <div data-reveal style="display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; font-family:'JetBrains Mono',monospace; font-size:12px;">
+          <span style="padding:6px 12px; border:1.5px solid var(--ink); border-radius:2px;">700+ contributions</span>
+          <span style="padding:6px 12px; border:1.5px solid var(--ink); border-radius:2px;">20+ repos</span>
+          <span style="padding:6px 12px; border:1.5px solid var(--ink); border-radius:2px;">15+ articles</span>
+        </div>
+        <div data-reveal style="display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;">
+          <a href="#work" data-magnetic style="display:inline-flex; align-items:center; gap:8px; padding:13px 24px; background:var(--ink); color:var(--paper); font-weight:600; border-radius:2px;">See the work ↓</a>
+          <a href="#contact" data-magnetic style="display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border:1.5px solid var(--ink); font-weight:600; border-radius:2px;">Get in touch</a>
+        </div>
+      </div>
+      <div data-reveal style="position:relative;">
+        <div style="position:absolute; top:-6%; right:2%; width:min(78%,320px); aspect-ratio:1; background:var(--red); border-radius:50%; z-index:0;"></div>
+        <div style="position:relative; z-index:1; border:1.5px solid var(--ink); background:var(--paper2); padding:8px; box-shadow:12px 12px 0 var(--ink);">
+          <div style="position:relative; aspect-ratio:4/5; border:1.5px solid var(--ink); overflow:hidden;">
+            <image-slot id="hero-panel" shape="rect" placeholder="Drop your art / anime self ✳"></image-slot>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 4px 2px; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--ink2); letter-spacing:0.06em;">
+            <span>FIG.01 / THE DEV</span><span>BENGALURU · 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:clamp(28px,5vh,56px); display:flex; align-items:center; gap:10px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink2);">
+      <span style="display:inline-block; animation:sgBob 2s ease-in-out infinite;">↓</span> Scroll — the story starts here
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div style="position:relative; z-index:2; overflow:hidden; border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink); background:var(--red); color:var(--paper); padding:11px 0;">
+    <div style="display:flex; width:max-content; animation:sgMarquee 26s linear infinite; font-family:'JetBrains Mono',monospace; font-size:14px; letter-spacing:0.04em; text-transform:uppercase; font-weight:500;">
+      <span style="padding-right:24px;">Building in public&nbsp;✳&nbsp; React &nbsp;✳&nbsp; Node.js &nbsp;✳&nbsp; TypeScript &nbsp;✳&nbsp; Cybersecurity &nbsp;✳&nbsp; Real-time systems &nbsp;✳&nbsp; WebRTC &nbsp;✳&nbsp; 700+ contributions &nbsp;✳&nbsp; </span>
+      <span style="padding-right:24px;" aria-hidden="true">Building in public&nbsp;✳&nbsp; React &nbsp;✳&nbsp; Node.js &nbsp;✳&nbsp; TypeScript &nbsp;✳&nbsp; Cybersecurity &nbsp;✳&nbsp; Real-time systems &nbsp;✳&nbsp; WebRTC &nbsp;✳&nbsp; 700+ contributions &nbsp;✳&nbsp; </span>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <section id="about" style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(20px,5vw,64px);">
+    <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:34px;">01 / Profile</div>
+    <div class="sg-two-b" style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:clamp(28px,4vw,60px); align-items:start;">
+      <!-- character card -->
+      <div data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); box-shadow:8px 8px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1.5px solid var(--ink); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em;">
+          <span>REG.CARD #ENG24CY0156</span><span style="color:var(--red);">◆ ACTIVE</span>
+        </div>
+        <div style="position:relative; aspect-ratio:1; border-bottom:1.5px solid var(--ink); overflow:hidden; background-image:radial-gradient(var(--ink) 0.8px, transparent 1.2px); background-size:7px 7px;">
+          <image-slot id="profile-portrait" shape="rect" placeholder="Drop a portrait ✳"></image-slot>
+        </div>
+        <div style="padding:16px 14px; display:flex; flex-direction:column; gap:11px; font-size:13px;">
+          <div style="display:flex; justify-content:space-between; gap:10px;"><span style="font-family:'JetBrains Mono',monospace; color:var(--ink2); font-size:11px;">NAME</span><span style="font-weight:600; text-align:right;">Samprati Gaurav</span></div>
+          <div style="display:flex; justify-content:space-between; gap:10px; border-top:1px dashed var(--line); padding-top:11px;"><span style="font-family:'JetBrains Mono',monospace; color:var(--ink2); font-size:11px;">CLASS</span><span style="font-weight:600; text-align:right;">Full-stack + Cybersec</span></div>
+          <div style="display:flex; justify-content:space-between; gap:10px; border-top:1px dashed var(--line); padding-top:11px;"><span style="font-family:'JetBrains Mono',monospace; color:var(--ink2); font-size:11px;">BASE</span><span style="font-weight:600; text-align:right;">Bengaluru, IN</span></div>
+          <div style="display:flex; justify-content:space-between; gap:10px; border-top:1px dashed var(--line); padding-top:11px;"><span style="font-family:'JetBrains Mono',monospace; color:var(--ink2); font-size:11px;">UNIV</span><span style="font-weight:600; text-align:right;">DSU · B.Tech '28</span></div>
+          <div style="display:flex; justify-content:space-between; gap:10px; border-top:1px dashed var(--line); padding-top:11px;"><span style="font-family:'JetBrains Mono',monospace; color:var(--ink2); font-size:11px;">SPECIALTY</span><span style="font-weight:600; text-align:right; color:var(--red);">Real-time systems</span></div>
+        </div>
+      </div>
+      <!-- bio -->
+      <div>
+        <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(30px,4.4vw,58px); line-height:1.02; letter-spacing:-0.01em; margin:0 0 22px; text-wrap:balance;">
+          A builder who ships loudly, breaks things safely, and <span style="font-style:italic; color:var(--red);">documents everything.</span>
+        </h2>
+        <p data-reveal style="margin:0 0 18px; font-size:17px; line-height:1.68; color:var(--ink2);">
+          <span style="float:left; font-family:'Instrument Serif',serif; font-size:62px; line-height:0.8; padding:6px 12px 0 0; color:var(--red);">F</span>ull-stack developer and cybersecurity student specializing in React, Node.js, and Python. I build real-time systems, AI-integrated apps, and secure browser extensions — with a hackathon team-lead streak and a built-in-public record across 20+ open-source repos and 700+ contributions this year.
+        </p>
+        <p data-reveal style="margin:0; font-size:17px; line-height:1.68; color:var(--ink2);">
+          When I'm not shipping, I'm writing about networking and systems internals, on the court, or somewhere between an anime rewatch and the next side project.
+        </p>
+      </div>
+    </div>
+
+    <!-- OFF THE CLOCK gallery -->
+    <div data-reveal style="margin-top:clamp(44px,6vh,72px);">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:20px;">
+        <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(24px,3vw,36px);">Off the clock</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink2); letter-spacing:0.06em;">— things I love</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px;">
+        <figure data-magnetic-card style="margin:0; border:1.5px solid var(--ink); background:var(--paper2); padding:7px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+          <div style="aspect-ratio:3/4; border:1px solid var(--ink); overflow:hidden;"><image-slot id="love-naruto" shape="rect" placeholder="Naruto ✳"></image-slot></div>
+          <figcaption style="font-family:'JetBrains Mono',monospace; font-size:10.5px; padding-top:7px; color:var(--ink2);">01 · NARUTO</figcaption>
+        </figure>
+        <figure data-magnetic-card style="margin:0; border:1.5px solid var(--ink); background:var(--paper2); padding:7px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+          <div style="aspect-ratio:3/4; border:1px solid var(--ink); overflow:hidden;"><image-slot id="love-yourname" shape="rect" placeholder="Your Name ✳"></image-slot></div>
+          <figcaption style="font-family:'JetBrains Mono',monospace; font-size:10.5px; padding-top:7px; color:var(--ink2);">02 · YOUR NAME</figcaption>
+        </figure>
+        <figure data-magnetic-card style="margin:0; border:1.5px solid var(--ink); background:var(--paper2); padding:7px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+          <div style="aspect-ratio:3/4; border:1px solid var(--ink); overflow:hidden;"><image-slot id="love-cats" shape="rect" placeholder="Cats 🐈 ✳"></image-slot></div>
+          <figcaption style="font-family:'JetBrains Mono',monospace; font-size:10.5px; padding-top:7px; color:var(--ink2);">03 · CATS</figcaption>
+        </figure>
+        <figure data-magnetic-card style="margin:0; border:1.5px solid var(--ink); background:var(--paper2); padding:7px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+          <div style="aspect-ratio:3/4; border:1px solid var(--ink); overflow:hidden;"><image-slot id="love-dogs" shape="rect" placeholder="Dogs 🐕 ✳"></image-slot></div>
+          <figcaption style="font-family:'JetBrains Mono',monospace; font-size:10.5px; padding-top:7px; color:var(--ink2);">04 · DOGS</figcaption>
+        </figure>
+        <figure data-magnetic-card style="margin:0; border:1.5px solid var(--ink); background:var(--paper2); padding:7px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+          <div style="aspect-ratio:3/4; border:1px solid var(--ink); overflow:hidden;"><image-slot id="love-hoops" shape="rect" placeholder="Basketball ✳"></image-slot></div>
+          <figcaption style="font-family:'JetBrains Mono',monospace; font-size:10.5px; padding-top:7px; color:var(--ink2);">05 · HOOPS</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCS / EXPERIENCE -->
+  <section id="arcs" style="position:relative; z-index:2; background:var(--ink); color:var(--paper); border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink);">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(20px,5vw,64px);">
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px;">02 / Arcs</div>
+      <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,5vw,64px); margin:0 0 46px;">The story so far</h2>
+
+      <div data-reveal style="display:grid; grid-template-columns:auto 1fr; gap:clamp(18px,3vw,44px); padding:28px 0; border-top:1px solid rgba(233,227,212,0.25);">
+        <div style="font-family:'Instrument Serif',serif; font-size:clamp(48px,7vw,96px); line-height:0.8; color:var(--red);">I</div>
+        <div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px 16px; align-items:baseline; margin-bottom:12px;">
+            <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(24px,3.2vw,38px); margin:0;">Machine Learning Intern</h3>
+            <span style="font-weight:600; color:var(--red);">FlyRank AI · Remote</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; opacity:0.7; margin-left:auto;">JUN 2026 — PRESENT</span>
+          </div>
+          <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:15.5px; line-height:1.55; opacity:0.88;">
+            <li style="display:flex; gap:10px;"><span style="color:var(--red);">→</span>Developed and optimized ML models for real-time data analysis, improving prediction accuracy by 15%.</li>
+            <li style="display:flex; gap:10px;"><span style="color:var(--red);">→</span>Collaborated cross-functionally to integrate AI solutions into existing products, lifting engagement.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div data-reveal style="display:grid; grid-template-columns:auto 1fr; gap:clamp(18px,3vw,44px); padding:28px 0; border-top:1px solid rgba(233,227,212,0.25); border-bottom:1px solid rgba(233,227,212,0.25);">
+        <div style="font-family:'Instrument Serif',serif; font-size:clamp(48px,7vw,96px); line-height:0.8; color:var(--red);">II</div>
+        <div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px 16px; align-items:baseline; margin-bottom:12px;">
+            <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(24px,3.2vw,38px); margin:0;">Campus Ambassador</h3>
+            <span style="font-weight:600; color:var(--red);">E-Cell, IIT Bombay</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; opacity:0.7; margin-left:auto;">JUL 2026 — PRESENT</span>
+          </div>
+          <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:15.5px; line-height:1.55; opacity:0.88;">
+            <li style="display:flex; gap:10px;"><span style="color:var(--red);">→</span>Spearheaded outreach engaging 500+ students in entrepreneurship workshops, growing campus startup culture.</li>
+            <li style="display:flex; gap:10px;"><span style="color:var(--red);">→</span>Organized networking events with industry leaders, opening mentorship for aspiring founders.</li>
+            <li style="display:flex; gap:10px;"><span style="color:var(--red);">→</span>Ran peer mentorship sessions, guiding students to refine ideas and build pitch decks.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / PROJECTS -->
+  <section id="work" style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(20px,5vw,64px);">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px; margin-bottom:12px;">
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red);">03 / The Work</div>
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink2);">03 CARDS</div>
+    </div>
+    <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,5vw,64px); margin:0 0 44px;">Things I've built</h2>
+
+    <!-- SyncWatch feature card -->
+    <article data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); box-shadow:10px 10px 0 var(--ink); overflow:hidden; margin-bottom:22px; transition:transform .45s cubic-bezier(.2,.7,.2,1);">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1.5px solid var(--ink); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em;">
+        <span>C1 · SYNCWATCH</span><span style="color:var(--red);">#2026 · FEATURED</span>
+      </div>
+      <div class="sg-two-b" style="display:grid; grid-template-columns:1fr 1fr;">
+        <div style="position:relative; aspect-ratio:16/11; border-right:1.5px solid var(--ink); overflow:hidden; background-image:radial-gradient(var(--ink) 0.8px, transparent 1.2px); background-size:6px 6px;">
+          <image-slot id="proj-syncwatch" shape="rect" placeholder="SyncWatch screenshot ✳"></image-slot>
+        </div>
+        <div style="padding:clamp(20px,2.6vw,34px); display:flex; flex-direction:column;">
+          <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(28px,3.6vw,44px); margin:0 0 4px; line-height:1;">SyncWatch</h3>
+          <p style="margin:0 0 14px; font-weight:600; font-size:15px;">Real-time P2P media sync platform</p>
+          <ul style="margin:0 0 18px; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.5; color:var(--ink2);">
+            <li style="display:flex; gap:9px;"><span style="color:var(--red);">→</span>Distributed A/V sync engine (Socket.io + WebRTC) hitting sub-second frame coordination across peers.</li>
+            <li style="display:flex; gap:9px;"><span style="color:var(--red);">→</span>Custom client-side audio fingerprinting (Web Audio API) matching encodings at &gt;0.85 correlation.</li>
+            <li style="display:flex; gap:9px;"><span style="color:var(--red);">→</span>Manifest V3 Chrome extension with Shadow DOM isolation and PBKDF2-secured account-less rooms.</li>
+          </ul>
+          <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">React</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">TypeScript</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Socket.io</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">WebRTC</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Redis</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Chrome MV3</span>
+          </div>
+          <div style="margin-top:auto; display:flex; gap:10px;">
+            <a href="https://syncwatch-eosin.vercel.app" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; align-items:center; gap:7px; padding:11px 20px; background:var(--red); color:var(--paper); font-weight:600; font-size:14px; border-radius:2px;">Live ↗</a>
+            <a href="https://github.com/sampratigaurav/syncwatch" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border:1.5px solid var(--ink); font-weight:600; font-size:14px; border-radius:2px;">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- two smaller cards -->
+    <div class="sg-two-b" style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+      <article data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); box-shadow:8px 8px 0 var(--ink); overflow:hidden; display:flex; flex-direction:column; transition:transform .45s cubic-bezier(.2,.7,.2,1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 14px; border-bottom:1.5px solid var(--ink); font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+          <span>C2 · SAMPRATI.DEV</span><span style="color:var(--red);">#2026</span>
+        </div>
+        <div style="position:relative; aspect-ratio:16/10; border-bottom:1.5px solid var(--ink); overflow:hidden; background-image:radial-gradient(var(--ink) 0.8px, transparent 1.2px); background-size:6px 6px;">
+          <image-slot id="proj-portfolio" shape="rect" placeholder="Portfolio screenshot ✳"></image-slot>
+        </div>
+        <div style="padding:20px; display:flex; flex-direction:column; flex:1;">
+          <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:28px; margin:0 0 4px;">Interactive Portfolio</h3>
+          <p style="margin:0 0 12px; font-size:14px; color:var(--ink2); line-height:1.5;">A dev portfolio with a global command palette, live GitHub contribution heatmap, and custom cybersecurity-themed UI. Reusable state hooks, CI/CD on Vercel.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">React</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Vite</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Vercel</span>
+          </div>
+          <div style="margin-top:auto; display:flex; gap:10px;">
+            <a href="https://www.samprati.dev" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; padding:10px 18px; background:var(--red); color:var(--paper); font-weight:600; font-size:13px; border-radius:2px;">Live ↗</a>
+            <a href="https://github.com/sampratigaurav" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; padding:10px 18px; border:1.5px solid var(--ink); font-weight:600; font-size:13px; border-radius:2px;">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); box-shadow:8px 8px 0 var(--ink); overflow:hidden; display:flex; flex-direction:column; transition:transform .45s cubic-bezier(.2,.7,.2,1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 14px; border-bottom:1.5px solid var(--ink); font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+          <span>C3 · DISTILL</span><span style="color:var(--red);">#2026</span>
+        </div>
+        <div style="position:relative; aspect-ratio:16/10; border-bottom:1.5px solid var(--ink); overflow:hidden; background-image:radial-gradient(var(--ink) 0.8px, transparent 1.2px); background-size:6px 6px;">
+          <image-slot id="proj-distill" shape="rect" placeholder="Distill screenshot ✳"></image-slot>
+        </div>
+        <div style="padding:20px; display:flex; flex-direction:column; flex:1;">
+          <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:28px; margin:0 0 4px;">Distill</h3>
+          <p style="margin:0 0 12px; font-size:14px; color:var(--ink2); line-height:1.5;">ML data-poisoning detection platform. Full-stack app (Next.js + Python API) detecting poisoning in ML pipelines, with Docker containerization and automated CI.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Next.js</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Python</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">Docker</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border:1px solid var(--ink); border-radius:2px;">GH Actions</span>
+          </div>
+          <div style="margin-top:auto; display:flex; gap:10px;">
+            <a href="https://github.com/sampratigaurav" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; padding:10px 18px; border:1.5px solid var(--ink); font-weight:600; font-size:13px; border-radius:2px;">GitHub ↗</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ARSENAL / SKILLS -->
+  <section id="skills" style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:clamp(40px,6vh,80px) clamp(20px,5vw,64px) clamp(60px,9vh,110px);">
+    <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px;">04 / Arsenal</div>
+    <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,5vw,64px); margin:0 0 40px;">What I build with</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1.5px; background:var(--ink); border:1.5px solid var(--ink);">
+      <div data-reveal style="background:var(--paper); padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Languages</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px;">
+          <span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Python</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">JavaScript</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">TypeScript</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">SQL</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">HTML5</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">CSS3</span>
+        </div>
+      </div>
+      <div data-reveal style="background:var(--paper); padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Frameworks</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px;">
+          <span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">React.js</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Next.js</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Node.js</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Express</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Flask</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Tailwind</span>
+        </div>
+      </div>
+      <div data-reveal style="background:var(--paper); padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">DB & Systems</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px;">
+          <span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">MySQL</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">MongoDB</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Redis</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">DBMS</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Networks</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">OS</span>
+        </div>
+      </div>
+      <div data-reveal style="background:var(--paper); padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Cloud & Tools</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px;">
+          <span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">AWS</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Vercel</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Docker</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">GH Actions</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Socket.io</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">WebRTC</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Supabase</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Firebase</span>
+        </div>
+      </div>
+      <div data-reveal style="background:var(--paper); padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Security & AI</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px;">
+          <span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">PBKDF2 Crypto</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Chrome MV3</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">Cybersec Fundamentals</span><span style="font-size:14px; padding:5px 11px; border:1px solid var(--ink); border-radius:2px;">AI Agent Workflows</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING & OPEN SOURCE -->
+  <section id="writing" style="position:relative; z-index:2; background:var(--paper2); border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink);">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(20px,5vw,64px);">
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px;">05 / Dispatches</div>
+      <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,5vw,64px); margin:0 0 12px;">Writing & open source</h2>
+      <p data-reveal style="max-width:620px; margin:0 0 40px; font-size:16px; line-height:1.6; color:var(--ink2);">15+ technical articles on networking — TCP/IP, DNS, HTTP — plus Linux and dev tooling, published on Hashnode. All in public.</p>
+
+      <div class="sg-two-b" style="display:grid; grid-template-columns:0.8fr 1.2fr; gap:clamp(24px,4vw,52px); align-items:center;">
+        <div style="display:flex; flex-direction:column; gap:22px;">
+          <div data-reveal style="display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--line); padding-bottom:16px;">
+            <span style="font-family:'Instrument Serif',serif; font-size:clamp(46px,6vw,76px); line-height:0.8; color:var(--red);">700+</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink2); letter-spacing:0.05em;">contributions<br>this year</span>
+          </div>
+          <div data-reveal style="display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--line); padding-bottom:16px;">
+            <span style="font-family:'Instrument Serif',serif; font-size:clamp(46px,6vw,76px); line-height:0.8;">20+</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink2); letter-spacing:0.05em;">open-source<br>repositories</span>
+          </div>
+          <div data-reveal style="display:flex; align-items:baseline; gap:14px;">
+            <span style="font-family:'Instrument Serif',serif; font-size:clamp(46px,6vw,76px); line-height:0.8;">15+</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink2); letter-spacing:0.05em;">technical<br>articles</span>
+          </div>
+        </div>
+        <div data-reveal style="border:1.5px solid var(--ink); background:var(--paper); padding:18px; box-shadow:8px 8px 0 var(--ink);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink2);">
+            <span>CONTRIBUTION GRAPH</span><span style="color:var(--red);">● 2026</span>
+          </div>
+          <div id="sg-heatmap" style="display:grid; grid-template-rows:repeat(7,1fr); grid-auto-flow:column; gap:3px; overflow-x:auto;"></div>
+          <div style="display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:12px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink2);">
+            Less
+            <span style="width:10px; height:10px; background:var(--paper2); border:1px solid var(--line);"></span>
+            <span style="width:10px; height:10px; background:rgba(198,46,34,0.35);"></span>
+            <span style="width:10px; height:10px; background:rgba(198,46,34,0.65);"></span>
+            <span style="width:10px; height:10px; background:var(--red);"></span>
+            More
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS + EDUCATION -->
+  <section id="certs" style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(20px,5vw,64px);">
+    <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px;">06 / Credentials</div>
+    <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(32px,5vw,64px); margin:0 0 40px;">Certifications</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-bottom:clamp(40px,6vh,64px);">
+      <div data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); padding:22px; display:flex; gap:16px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+        <div style="flex-shrink:0; width:46px; height:46px; border-radius:50%; border:2px solid var(--red); color:var(--red); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:10px; text-align:center; line-height:1;">CLL<br>MSP</div>
+        <div><div style="font-weight:600; font-size:15px; line-height:1.3;">Certified LLM Security Professional</div><div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink2); margin-top:6px;">Red Team Leaders · Jun 2026</div></div>
+      </div>
+      <div data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); padding:22px; display:flex; gap:16px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+        <div style="flex-shrink:0; width:46px; height:46px; border-radius:50%; border:2px solid var(--red); color:var(--red); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:16px;">◆</div>
+        <div><div style="font-weight:600; font-size:15px; line-height:1.3;">Cyber Job Simulation</div><div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink2); margin-top:6px;">Deloitte Australia · Nov 2025</div></div>
+      </div>
+      <div data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); padding:22px; display:flex; gap:16px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+        <div style="flex-shrink:0; width:46px; height:46px; border-radius:50%; border:2px solid var(--red); color:var(--red); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:16px;">◆</div>
+        <div><div style="font-weight:600; font-size:15px; line-height:1.3;">Introduction to Cybersecurity</div><div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink2); margin-top:6px;">Cisco Networking Academy · Feb 2026</div></div>
+      </div>
+      <div data-reveal data-magnetic-card style="border:1.5px solid var(--ink); background:var(--paper2); padding:22px; display:flex; gap:16px; box-shadow:5px 5px 0 var(--ink); transition:transform .4s cubic-bezier(.2,.7,.2,1);">
+        <div style="flex-shrink:0; width:46px; height:46px; border-radius:50%; border:2px solid var(--red); color:var(--red); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:16px;">›_</div>
+        <div><div style="font-weight:600; font-size:15px; line-height:1.3;">Command Line Course</div><div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink2); margin-top:6px;">Codecademy · Jul 2025</div></div>
+      </div>
+    </div>
+
+    <!-- education strip -->
+    <div data-reveal style="border:1.5px solid var(--ink); background:var(--ink); color:var(--paper); padding:clamp(22px,3vw,36px); display:grid; grid-template-columns:auto 1fr auto; gap:24px; align-items:center;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.1em; color:var(--red);">07 / EDU</div>
+      <div>
+        <h3 style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(22px,3vw,34px); margin:0 0 4px;">Dayananda Sagar University, Bengaluru</h3>
+        <p style="margin:0; font-size:14.5px; opacity:0.85;">B.Tech, Computer Science (Cybersecurity) · ID ENG24CY0156 · Activities: E-Cell, Basketball, Badminton</p>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:12px; opacity:0.75; text-align:right; white-space:nowrap;">2024 — 2028</div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="position:relative; z-index:2; background:var(--red); color:var(--paper); border-top:1.5px solid var(--ink);">
+    <div style="max-width:1240px; margin:0 auto; padding:clamp(64px,11vh,150px) clamp(20px,5vw,64px); text-align:center;">
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px; opacity:0.85;">08 / Contact</div>
+      <h2 data-reveal style="font-family:'Instrument Serif',serif; font-weight:400; font-size:clamp(52px,11vw,150px); line-height:0.9; margin:0;">Let's build<br><span style="font-style:italic;">something.</span></h2>
+      <p data-reveal style="max-width:440px; margin:24px auto 38px; font-size:17px; line-height:1.5; opacity:0.9;">Internships, collabs, or a chat about real-time systems, security, or the next anime worth watching.</p>
+      <div data-reveal style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:34px;">
+        <a href="mailto:sampratigaurav123@gmail.com" data-magnetic style="display:inline-flex; align-items:center; gap:8px; padding:15px 30px; background:var(--paper); color:var(--ink); font-weight:600; font-size:16px; border-radius:2px;">Email me ↗</a>
+        <a href="https://github.com/sampratigaurav" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; align-items:center; gap:8px; padding:15px 28px; border:1.5px solid var(--paper); font-weight:600; font-size:16px; border-radius:2px;">GitHub</a>
+        <a href="https://www.linkedin.com/in/sampratigaurav" target="_blank" rel="noopener" data-magnetic style="display:inline-flex; align-items:center; gap:8px; padding:15px 28px; border:1.5px solid var(--paper); font-weight:600; font-size:16px; border-radius:2px;">LinkedIn</a>
+      </div>
+      <div data-reveal style="font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:0.04em; opacity:0.9;">sampratigaurav123@gmail.com &nbsp;·&nbsp; +91 74882 88878 &nbsp;·&nbsp; samprati.dev</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="position:relative; z-index:2; max-width:1240px; margin:0 auto; padding:26px clamp(20px,5vw,64px) 44px; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink2);">
+    <span>© 2026 SAMPRATI GAURAV · VOL.2026</span>
+    <span>BENGALURU, IN — BUILT IN PUBLIC ✳</span>
+    <a href="#top" style="color:var(--ink2);">BACK TO TOP ↑</a>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C62E22&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C62E22&quot;,&quot;#D14A3A&quot;,&quot;#1F6F5C&quot;,&quot;#2E4A9E&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;paperTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Bone&quot;,&quot;options&quot;:[&quot;Bone&quot;,&quot;Cool grey&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;enableGrain&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;enableCursor&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this._cleanups = [];
+    this.applyTheme();
+    this.initLetters();
+    this.initReveal();
+    this.initMagnetic();
+    this.initCursor();
+    this.buildHeatmap();
+  }
+  componentDidUpdate() { this.applyTheme(); }
+  componentWillUnmount() { (this._cleanups || []).forEach(fn => fn()); }
+
+  root() { return document.getElementById('sg-portfolio'); }
+
+  applyTheme() {
+    const r = this.root(); if (!r) return;
+    r.style.setProperty('--red', this.props.accentColor || '#C62E22');
+    const cool = (this.props.paperTone || 'Bone') === 'Cool grey';
+    r.style.setProperty('--paper', cool ? '#EDECE7' : '#E9E3D4');
+    r.style.setProperty('--paper2', cool ? '#E3E2DC' : '#E0D8C4');
+    r.style.setProperty('--line', cool ? '#D3D2CB' : '#C8BEA6');
+    const grain = r.querySelector('#sg-grain');
+    if (grain) grain.style.display = (this.props.enableGrain === false) ? 'none' : 'block';
+    const cur = r.querySelector('#sg-cursor');
+    if (cur) cur.style.display = (this.props.enableCursor === false) ? 'none' : 'block';
+  }
+
+  initLetters() {
+    const r = this.root(); if (!r) return;
+    const letters = [...r.querySelectorAll('[data-letter]')];
+    letters.forEach((el, i) => {
+      el.style.display = 'inline-block';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(0.6em)';
+      el.style.transition = 'opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)';
+      el.style.transitionDelay = (0.15 + i * 0.045) + 's';
+    });
+    requestAnimationFrame(() => letters.forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }));
+  }
+
+  initReveal() {
+    const r = this.root(); if (!r) return;
+    const items = [...r.querySelectorAll('[data-reveal]')];
+    items.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(26px)';
+      el.style.transition = 'opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1)';
+    });
+    const show = el => { el.style.opacity = '1'; el.style.transform = 'none'; };
+    if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(el => io.observe(el));
+    const safety = setTimeout(() => items.forEach(show), 3500);
+    this._cleanups.push(() => { io.disconnect(); clearTimeout(safety); });
+  }
+
+  initMagnetic() {
+    const r = this.root(); if (!r) return;
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+    const strength = 0.3;
+    r.querySelectorAll('[data-magnetic]').forEach(el => {
+      el.style.transition = 'transform .35s cubic-bezier(.2,.7,.2,1)';
+      el.style.willChange = 'transform';
+      const move = (e) => {
+        const b = el.getBoundingClientRect();
+        el.style.transform = `translate(${(e.clientX - (b.left + b.width / 2)) * strength}px, ${(e.clientY - (b.top + b.height / 2)) * strength}px)`;
+      };
+      const reset = () => { el.style.transform = 'translate(0,0)'; };
+      el.addEventListener('mousemove', move); el.addEventListener('mouseleave', reset);
+      this._cleanups.push(() => { el.removeEventListener('mousemove', move); el.removeEventListener('mouseleave', reset); });
+    });
+    r.querySelectorAll('[data-magnetic-card]').forEach(el => {
+      const base = el.style.transform || '';
+      const enter = () => { el.style.transform = 'translate(-3px,-3px)'; };
+      const leave = () => { el.style.transform = base; };
+      el.addEventListener('mouseenter', enter); el.addEventListener('mouseleave', leave);
+      this._cleanups.push(() => { el.removeEventListener('mouseenter', enter); el.removeEventListener('mouseleave', leave); });
+    });
+  }
+
+  initCursor() {
+    const r = this.root(); if (!r) return;
+    const cur = r.querySelector('#sg-cursor'); if (!cur) return;
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) { cur.style.display = 'none'; return; }
+    let tx = -1000, ty = -1000, cx = -1000, cy = -1000, raf = 0, idle = 0;
+    const loop = () => {
+      cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18;
+      cur.style.transform = `translate(${cx}px, ${cy}px)`;
+      if (Date.now() - idle > 200 && Math.abs(tx - cx) < 0.5 && Math.abs(ty - cy) < 0.5) { raf = 0; return; }
+      raf = requestAnimationFrame(loop);
+    };
+    const onMove = (e) => { tx = e.clientX; ty = e.clientY; idle = Date.now(); if (!raf) raf = requestAnimationFrame(loop); };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    this._cleanups.push(() => { window.removeEventListener('mousemove', onMove); if (raf) cancelAnimationFrame(raf); });
+  }
+
+  buildHeatmap() {
+    const r = this.root(); if (!r) return;
+    const grid = r.querySelector('#sg-heatmap'); if (!grid || grid.childElementCount) return;
+    let seed = 42;
+    const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    const shades = ['var(--paper2)', 'rgba(198,46,34,0.30)', 'rgba(198,46,34,0.55)', 'rgba(198,46,34,0.80)', 'var(--red)'];
+    const weeks = 52;
+    for (let i = 0; i < weeks * 7; i++) {
+      const v = rnd();
+      let lvl = 0;
+      if (v > 0.42) lvl = 1;
+      if (v > 0.62) lvl = 2;
+      if (v > 0.80) lvl = 3;
+      if (v > 0.92) lvl = 4;
+      const cell = document.createElement('div');
+      cell.style.width = '11px';
+      cell.style.height = '11px';
+      cell.style.borderRadius = '2px';
+      cell.style.background = shades[lvl];
+      if (lvl === 0) cell.style.border = '1px solid var(--line)';
+      grid.appendChild(cell);
+    }
+  }
+
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
