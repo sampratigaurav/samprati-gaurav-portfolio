@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
+  <!-- Halftone dot background -->
   <defs>
     <pattern id="dot2" width="15" height="15" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.5" fill="#17130D" fill-opacity="0.15"/>
@@ -6,20 +7,44 @@
   </defs>
   <rect width="300" height="400" fill="url(#dot2)"/>
 
-  <!-- Track lanes -->
-  <path d="M 0 250 C 150 250, 250 150, 300 0" fill="none" stroke="#C62E22" stroke-width="20"/>
-  <path d="M 0 300 C 150 300, 280 180, 300 40" fill="none" stroke="#17130D" stroke-width="4"/>
-  <path d="M 0 350 C 150 350, 310 210, 300 80" fill="none" stroke="#17130D" stroke-width="4"/>
+  <!-- Track / Ground line -->
+  <line x1="10" y1="320" x2="290" y2="320" stroke="#17130D" stroke-width="4" stroke-dasharray="40 10 80 15 30 10"/>
+  <line x1="30" y1="330" x2="250" y2="330" stroke="#17130D" stroke-width="2" stroke-dasharray="10 20 50 10"/>
 
-  <!-- Abstract Running Shoe -->
-  <g transform="translate(10, 10)">
-    <path d="M 50 220 C 50 170, 70 150, 100 150 L 120 160 L 160 170 C 190 180, 220 200, 220 220 C 220 240, 180 250, 100 250 C 60 250, 50 240, 50 220 Z" fill="#17130D"/>
-    <!-- Laces -->
-    <line x1="100" y1="150" x2="110" y2="130" stroke="#17130D" stroke-width="6" stroke-linecap="round"/>
-    <line x1="120" y1="160" x2="135" y2="140" stroke="#17130D" stroke-width="6" stroke-linecap="round"/>
-    <line x1="140" y1="165" x2="160" y2="150" stroke="#17130D" stroke-width="6" stroke-linecap="round"/>
+  <!-- Red Speed Lines -->
+  <line x1="30" y1="120" x2="90" y2="120" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+  <line x1="10" y1="170" x2="60" y2="170" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+  <line x1="40" y1="230" x2="90" y2="230" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Abstract Runner Silhouette -->
+  <!-- We draw the back limbs first so they appear behind the torso -->
+  <g stroke="#17130D" stroke-linecap="round" stroke-linejoin="round" fill="none">
     
-    <!-- Highlight / Swoosh -->
-    <path d="M 80 200 C 120 200, 150 180, 180 180" fill="none" stroke="#E9E3D4" stroke-width="8" stroke-linecap="round"/>
+    <!-- Back Arm (Left arm, swinging forward) -->
+    <path d="M 140 130 L 190 160 L 220 100" stroke-width="18"/>
+    
+    <!-- Back Leg (Left leg, pushing off ground) -->
+    <path d="M 120 200 L 70 250 L 30 320" stroke-width="22"/>
+    <!-- Back Foot -->
+    <path d="M 30 320 L 10 320" stroke-width="16"/>
+
+    <!-- Torso -->
+    <path d="M 140 130 L 120 200" stroke-width="34"/>
+
+    <!-- Front Leg (Right leg, high knee stepping forward) -->
+    <path d="M 120 200 L 200 180 L 220 260" stroke-width="24"/>
+    <!-- Front Foot -->
+    <path d="M 220 260 L 250 260" stroke-width="20"/>
+
+    <!-- Front Arm (Right arm, swinging back) -->
+    <path d="M 140 130 L 90 120 L 120 60" stroke-width="20"/>
+
   </g>
+
+  <!-- Head -->
+  <circle cx="165" cy="80" r="22" fill="#17130D"/>
+
+  <!-- Red Headband / Sweatband -->
+  <path d="M 145 72 C 160 70, 180 75, 185 85" fill="none" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
+
 </svg>
