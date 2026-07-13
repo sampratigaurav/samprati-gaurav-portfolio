@@ -29,21 +29,26 @@ export const REG_CARD = {
 };
 
 export const GALLERY = [
+  { id: 'anime', num: '01', label: 'ANIME', src: '/images/gallery-anime.svg' },
   {
-    id: 'naruto',
-    num: '01',
-    label: 'NARUTO',
-    src: '/images/gallery-naruto.svg',
-  },
-  {
-    id: 'your-name',
+    id: 'animals',
     num: '02',
-    label: 'YOUR NAME',
-    src: '/images/gallery-your-name.svg',
+    label: 'ANIMALS',
+    src: '/images/gallery-animals.svg',
   },
-  { id: 'cats', num: '03', label: 'CATS', src: '/images/gallery-cats.svg' },
-  { id: 'dogs', num: '04', label: 'DOGS', src: '/images/gallery-dogs.svg' },
-  { id: 'f1', num: '05', label: 'F1', src: '/images/gallery-f1.svg' },
+  { id: 'f1', num: '03', label: 'F1', src: '/images/gallery-f1.svg' },
+  {
+    id: 'running',
+    num: '04',
+    label: 'RUNNING',
+    src: '/images/gallery-running.svg',
+  },
+  {
+    id: 'tennis',
+    num: '05',
+    label: 'TENNIS',
+    src: '/images/gallery-tennis.svg',
+  },
 ];
 
 export const ARCS = [
