@@ -7,83 +7,111 @@
   body {
     width: 1200px;
     height: 630px;
-    background: #000;
-    color: #fff;
+    background: #E9E3D4;
+    color: #17130D;
     font-family: Georgia, serif;
     overflow: hidden;
     position: relative;
   }
-  .grid {
+  .halftone {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
+    background-image: radial-gradient(#17130D 2.5px, transparent 3px);
+    background-size: 14px 14px;
+    opacity: 0.15;
   }
-  .content {
+  .red-circle {
+    position: absolute;
+    right: -200px;
+    bottom: -200px;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: #C62E22;
+  }
+  .watermark {
+    position: absolute;
+    right: 50px;
+    bottom: -60px;
+    font-size: 500px;
+    font-style: italic;
+    font-weight: bold;
+    color: #17130D;
+    line-height: 1;
+  }
+  .content-box {
     position: absolute;
     left: 80px;
     top: 160px;
+    width: 840px;
+    height: 360px;
+    background: #E9E3D4;
+    border: 6px solid #17130D;
+    padding: 70px 60px;
+    z-index: 10;
   }
   .name {
-    font-size: 86px;
+    font-size: 96px;
     font-style: italic;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 1;
     margin-bottom: 20px;
   }
   .tagline {
+    font-family: monospace;
     font-size: 32px;
-    font-style: italic;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 28px;
+    color: #C62E22;
+    font-weight: bold;
+    margin-bottom: 40px;
   }
   .divider {
-    width: 500px;
-    height: 1px;
-    background: rgba(255,255,255,0.12);
-    margin-bottom: 28px;
+    width: 480px;
+    height: 2px;
+    background: transparent;
+    border-bottom: 2px dashed #17130D;
+    margin-bottom: 30px;
   }
   .stats {
     font-family: monospace;
-    font-size: 20px;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 14px;
+    font-size: 24px;
+    color: #17130D;
+    margin-bottom: 20px;
   }
   .cta {
     font-family: monospace;
     font-size: 20px;
-    color: rgba(255,255,255,0.55);
+    color: #17130D;
   }
-  .url {
+  .url-badge {
     position: absolute;
-    bottom: 48px;
+    top: 80px;
     left: 80px;
+    width: 220px;
+    height: 50px;
+    background: #17130D;
+    color: #E9E3D4;
     font-family: monospace;
     font-size: 24px;
-    color: rgba(255,255,255,0.25);
-  }
-  .watermark {
-    position: absolute;
-    right: -40px;
-    bottom: -60px;
-    font-size: 400px;
-    font-style: italic;
-    color: rgba(255,255,255,0.03);
-    line-height: 1;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
   }
 </style>
 </head>
 <body>
-  <div class="grid"></div>
+  <div class="halftone"></div>
+  <div class="red-circle"></div>
   <div class="watermark">S</div>
-  <div class="content">
+  <div class="url-badge">samprati.dev</div>
+  
+  <div class="content-box">
     <div class="name">Samprati Gaurav</div>
     <div class="tagline">Cybersecurity Student · Builder · Writer</div>
     <div class="divider"></div>
     <div class="stats">15 articles · 159 commits · 6 certs · 1 live project</div>
-    <div class="cta">Open to internships & collaborations →</div>
+    <div class="cta">Open to internships & collaborations</div>
   </div>
-  <div class="url">samprati.dev</div>
 </body>
 </html>
