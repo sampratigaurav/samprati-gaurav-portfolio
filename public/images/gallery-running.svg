@@ -1,27 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="100%" height="100%">
-  <!-- Halftone dot background -->
+  <!-- Halftone grid -->
   <defs>
-    <pattern id="dot2" width="15" height="15" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.5" fill="#17130D" fill-opacity="0.15"/>
+    <pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#17130D" stroke-width="1" stroke-opacity="0.1"/>
     </pattern>
   </defs>
-  <rect width="300" height="400" fill="url(#dot2)"/>
+  <rect width="300" height="400" fill="url(#grid3)"/>
 
-  <!-- Track / Ground line -->
-  <line x1="10" y1="365" x2="290" y2="365" stroke="#17130D" stroke-width="4" stroke-dasharray="40 10 80 15 30 10"/>
-  <line x1="30" y1="375" x2="250" y2="375" stroke="#17130D" stroke-width="2" stroke-dasharray="10 20 50 10"/>
+  <!-- Minimalist Running Track Curves -->
+  <!-- 4 thick, sweeping concentric curves representing athletic track lanes -->
+  <path d="M -50 380 C 150 380, 280 250, 380 -50" fill="none" stroke="#17130D" stroke-width="4"/>
+  <path d="M -50 330 C 110 330, 230 210, 330 -50" fill="none" stroke="#C62E22" stroke-width="32"/>
+  <path d="M -50 280 C 70 280, 180 170, 280 -50" fill="none" stroke="#17130D" stroke-width="4"/>
+  <path d="M -50 230 C 30 230, 130 130, 230 -50" fill="none" stroke="#17130D" stroke-width="4"/>
 
-  <!-- Red Speed Lines -->
-  <line x1="20" y1="120" x2="100" y2="120" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
-  <line x1="10" y1="180" x2="70" y2="180" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
-  <line x1="40" y1="270" x2="110" y2="270" stroke="#C62E22" stroke-width="6" stroke-linecap="round"/>
-
-  <!-- High Quality Runner Silhouette -->
-  <g transform="translate(-5, -5) scale(0.75)">
-    <!-- Head -->
-    <path d="M332.8,70.4 c0-23.5-19.1-42.6-42.6-42.6 s-42.6,19.1-42.6,42.6 s19.1,42.6,42.6,42.6 S332.8,93.9,332.8,70.4 z" fill="#17130D"/>
+  <!-- Stopwatch graphic overlapping the track -->
+  <g transform="translate(150, 180)">
+    <!-- Base -->
+    <circle cx="0" cy="0" r="80" fill="#E9E3D4" stroke="#17130D" stroke-width="12"/>
     
-    <!-- Body -->
-    <path d="M353.4,204.6 l-38.6-88.7 c-5.7-13.1-18.7-21.5-33-21.5 h-10 c-15.6,0-29.6,9.8-34.6,24.6 L201.5,231 l38.2,12 l21.2-66.9 L249,195.4 l-42.3,86.2 l-26.6-9.5 l-44.5,41.9 l27,28.6 l31.1-29.3 l25,8.9 l-22.1,51.8 L139,451.9 l36.5,18 l45.4-86.4 l24-56.1 l43,30.3 v126.3 h40.2 V337.8 c0-13.9-6.8-27-18.3-35.1 l-34.7-24.5 l26-51.5 L341,257.6 C341,257.6,353.4,204.6,353.4,204.6 z" fill="#17130D"/>
+    <!-- Top button -->
+    <rect x="-16" y="-110" width="32" height="30" fill="#17130D"/>
+    <rect x="-24" y="-120" width="48" height="10" fill="#17130D"/>
+
+    <!-- Side Button -->
+    <g transform="rotate(45)">
+      <rect x="-10" y="-105" width="20" height="25" fill="#17130D"/>
+    </g>
+
+    <!-- Inner Dial -->
+    <circle cx="0" cy="0" r="55" fill="none" stroke="#17130D" stroke-width="4" stroke-dasharray="4 8"/>
+    <circle cx="0" cy="0" r="45" fill="none" stroke="#17130D" stroke-width="2"/>
+
+    <!-- Red Hand -->
+    <line x1="0" y1="0" x2="30" y2="-40" stroke="#C62E22" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="10" fill="#17130D"/>
   </g>
 </svg>
